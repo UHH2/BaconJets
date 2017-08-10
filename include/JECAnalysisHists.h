@@ -3,8 +3,8 @@
 #include "UHH2/core/include/Hists.h"
 #include "UHH2/core/include/Event.h"
 #include "TClonesArray.h"
-#include "UHH2/bacondataformats/interface/TEventInfo.hh"
-#include "UHH2/bacondataformats/interface/BaconAnaDefs.hh"
+#include "UHH2/bacondataformats/interface/TEventInfo.h"
+#include "UHH2/bacondataformats/interface/BaconAnaDefs.h"
 using namespace baconhep;
 /**  \brief Example class for booking and filling histograms
  * 

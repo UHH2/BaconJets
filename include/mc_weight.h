@@ -19,8 +19,8 @@
 #include "UHH2/core/include/AnalysisModule.h"
 #include "UHH2/core/include/Event.h"
 
-#include "UHH2/bacondataformats/interface/TEventInfo.hh"
-//#include "UHH2/bacondataformats/interface/BaconAnaDefs.hh"
+#include "UHH2/bacondataformats/interface/TEventInfo.h"
+
 using namespace std;
 
 namespace uhh2bacon {

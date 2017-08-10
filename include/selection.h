@@ -6,8 +6,7 @@
 #include "UHH2/core/include/Event.h"
 
 
-#include "UHH2/bacondataformats/interface/TEventInfo.hh"
-//#include "UHH2/bacondataformats/interface/BaconAnaDefs.hh"
+#include "UHH2/bacondataformats/interface/TEventInfo.h"
 
 namespace uhh2bacon {
 
