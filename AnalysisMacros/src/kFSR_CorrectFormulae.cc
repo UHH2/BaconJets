@@ -608,7 +608,8 @@ void CorrectionObject::kFSR_CorrectFormulae(){
    //Create output .dat file, including the kFSR extrapolation (alpha->0)
    FILE *fp_rel_r, *fp_mpf_r; 
    TH1D *kFSR_MPF, *kFSR_DiJet, *plotkfsr;
-   
+
+   CorrectionObject::make_path( _outpath+"output/");
    cout << "Opening .dat files at: " << CorrectionObject::_outpath+"output/KFSR_MPF_extrapolation.dat" << endl;
    fp_mpf_r = fopen(CorrectionObject::_outpath+"output/KFSR_MPF_extrapolation.dat","w");
    fp_rel_r = fopen(CorrectionObject::_outpath+"output/KFSR_DiJet_extrapolation.dat","w");

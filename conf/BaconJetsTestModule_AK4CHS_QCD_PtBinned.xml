@@ -2,14 +2,14 @@
 <!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd"[
 
 
-<!ENTITY PROOFdir            "/nfs/dust/cms/user/multh/.proof2"> 
+<!ENTITY PROOFdir            "/nfs/dust/cms/user/garbersc/forBaconJets/.proof2"> 
 <!ENTITY NEVT                "-1">
 
 <!ENTITY CACHEABLE           "False">
-<!ENTITY OUTdir              "/nfs/dust/cms/user/multh/JEC/2016ReReco/Residuals/Summer16_03Feb2017_V3/AK4CHS/MC_Reweighted_chsMET_NewSF/">
+<!ENTITY OUTdir              "/nfs/dust/cms/user/garbersc/forBaconJets/2016ReReco/Residuals/Summer16_03Feb2017_V3/AK4CHS/Run17B_PromptReco_and_MC16/">
 
 <!ENTITY b_closuretest       "false">
-<!ENTITY jec_version         "Summer16_03Feb2017_V3">
+<!ENTITY jec_version         "Summer16_03Feb2017_V3"> <!--TODO keep in mind that this is old, why V3 and not V4??? -->
 <!ENTITY APPLY_WEIGHTS       "false">
 <!ENTITY WEIGHT_PATH         "/nfs/dust/cms/user/multh/JEC/2016ReReco/Residuals/Summer16_03Feb2017_V3/AK4CHS/MC_Reweighted_chsMET_NewTriggerSetup_ForWeights/"> <!-- Change Weight-Path: CENTRAL/FWD -->
 <!ENTITY Cut_PATH            "/nfs/dust/cms/user/multh/JEC/2016ReReco/Residuals/Summer16_03Feb2017_V3/AK4CHS/EtaPhiCut/">
@@ -19,7 +19,7 @@
 <!ENTITY APPLY_LUMIWEIGHTS   "false"> 
 <!ENTITY APPLY_UNFLATTENING  "false">
 <!ENTITY TRIGGER_CENTRAL     "true">  <!--Trigger Flag -->
-<!ENTITY TRIGGER_FWD         "true"> <!--Trigger Flag -->
+<!ENTITY TRIGGER_FWD         "false"> <!--Trigger Flag -->
 
 <!--
 <!ENTITY QCDPt15to7000_pythia8_AK4CHS_Flat SYSTEM "/nfs/dust/cms/user/multh/CMSSW_8_0_26_patch2/src/UHH2/common/datasets/RunII_80X_v3_EGReg/MC_QCD_FlatP6_pythia8_PUpthat_EGReg_chsMET.xml">
@@ -46,32 +46,15 @@
 <!ENTITY QCDPt2400to3200_pythia8_AK4CHS_ext1  SYSTEM "/nfs/dust/cms/user/multh/CMSSW_8_0_26_patch2/src/UHH2/common/datasets/RunII_80X_v3_EGReg/QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8_ext1.xml">
 <!ENTITY QCDPt3200toInf_pythia8_AK4CHS        SYSTEM "/nfs/dust/cms/user/multh/CMSSW_8_0_26_patch2/src/UHH2/common/datasets/RunII_80X_v3_EGReg/MC_QCD_Pt_3200toInf_EGReg_chsMET.xml">
 
-<!ENTITY DATA_RunB_AK4CHS SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_8_0_20/src/UHH2/common/datasets/RunII_80X_v2/DATA_JetHT_ReReco_RunB.xml">
-<!ENTITY DATA_RunC_AK4CHS SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_8_0_20/src/UHH2/common/datasets/RunII_80X_v2/DATA_JetHT_ReReco_RunC.xml">
-<!ENTITY DATA_RunD_AK4CHS SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_8_0_20/src/UHH2/common/datasets/RunII_80X_v2/DATA_JetHT_ReReco_RunD.xml">
-<!ENTITY DATA_RunE_AK4CHS SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_8_0_20/src/UHH2/common/datasets/RunII_80X_v2/DATA_JetHT_ReReco_RunE.xml">
-<!ENTITY DATA_RunF_AK4CHS SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_8_0_20/src/UHH2/common/datasets/RunII_80X_v2/DATA_JetHT_ReReco_RunF.xml">
-<!ENTITY DATA_RunG_AK4CHS SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_8_0_20/src/UHH2/common/datasets/RunII_80X_v2/DATA_JetHT_ReReco_RunG.xml">
-<!ENTITY DATA_RunH_AK4CHS SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_8_0_20/src/UHH2/common/datasets/RunII_80X_v2/DATA_JetHT_RunH_full.xml">
 
-<!ENTITY DATA_RunB_reMINIAOD_AK4CHS SYSTEM "/nfs/dust/cms/user/multh/CMSSW_8_0_26_patch2/src/UHH2/common/datasets/RunII_80X_v3_EGReg/DATA_JetHT_Run2016B_03Feb_EGReg_chsMET.xml">
-<!ENTITY DATA_RunC_reMINIAOD_AK4CHS SYSTEM "/nfs/dust/cms/user/multh/CMSSW_8_0_26_patch2/src/UHH2/common/datasets/RunII_80X_v3_EGReg/DATA_JetHT_Run2016C_03Feb_EGReg_chsMET.xml">
-<!ENTITY DATA_RunD_reMINIAOD_AK4CHS SYSTEM "/nfs/dust/cms/user/multh/CMSSW_8_0_26_patch2/src/UHH2/common/datasets/RunII_80X_v3_EGReg/DATA_JetHT_Run2016D_03Feb_EGReg_chsMET.xml">
-<!ENTITY DATA_RunE_reMINIAOD_AK4CHS SYSTEM "/nfs/dust/cms/user/multh/CMSSW_8_0_26_patch2/src/UHH2/common/datasets/RunII_80X_v3_EGReg/DATA_JetHT_Run2016E_03Feb_EGReg_chsMET.xml">
-<!ENTITY DATA_RunF_reMINIAOD_AK4CHS SYSTEM "/nfs/dust/cms/user/multh/CMSSW_8_0_26_patch2/src/UHH2/common/datasets/RunII_80X_v3_EGReg/DATA_JetHT_Run2016F_03Feb_EGReg_chsMET.xml">
-<!ENTITY DATA_RunG_reMINIAOD_AK4CHS SYSTEM "/nfs/dust/cms/user/multh/CMSSW_8_0_26_patch2/src/UHH2/common/datasets/RunII_80X_v3_EGReg/DATA_JetHT_Run2016G_03Feb_EGReg_chsMET.xml">
-<!ENTITY DATA_RunH_reMINIAOD_AK4CHS SYSTEM "/nfs/dust/cms/user/multh/CMSSW_8_0_26_patch2/src/UHH2/common/datasets/RunII_80X_v3_EGReg/DATA_JetHT_Run2016H_03Feb_EGReg_chsMET.xml">
 
-<!ENTITY DATA_RunH_Legacy_AK4CHS SYSTEM "/nfs/dust/cms/user/multh/CMSSW_8_0_26_patch2/src/UHH2/common/datasets/RunII_80X_v3/DATA_JetHT_Run2016H_18Apr_EGReg_chsMET.xml">
-<!ENTITY DATA_RunB_Legacy_AK4CHS SYSTEM "/nfs/dust/cms/user/multh/CMSSW_8_0_26_patch2/src/UHH2/common/datasets/RunII_80X_v3/DATA_JetHT_Run2016B_18Apr_EGReg_chsMET.xml">
-
-<!ENTITY DATA_RunB_promptReco_2017 SYSTEM "/afs/desy.de/user/k/karavdia/public/JERC/2017Data/DATA_JetHT_Run2017B_PromtReco.xml">
+<!ENTITY DATA_RunB_promptReco_2017 SYSTEM "/afs/desy.de/user/g/garbersc/xxl/af-cms/UHH2_17/CMSSW_9_2_7_patch1/src/UHH2/common/datasets/RunII_92X_v1/DATA_JetHT_Run2017B_PromtReco_v1.xml">
 ]>
 
 
 <!--
-<ConfigParse NEventsBreak="0" FileSplit="60" AutoResubmit="5"/>
-<ConfigSGE RAM ="4" DISK ="3" Mail="xxx@desy.de" Notification="as" Workdir="workdir_Summer16_03Feb2017_RunBCDEFGH_nominal"/>
+<ConfigParse NEventsBreak="0" FileSplit="40" AutoResubmit="5"/>
+<ConfigSGE RAM ="4" DISK ="3" Mail="xxx@desy.de" Notification="as" Workdir="workdir_Run17B_PromtReco_and_MC16"/>
 -->
 
 <!-- OutputLevel controls which messages are printed; set to VERBOSE or DEBUG for more verbosity, to WARNING or ERROR for less -->
@@ -79,9 +62,8 @@
     <Library Name="libSUHH2BaconJets"/>
     <Package Name="SUHH2BaconJets.par" />
 
- <Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&OUTdir;/" PostFix="" TargetLumi="8500" > 
-<!-- <Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&OUTdir;/" PostFix="" TargetLumi="12900" RunMode="PROOF" ProofServer="lite://" ProofWorkDir="&PROOFdir;/" ProofNodes="15" > -->
-
+ <Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&OUTdir;/" PostFix="" TargetLumi="4553" > 
+<!-- <Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&OUTdir;/" PostFix="" TargetLumi="4553" RunMode="PROOF" ProofServer="lite://" ProofWorkDir="&PROOFdir;/" ProofNodes="15" > -->
 
 
 <!-- For Weight Calculation -->
@@ -153,15 +135,14 @@
           <OutputTree Name="AnalysisTree"/>
      </InputData>
 
-
 <!-- For Second Run -->
-<!--
-<InputData Lumi="0.518" NEventsMax="&NEVT;" Type="MC" Version="QCDPt50to80_pythia8_AK4CHS_RunH" Cacheable="&CACHEABLE;">
-          &QCDPt50to80_pythia8_AK4CHS;
-          <InputTree Name="AnalysisTree"/>
-          <OutputTree Name="AnalysisTree"/>
-     </InputData>
 
+<!-- <InputData Lumi="0.518" NEventsMax="&NEVT;" Type="MC" Version="QCDPt50to80_pythia8_AK4CHS_RunH" Cacheable="&CACHEABLE;"> -->
+<!--           &QCDPt50to80_pythia8_AK4CHS; -->
+<!--           <InputTree Name="AnalysisTree"/> -->
+<!--           <OutputTree Name="AnalysisTree"/> -->
+<!--      </InputData> -->
+<!--
 <InputData Lumi="5.283" NEventsMax="&NEVT;" Type="MC" Version="QCDPt80to120_pythia8_AK4CHS_RunH" Cacheable="&CACHEABLE;">
           &QCDPt80to120_pythia8_AK4CHS;
           <InputTree Name="AnalysisTree"/>
@@ -227,59 +208,24 @@
 <!-- DATA -->
 <!--
   <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_RunB_AK4CHS" Cacheable="&CACHEABLE;">
-       &DATA_RunB_AK4CHS;
+       &DATA_RunB_promptReco_2017;
        <InputTree Name="AnalysisTree"/>
        <OutputTree Name="AnalysisTree"/>
-  </InputData> 
-
-  <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_RunC_AK4CHS" Cacheable="&CACHEABLE;">
-       &DATA_RunC_AK4CHS;
-       <InputTree Name="AnalysisTree"/>
-       <OutputTree Name="AnalysisTree"/>
-  </InputData>
-
-  <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_RunD_AK4CHS" Cacheable="&CACHEABLE;">
-       &DATA_RunD_reMINIAOD_AK4CHS;
-       <InputTree Name="AnalysisTree"/>
-       <OutputTree Name="AnalysisTree"/>
-  </InputData>
-
-  <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_RunE_AK4CHS" Cacheable="&CACHEABLE;">
-       &DATA_RunE_AK4CHS;
-       <InputTree Name="AnalysisTree"/>
-       <OutputTree Name="AnalysisTree"/>
-  </InputData> 
-
-  <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_RunFearly_AK4CHS" Cacheable="&CACHEABLE;">
-       &DATA_RunF_AK4CHS;
-       <InputTree Name="AnalysisTree"/>
-       <OutputTree Name="AnalysisTree"/>
-  </InputData>
-
-  <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_RunFlate_AK4CHS" Cacheable="&CACHEABLE;">
-       &DATA_RunF_AK4CHS;
-       <InputTree Name="AnalysisTree"/>
-       <OutputTree Name="AnalysisTree"/>
-  </InputData>
-
-  <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_RunG_AK4CHS" Cacheable="&CACHEABLE;">
-       &DATA_RunG_AK4CHS;
-       <InputTree Name="AnalysisTree"/>
-       <OutputTree Name="AnalysisTree"/>
-  </InputData>
-
-  <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_RunH_AK4CHS" Cacheable="&CACHEABLE;">
-       &DATA_RunH_AK4CHS;
-       <InputTree Name="AnalysisTree"/>
-       <OutputTree Name="AnalysisTree"/>
-  </InputData>
+       </InputData>
 -->
+
+
+<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_RunB_promptReco_2017" Cacheable="&CACHEABLE;">
+          &DATA_RunB_promptReco_2017;
+          <InputTree Name="AnalysisTree"/>
+          <OutputTree Name="AnalysisTree"/>
+</InputData>
 
     <UserConfig>
       <Item Name="PrimaryVertexCollection" Value="offlineSlimmedPrimaryVertices"/>
       <Item Name="GenParticleCollection"   Value="GenParticles"/>
-      <Item Name="ElectronCollection"      Value="slimmedElectronsUSER"/>
-      <Item Name="MuonCollection"          Value="slimmedMuonsUSER"/>
+      <Item Name="ElectronCollection"      Value="slimmedElectrons"/>
+      <Item Name="MuonCollection"          Value="slimmedMuons"/>
       <Item Name="TauCollection"           Value="slimmedTaus"/>
       <!-- AK4CHS -->
       <Item Name="JetCollection"           Value="slimmedJets"/>
@@ -297,7 +243,7 @@
       <!--          <Item Name="METName"                 Value="slimmedMETs"/>-->
       <Item Name="METName"                 Value="slMETsCHS"/>
      
-      <Item Name="lumi_file" Value="/nfs/dust/cms/user/multh/CMSSW_8_0_26_patch2/src/UHH2/common/data/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.root"/>
+      <Item Name="lumi_file" Value="/afs/desy.de/user/g/garbersc/xxl/af-cms/UHH2_17/CMSSW_9_2_7_patch1/src/UHH2/common/data/Cert_13TeV_2017_HCAL_DCS_GOOD_11Jul.root"/>
      
       <!--
       	 <Item Name="pileup_directory"           Value="/afs/desy.de/user/k/karavdia/CMSSW_8_0_20/src/UHH2/BaconJets/data/PileUp/80X/PileUP_MC_pythia8_PUFlat.root"/>
@@ -314,21 +260,22 @@
 
       <Item Name="use_sframe_weight" Value="true"/>  <!--false-->
 
-      <Item Name="trigger40" Value="HLT_DiPFJetAve40_v*"/>
-      <Item Name="trigger60" Value="HLT_DiPFJetAve60_v*"/>
-      <Item Name="trigger80" Value="HLT_DiPFJetAve80_v*"/>
-      <Item Name="trigger140" Value="HLT_DiPFJetAve140_v*"/>
-      <Item Name="trigger200" Value="HLT_DiPFJetAve200_v*"/>
-      <Item Name="trigger260" Value="HLT_DiPFJetAve260_v*"/>
-      <Item Name="trigger320" Value="HLT_DiPFJetAve320_v*"/>
-      <Item Name="trigger400" Value="HLT_DiPFJetAve400_v*"/>
-      <Item Name="trigger500" Value="HLT_DiPFJetAve500_v*"/>
-      <Item Name="trigger60_HFJEC" Value="HLT_DiPFJetAve60_HFJEC_v*"/>
-      <Item Name="trigger80_HFJEC" Value="HLT_DiPFJetAve80_HFJEC_v*"/>
-      <Item Name="trigger100_HFJEC" Value="HLT_DiPFJetAve100_HFJEC_v*"/>
-      <Item Name="trigger160_HFJEC" Value="HLT_DiPFJetAve160_HFJEC_v*"/>
-      <Item Name="trigger220_HFJEC" Value="HLT_DiPFJetAve220_HFJEC_v*"/>
-      <Item Name="trigger300_HFJEC" Value="HLT_DiPFJetAve300_HFJEC_v*"/>
+      <Item Name="trigger40" Value="HLT_PFJet40_v*"/>
+      <Item Name="trigger60" Value="HLT_PFJet60_v*"/>
+      <Item Name="trigger80" Value="HLT_PFJet80_v*"/>
+      <Item Name="trigger140" Value="HLT_PFJet140_v*"/>
+      <Item Name="trigger200" Value="HLT_PFJet200_v*"/>
+      <Item Name="trigger260" Value="HLT_PFJet260_v*"/>
+      <Item Name="trigger320" Value="HLT_PFJet320_v*"/>
+      <Item Name="trigger400" Value="HLT_PFJet400_v*"/>
+      <Item Name="trigger450" Value="HLT_PFJet450_v*"/>
+      <Item Name="trigger500" Value="HLT_PFJet500_v*"/>
+      <!-- <Item Name="trigger60_HFJEC" Value="HLT_DiPFJetAve60_HFJEC_v*"/> -->
+      <!-- <Item Name="trigger80_HFJEC" Value="HLT_DiPFJetAve80_HFJEC_v*"/> -->
+      <!-- <Item Name="trigger100_HFJEC" Value="HLT_DiPFJetAve100_HFJEC_v*"/> -->
+      <!-- <Item Name="trigger160_HFJEC" Value="HLT_DiPFJetAve160_HFJEC_v*"/> -->
+      <!-- <Item Name="trigger220_HFJEC" Value="HLT_DiPFJetAve220_HFJEC_v*"/> -->
+      <!-- <Item Name="trigger300_HFJEC" Value="HLT_DiPFJetAve300_HFJEC_v*"/> -->
 
 
 	<!-- Closure test? -->

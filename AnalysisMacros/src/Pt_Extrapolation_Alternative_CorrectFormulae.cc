@@ -335,6 +335,7 @@ void CorrectionObject::Pt_Extrapolation_Alternative_CorrectFormulae(bool mpfMeth
   // create output .dat file, including the kFSR extrapolation (alpha->0)
   FILE *fp, *fp2, *l2resfile;
   if(mpfMethod){
+    CorrectionObject::make_path(CorrectionObject::_outpath+"output/");
     fp = fopen(CorrectionObject::_outpath+"output/pT_MPF_"+CorrectionObject::_generator_tag+"_extrapolations.dat","w");
     fp2 = fopen(CorrectionObject::_outpath+"output/pT_MPF_"+CorrectionObject::_generator_tag+"_constantExtrapolation.dat","w");
     l2resfile = fopen(CorrectionObject::_outpath+"output/L2Res_MPF_"+CorrectionObject::_generator_tag+".dat","w");
@@ -349,6 +350,7 @@ void CorrectionObject::Pt_Extrapolation_Alternative_CorrectFormulae(bool mpfMeth
 
   /* +++++++++++++++++++++++ Plots +++++++++++++++++++ */
   if(mpfMethod){
+    CorrectionObject::make_path(CorrectionObject::_outpath+"plots/");
   TFile* pT_extrapolation_mpf_out = new TFile(CorrectionObject::_outpath+"plots/pT_extrapolation_mpf.root","RECREATE");}
   else{   TFile* pT_extrapolation_pt_out = new TFile(CorrectionObject::_outpath+"plots/pT_extrapolation_pt.root","RECREATE");}
 
@@ -553,7 +555,7 @@ void CorrectionObject::Pt_Extrapolation_Alternative_CorrectFormulae(bool mpfMeth
     TFile* kfsr_mpf;
     TH1D* hist_kfsr_fit_mpf;
     TH1D* hist_kfsr_mpf;
-    if(CorrectionObject::_runnr != "BCDEFGH"){
+    if(CorrectionObject::_runnr == "BCDEFGH"){ //TODO was original if(CorrectionObject::_runnr != "BCDEFGH"){ seems wrong...
         kfsr_mpf = new TFile(CorrectionObject::_input_path+"RunBCDEFGH/Histo_Res_MPF_L1_"+CorrectionObject::_generator_tag+"_AK4PFchs.root","READ");
 	hist_kfsr_fit_mpf = (TH1D*)kfsr_mpf->Get("hist_kfsr_fit_mpf");
 	hist_kfsr_mpf = (TH1D*)kfsr_mpf->Get("kfsr_mpf");
@@ -911,7 +913,7 @@ void CorrectionObject::Pt_Extrapolation_Alternative_CorrectFormulae(bool mpfMeth
     TFile* kfsr_dijet;
     TH1D* hist_kfsr_fit_dijet;
     TH1D* hist_kfsr_dijet;
-    if(CorrectionObject::_runnr != "BCDEFGH"){
+    if(CorrectionObject::_runnr == "BCDEFGH"){ //TODO same as above
         kfsr_dijet = new TFile(CorrectionObject::_input_path+"RunBCDEFGH/Histo_Res_DiJet_L1_"+CorrectionObject::_generator_tag+"_AK4PFchs.root","READ");
 	hist_kfsr_fit_dijet = (TH1D*)kfsr_dijet->Get("hist_kfsr_fit_dijet");
 	hist_kfsr_dijet = (TH1D*)kfsr_dijet->Get("kfsr_dijet");

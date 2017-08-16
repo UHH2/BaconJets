@@ -1,3 +1,6 @@
+#ifndef CORRECTIONOBJECT_H
+#define CORRECTIONOBJECT_H
+
 #pragma once
 
 #include <cmath>
@@ -5,8 +8,9 @@
 #include <TString.h>
 #include <TFile.h>
 
-
-
+#include <string>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 using namespace std;
 
@@ -17,7 +21,7 @@ using namespace std;
   public:
 
     // Constructors, destructor
-    CorrectionObject(const TString & runnr, const TString & generator, const TString & collection,const TString & input_path, const TString & weight_path, const bool & closuretest = false,const bool & trigger_fwd = false,const bool & trigger_central = false);
+    CorrectionObject(const TString & runnr, const TString & generator, const TString & collection,const TString & input_path, const TString & input_path_MC, const TString & weight_path, const bool & closuretest = false,const bool & trigger_fwd = false,const bool & trigger_central = false);
     CorrectionObject(const CorrectionObject &) = default;
     CorrectionObject & operator = (const CorrectionObject &) = default;
     ~CorrectionObject() = default;
@@ -27,6 +31,7 @@ using namespace std;
     inline TString runnr(){ return _runnr;}
     inline TString collection(){ return _collection;}
     inline TString input_path(){return _input_path;}
+    inline TString input_path_MC(){return _input_path_MC;}    
     inline TString weight_path(){return _weight_path;}
     inline TString generator(){ return _generator;}
     inline TString jettag(){ return _jettag;}
@@ -40,6 +45,7 @@ using namespace std;
     inline const TString runnr() const{return _runnr;}
     inline const TString collection() const{return _collection;}
     inline const TString input_path()const{return _input_path;}
+    inline const TString input_path_MC()const{return _input_path_MC;}
     inline const TString weight_path()const{return _weight_path;}
     inline const TString generator() const{return _generator;}
     inline const TString jettag() const{return _jettag;}
@@ -88,12 +94,38 @@ using namespace std;
     void FullCycle_CorrectFormulae();
     void FullCycle_CorrectFormulae_eta();
     void MatchingPlots();
+    
+static bool make_path(std::string path_name){
+    int status = 1;
+
+    std::string path_base = "";
+    std::string dir_name ="";
+    std::string path_remain = path_name;
+
+    size_t last_pos = path_remain.find("/",1);
+    while(last_pos != std::string::npos){
+      dir_name = path_remain.substr(0,last_pos);
+      path_remain = path_remain.substr(last_pos);
+
+      path_base += dir_name;
+      status *=  mkdir(path_base.c_str() , S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+
+      last_pos = path_remain.find("/",1);
+    }
+
+    return status!=0;
+  }
+
+static bool make_path(TString path_name){
+  return CorrectionObject::make_path(std::string(path_name.Data()));
+  }
 
   private:
     TString _runnr;
     TString _collection;
     TString _generator, _generator_tag;
     TString _input_path;
+    TString _input_path_MC;   
     TString _weight_path;
     TString _jettag;
     TString _lumitag;
@@ -136,3 +168,4 @@ inline ostream & operator << (ostream & os, const CorrectionObject & q) {
 }
 
 
+#endif

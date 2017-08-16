@@ -187,7 +187,7 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
   TTreeReaderValue<Float_t> sum_jets_pt_data(myReader_DATA, "sum_jets_pt");
   TTreeReaderValue<Float_t> jet3_pt_data(myReader_DATA, "jet3_pt");
 
-  /*
+  
   TTreeReaderValue<Float_t> probejet_neutEmEF_data(myReader_DATA, "probejet_neutEmEF");
   TTreeReaderValue<Float_t> probejet_neutHadEF_data(myReader_DATA, "probejet_neutHadEF");
   TTreeReaderValue<Float_t> probejet_chEmEF_data(myReader_DATA, "probejet_chEmEF");
@@ -195,13 +195,18 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
   TTreeReaderValue<Float_t> probejet_photonEF_data(myReader_DATA, "probejet_photonEF");
   TTreeReaderValue<Float_t> probejet_muonEF_data(myReader_DATA, "probejet_muonEF");
   TTreeReaderValue<Float_t> probejet_phi_data(myReader_DATA, "probejet_phi");
-  */
-   
+
+  int myCount = 0;
+  int myCount_cut = 0;
   while (myReader_DATA.Next()) {
-    if(*alpha_data>alpha_cut) continue;
+    if(*alpha_data>alpha_cut){
+      myCount_cut++;
+      continue;
+    }
     //fill histos in bins of eta
     for(int i=0; i<n_eta-1; i++){
       if(fabs(*probejet_eta_data)<eta_bins[i+1] && fabs(*probejet_eta_data)>=eta_bins[i]){
+	myCount++;
 	hdata_pt_ave[i]->Fill(*pt_ave_data,*weight_data);
 	hdata_MET[i]->Fill(*MET_data, *weight_data);
 	hdata_alpha[i]->Fill(*alpha_data, *weight_data);
@@ -219,7 +224,7 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
 	  hdata_B[k][j]->Fill(*B_data,*weight_data);
 	  hdata_METoverJetsPt[k][j]->Fill((*MET_data)/(*sum_jets_pt_data+*probejet_pt_data+*barreljet_pt_data),*weight_data);
 	  hdata_METoverSqrtJetsPt[k][j]->Fill((*MET_data)/(sqrt(*sum_jets_pt_data+*probejet_pt_data+*barreljet_pt_data)),*weight_data);
-	  /*
+	  
 	  hdata_probejet_neutEmEF[k][j]->Fill(*probejet_neutEmEF_data,*weight_data);
 	  hdata_probejet_neutHadEF[k][j]->Fill(*probejet_neutHadEF_data,*weight_data);
 	  hdata_probejet_chEmEF[k][j]->Fill(*probejet_chEmEF_data,*weight_data);
@@ -227,11 +232,13 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
 	  hdata_probejet_photonEF[k][j]->Fill(*probejet_photonEF_data,*weight_data);
 	  hdata_probejet_muonEF[k][j]->Fill(*probejet_muonEF_data,*weight_data);
 	  hdata_probejet_phi[k][j]->Fill(*probejet_phi_data,*weight_data);
-	  */
 	}
       }
     }
   }
+
+  //DEBUG
+  std::cout<<"\ncount data "<<myCount<<"  count cut data "<<myCount_cut<<std::endl<<std::endl;
 
 
   //Get relevant information from MC, loop over MC events 
@@ -257,12 +264,18 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
   TTreeReaderValue<Float_t> probejet_muonEF_mc(myReader_MC, "probejet_muonEF");
   TTreeReaderValue<Float_t> probejet_phi_mc(myReader_MC, "probejet_phi");
   
-
+  double myCount_mc = 0.;
+  double  myCount_cut_mc = 0.;
   while (myReader_MC.Next()) {
-    if(*alpha_mc>alpha_cut) continue;
+    if(*alpha_mc>alpha_cut) {
+      myCount_cut_mc+=*weight_mc;
+      continue;
+    }
     //fill histos in bins of eta
+    
     for(int i=0; i<n_eta-1; i++){
       if(fabs(*probejet_eta_mc)<eta_bins[i+1] && fabs(*probejet_eta_mc)>=eta_bins[i]){
+	myCount_mc+=*weight_mc;
 	hmc_alpha[i]->Fill(*alpha_mc,*weight_mc);
 	hmc_pt_ave[i]->Fill(*pt_ave_mc,*weight_mc);
 	hmc_MET[i]->Fill(*MET_mc, *weight_mc);
@@ -294,8 +307,8 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
     }
   }
   
-
-
+  //DEBUG
+  std::cout<<"\ncount mc "<<myCount_mc<<"  count cut mc "<<myCount_cut_mc<<std::endl<<std::endl;
 
  
 

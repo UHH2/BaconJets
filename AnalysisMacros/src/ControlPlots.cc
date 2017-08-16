@@ -1,4 +1,5 @@
 #include "../include/CorrectionObject.h"
+// #include "../../include/helper_fkt.h"
 #include "../include/parameters.h"
 #include <TH1F.h>
 #include <TH2F.h>
@@ -17,6 +18,7 @@ void CorrectionObject::ControlPlots(){
   TString DATAtitle = "DATA";
   TString MCtitle = "MC";
   TString SavePlots = CorrectionObject::_outpath + "plots/control/ControlPlots_" + dirName + "_" + CorrectionObject::_generator_tag;
+ CorrectionObject::make_path(std::string((_outpath + "plots/control/").Data()));
 
 
   /* ++++++++++++++++ Collect all histograms ++++++++++++++++ */
