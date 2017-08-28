@@ -18,7 +18,7 @@ CorrectionObject::CorrectionObject(const TString & runnr, const TString & genera
      _weightpath_FLAT = _weight_path+"/CENTRAL/";
      _weightpath_FWD  = _weight_path+"/FWD/";
      _weightpath      = _weight_path;
-     _outpath    = inputPath +"Run" + _runnr + "/";
+     _outpath    = inputPath +"BarrelJet/Run" + _runnr + "/";
           
      
      //For QCD pT binned samples 

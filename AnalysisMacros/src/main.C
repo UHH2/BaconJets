@@ -31,16 +31,16 @@ int main(){
   bool    trigger_central = true;     //Use for Weight Calc
   TString collection    = "AK4CHS";
 
-  //   TString input_path   = "/nfs/dust/cms/user/multh/JEC/2016ReReco/Residuals/Summer16_03Feb2017_V3/AK4CHS/MC_Reweighted_chsMET_NewTriggerSetup/";
-  //   TString weight_path  = "/nfs/dust/cms/user/multh/JEC/2016ReReco/Residuals/Summer16_03Feb2017_V3/AK4CHS/MC_Reweighted_chsMET_NewTriggerSetup_ForWeights/";
+     TString input_path   = "/nfs/dust/cms/user/multh/JEC/2016ReReco/Residuals/Summer16_03Feb2017_V3/AK4CHS/MC_Reweighted_chsMET_NewSF/";
+     TString weight_path  = "/nfs/dust/cms/user/multh/JEC/2016ReReco/Residuals/Summer16_03Feb2017_V3/AK4CHS/MC_Reweighted_chsMET_NewTriggerSetup_ForWeights/";
 
   // TString input_path   = "/nfs/dust/cms/user/karavdia/L2Res_fromJens/AK4CHS/MC_Reweighted_chsMET_NewSF/"; //copy of Jen's files
   // TString weight_path  = "/nfs/dust/cms/user/karavdia/L2Res_fromJens/AK4CHS/MC_Reweighted_chsMET_NewTriggerSetup_ForWeights/"; //copy of Jen's files
 
   //  TString input_path   = "/nfs/dust/cms/user/karavdia/JEC_Summer16_V8_ReWeighted/";
   //  TString input_path   = "/nfs/dust/cms/user/karavdia/JEC_Summer16_V8_ReWeighted_MC/";
-  TString input_path  = "/nfs/dust/cms/user/karavdia/JEC_Summer16_V8_ForWeights/"; 
-  TString weight_path  = "/nfs/dust/cms/user/karavdia/JEC_Summer16_V8_ForWeights/"; 
+  //  TString input_path  = "/nfs/dust/cms/user/karavdia/JEC_Summer16_V8_ForWeights/"; 
+  //  TString weight_path  = "/nfs/dust/cms/user/karavdia/JEC_Summer16_V8_ForWeights/"; 
 
 
   //eine Klasse: enthaelt Info ueber runnr, Generator, collection, Strings zu MC/DATA-files, memberfunctions: controlPlots, kFSR etc.
@@ -70,22 +70,22 @@ int main(){
       }
 
 
-      for(unsigned int i=0; i<Objects.size(); i++) Objects[i].ControlPlots();
-      for(unsigned int i=0; i<Objects.size(); i++) Objects[i].kFSR_CorrectFormulae();
+      //       for(unsigned int i=0; i<Objects.size(); i++) Objects[i].ControlPlots();
+      //              for(unsigned int i=0; i<Objects.size(); i++) Objects[i].kFSR_CorrectFormulae();
 // // //       //  for(unsigned int i=0; i<Objects.size(); i++) Objects[i].kFSR_CorrectFormulae_eta();  //extended eta range to negative Values 
 
-      for(unsigned int i=0; i<Objects.size(); i++) Objects[i].Pt_Extrapolation_Alternative_CorrectFormulae(true);   //MPF method
-      for(unsigned int i=0; i<Objects.size(); i++) Objects[i].Pt_Extrapolation_Alternative_CorrectFormulae(false);  //pT bal method
+      //             for(unsigned int i=0; i<Objects.size(); i++) Objects[i].Pt_Extrapolation_Alternative_CorrectFormulae(true);   //MPF method
+      //         for(unsigned int i=0; i<Objects.size(); i++) Objects[i].Pt_Extrapolation_Alternative_CorrectFormulae(false);  //pT bal method
 // // //       //for(unsigned int i=0; i<Objects.size(); i++) Objects[i].Pt_Extrapolation_Alternative_CorrectFormulae_eta(true); //extended eta range to negative Values 
 // // //       //for(unsigned int i=0; i<Objects.size(); i++) Objects[i].Pt_Extrapolation_Alternative_CorrectFormulae_eta(false); //extended eta range to negative Values 
 
-      for(unsigned int i=0; i<Objects.size(); i++) Objects[i].L2ResOutput();
+//	           for(unsigned int i=0; i<Objects.size(); i++) Objects[i].L2ResOutput();
 // //       // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].L2ResOutput_eta();
 // //    // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].InputForGlobalFit(); //Mikkos Macro 
 // //    // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].InputForGlobalFit_eta_0_13(); //Mikkos Macro
 
-//       for(unsigned int i=0; i<Objects.size(); i++) Objects[i].FinalControlPlots_CorrectFormulae();
-//      for(unsigned int i=0; i<Objects.size(); i++) Objects[i].MatchingPlots();
+      //   for(unsigned int i=0; i<Objects.size(); i++) Objects[i].FinalControlPlots_CorrectFormulae();
+      for(unsigned int i=0; i<Objects.size(); i++) Objects[i].MatchingPlots();
 
 // //    // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].FinalControlPlots_CorrectFormulae_eta(); //extended eta range to negative Values
  

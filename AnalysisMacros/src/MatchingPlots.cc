@@ -33,8 +33,16 @@ void CorrectionObject::MatchingPlots(){
   TH1D *hmc_asymmetry_matched[n_pt-1][n_eta-1];   // A for MC, matched
   TH1D *hmc_B_matched[n_pt-1][n_eta-1];           // B for MC, matched
 
+  TH1D *hmc_probejetpt_matched[n_pt-1][n_eta-1];   // probejet pt for MC, matched
+  TH1D *hmc_probejetpt[n_pt-1][n_eta-1];   // probejet pt for MC,not  matched
+  TH1D *hdata_probejetpt[n_pt-1][n_eta-1];   // probejet pt for DATA
+
+  TH1D *hmc_barreljetpt_matched[n_pt-1][n_eta-1];   // barreljet pt for MC, matched
+  TH1D *hmc_barreljetpt[n_pt-1][n_eta-1];   // barreljet pt for MC,not  matched
+  TH1D *hdata_barreljetpt[n_pt-1][n_eta-1];   // barreljet pt for DATA
+
   TH1D *hmc_jet3pt_matched[n_pt-1][n_eta-1];   // jet3 pt for MC, matched
-  TH1D *hmc_jet3pt[n_pt-1][n_eta-1];   // jet3 pt for MC, matched
+  TH1D *hmc_jet3pt[n_pt-1][n_eta-1];   // jet3 pt for MC,not matched
   TH1D *hdata_jet3pt[n_pt-1][n_eta-1];   // jet3 pt for DATA
   // TH1D *hmc_dR_jet3_barreljet[n_pt-1][n_eta-1];   //dR between jet3 and barrel jet, MC
   // TH1D *hdata_dR_jet3_barreljet[n_pt-1][n_eta-1];  //dR between jet3 and barrel jet, DATA
@@ -48,6 +56,12 @@ void CorrectionObject::MatchingPlots(){
   TString name4 = "hist_mc_B_";
   TString name5 = "hist_mc_jet3pt_";
   TString name6 = "hist_data_jet3pt_";
+  TString name7 = "hist_mc_probejetpt_";
+  TString name8 = "hist_data_probejetpt_";
+  TString name9 = "hist_mc_barreljetpt_";
+  TString name10 = "hist_data_barreljetpt_";
+
+
   // TString name7 = "hist_mc_dR_jet3_barreljet";
   // TString name8 = "hist_data_dR_jet3_barreljet";
   // TString name9 = "hist_mc_dR_jet3_probejet";
@@ -73,8 +87,18 @@ void CorrectionObject::MatchingPlots(){
       hmc_jet3pt_matched[k][j] = new TH1D(name,"",50,0,pt_bins[k+1]);
       name = name6 + eta_name + "_" + pt_name;
       hdata_jet3pt[k][j] = new TH1D(name,"",50,0,pt_bins[k+1]);
-
-
+      name = name7 + eta_name + "_" + pt_name;
+      hmc_probejetpt[k][j] = new TH1D(name,"",50,0,500);
+      name +="_matched";
+      hmc_probejetpt_matched[k][j] = new TH1D(name,"",50,0,500);
+      name = name8 + eta_name + "_" + pt_name;
+      hdata_probejetpt[k][j] = new TH1D(name,"",50,0,500);
+      name = name9 + eta_name + "_" + pt_name;
+      hmc_barreljetpt[k][j] = new TH1D(name,"",50,0,500);
+      name +="_matched";
+      hmc_barreljetpt_matched[k][j] = new TH1D(name,"",50,0,500);
+      name = name10 + eta_name + "_" + pt_name;
+      hdata_barreljetpt[k][j] = new TH1D(name,"",50,0,500);
       count++;
     }
   }
@@ -103,10 +127,15 @@ void CorrectionObject::MatchingPlots(){
   TTreeReaderValue<Float_t> probejet_phi_mc(myReader_MC, "probejet_phi");
   TTreeReaderValue<Float_t> probejet_ptgen_mc(myReader_MC, "probejet_ptgen");
   TTreeReaderValue<Float_t> barreljet_ptgen_mc(myReader_MC, "barreljet_ptgen");
+  TTreeReaderValue<Float_t> rho_mc(myReader_MC, "rho");
+  TTreeReaderValue<Int_t> PU_mc(myReader_MC, "nPU");
 
-  
-
+ 
   while (myReader_MC.Next()) {
+  
+   
+    // if(*rho_mc < 17 ) continue;
+    // if(*PU_mc < 50) continue;
     if(*alpha_mc>alpha_cut) continue;
     //fill histos in bins of pt and eta
     for(int k=0; k<n_pt-1; k++){
@@ -114,21 +143,24 @@ void CorrectionObject::MatchingPlots(){
       for(int j=0; j<n_eta-1; j++){
 	if(fabs(*probejet_eta_mc)>eta_bins[j+1] || fabs(*probejet_eta_mc)<eta_bins[j]) continue;
 	else{
-	  if(*probejet_ptgen_mc<0 || *barreljet_ptgen_mc<0){ //not matched
+	  if(*barreljet_ptgen_mc<0){ //not matched   || *barreljet_ptgen_mc<0
 	  }
 	  else{ //matched
 	    hmc_asymmetry_matched[k][j]->Fill(*asymmetry_mc,*weight_mc);
 	    hmc_B_matched[k][j]->Fill(*B_mc,*weight_mc);
 	    hmc_jet3pt_matched[k][j]->Fill(*jet3_pt_mc,*weight_mc);
+	    hmc_probejetpt_matched[k][j]->Fill(*probejet_pt_mc, *weight_mc);
+	    hmc_barreljetpt_matched[k][j]->Fill(*barreljet_pt_mc, *weight_mc);
 	  }
 	  hmc_asymmetry[k][j]->Fill(*asymmetry_mc,*weight_mc);
 	  hmc_B[k][j]->Fill(*B_mc,*weight_mc);
 	  hmc_jet3pt[k][j]->Fill(*jet3_pt_mc,*weight_mc);
+	  hmc_probejetpt[k][j]->Fill(*probejet_pt_mc, *weight_mc);
+	  hmc_barreljetpt[k][j]->Fill(*barreljet_pt_mc, *weight_mc);
 	}
       }
     }
-  }
-  
+ }
 
 
  //Get relevant information from DATA, loop over DATA events
@@ -144,8 +176,10 @@ void CorrectionObject::MatchingPlots(){
   TTreeReaderValue<Float_t> MET_data(myReader_DATA, "MET");
   TTreeReaderValue<Float_t> sum_jets_pt_data(myReader_DATA, "sum_jets_pt");
   TTreeReaderValue<Float_t> jet3_pt_data(myReader_DATA, "jet3_pt");
+  TTreeReaderValue<Float_t> rho_data(myReader_DATA, "rho");
 
   while (myReader_DATA.Next()) {
+    //if(*rho_data < 17) continue;
     if(*alpha_data>alpha_cut) continue;
     //fill histos in bins of pt and eta
     for(int k=0; k<n_pt-1; k++){
@@ -154,6 +188,8 @@ void CorrectionObject::MatchingPlots(){
 	if(fabs(*probejet_eta_data)>eta_bins[j+1] || fabs(*probejet_eta_data)<eta_bins[j]) continue;
 	else{
 	  hdata_jet3pt[k][j]->Fill(*jet3_pt_data,*weight_mc);
+	  hdata_probejetpt[k][j]->Fill(*probejet_pt_data, *weight_mc);
+	  hdata_barreljetpt[k][j]->Fill(*barreljet_pt_data, *weight_mc);
 	}
       }
     }
@@ -245,6 +281,12 @@ void CorrectionObject::MatchingPlots(){
       hmc_jet3pt[k][j]->Write();
       hmc_jet3pt_matched[k][j]->Write();
       hdata_jet3pt[k][j]->Write();
+      hmc_probejetpt[k][j]->Write();
+      hmc_probejetpt_matched[k][j]->Write();
+      hdata_probejetpt[k][j]->Write();
+      hmc_barreljetpt[k][j]->Write();
+      hmc_barreljetpt_matched[k][j]->Write();
+      hdata_barreljetpt[k][j]->Write();
     }
   }
   test_out_mc_A->Close();
@@ -523,7 +565,7 @@ void CorrectionObject::MatchingPlots(){
       htemp_mpf_mc_matched = (TH1D*)f_rel_mc->Get(name_mpf_mc);
       n_ev = htemp_mpf_mc_matched->GetEntries();
       if(htemp_mpf_mc_matched->Integral() > 0)htemp_mpf_mc_matched->Scale(1/htemp_mpf_mc_matched->Integral());
-      h->GetXaxis()->SetTitle("jet3 pT");
+      h->GetXaxis()->SetTitle("jet 3 pT");
       h->GetYaxis()->SetTitle("Normalized entries");
       h->GetYaxis()->SetTitleOffset(1.5);
       h->GetXaxis()->SetLimits(0,pt_bins[j+1]);
@@ -573,7 +615,7 @@ void CorrectionObject::MatchingPlots(){
       if(n_ev>0) htemp_mpf_mc_matched->Draw("HIST SAME");
       if(n_ev>0) htemp_mpf_data->Draw("HIST SAME");
       leg2.Draw();
-      ctmp->SaveAs(CorrectionObject::_outpath+"plots/control/Matched_Jet3_NormDistribution_MC_" + CorrectionObject::_generator_tag + "_eta_" + eta_range2[i] + "_" + eta_range2[i+1] 
+      ctmp->SaveAs(CorrectionObject::_outpath+"plots/control/Matched_jet3_NormDistribution_MC_" + CorrectionObject::_generator_tag + "_eta_" + eta_range2[i] + "_" + eta_range2[i+1] 
 		   +"_" +pt_name +".pdf");
     }
 
@@ -582,7 +624,6 @@ void CorrectionObject::MatchingPlots(){
  
     // c1->SaveAs(CorrectionObject::_outpath+"plots/control/Matched_Jet3_NormDistribution_MC_" + CorrectionObject::_generator_tag + "_eta_" + eta_range2[i] + "_" + eta_range2[i+1] + ".pdf");
   }
-
 
 //     TCanvas* c2 = new TCanvas();
 //     tdrCanvas(c2,"c2",h,4,10,kSquare,CorrectionObject::_lumitag);

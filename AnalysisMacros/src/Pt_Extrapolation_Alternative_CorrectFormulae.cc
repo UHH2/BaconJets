@@ -130,8 +130,10 @@ void CorrectionObject::Pt_Extrapolation_Alternative_CorrectFormulae(bool mpfMeth
   TTreeReaderValue<Float_t> asymmetry_data(myReader_DATA, "asymmetry");
   TTreeReaderValue<Float_t> B_data(myReader_DATA, "B");   
   TTreeReaderValue<Float_t> weight_data(myReader_DATA, "weight");
-   
+  TTreeReaderValue<Float_t> rho_data(myReader_DATA, "rho");
+
   while (myReader_DATA.Next()) {
+    // if(*rho_data < 16) continue;
     if(*alpha_data>alpha_cut) continue;
     for(int j=0; j<n_eta-1; j++){
       if(fabs(*probejet_eta_data)>eta_bins[j+1] || fabs(*probejet_eta_data)<eta_bins[j]) continue;
@@ -160,8 +162,10 @@ void CorrectionObject::Pt_Extrapolation_Alternative_CorrectFormulae(bool mpfMeth
   TTreeReaderValue<Float_t> asymmetry_mc(myReader_MC, "asymmetry");
   TTreeReaderValue<Float_t> B_mc(myReader_MC, "B");
   TTreeReaderValue<Float_t> weight_mc(myReader_MC, "weight");
+  TTreeReaderValue<Float_t> rho_mc(myReader_MC, "rho");
 
   while (myReader_MC.Next()) {
+    // if(*rho_mc < 16) continue;
     if(*alpha_mc>alpha_cut) continue;
     for(int j=0; j<n_eta-1; j++){
       if(fabs(*probejet_eta_mc)>eta_bins[j+1] || fabs(*probejet_eta_mc)<eta_bins[j]) continue;

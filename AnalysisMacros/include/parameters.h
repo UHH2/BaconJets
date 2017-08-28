@@ -9,11 +9,13 @@ using namespace std;
 const int nResponseBins = 100;// 100
 const int n_etabarr=5; // needed for the normalization to 1 in the barrel
 
+const double rho_cut = 8; //Low PU
+
 //Alpha: 
 const double alpha_cut = 0.3;
 const TString s_alpha_cut = "0.3";
 
-const int n_alpha = 9;
+const int n_alpha = 9;   //9
 const TString alpha_range[n_alpha] = {"a005", "a010", "a015", "a020", "a025", "a030", "a035", "a040", "a045"};
 const double alpha_bins[n_alpha] = {0.050, 0.100, 0.150, 0.200, 0.250, 0.300, 0.350,  0.400, 0.450};
 

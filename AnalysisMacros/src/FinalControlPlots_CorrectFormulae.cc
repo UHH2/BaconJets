@@ -186,7 +186,7 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
   TTreeReaderValue<Float_t> MET_data(myReader_DATA, "MET");
   TTreeReaderValue<Float_t> sum_jets_pt_data(myReader_DATA, "sum_jets_pt");
   TTreeReaderValue<Float_t> jet3_pt_data(myReader_DATA, "jet3_pt");
-
+  TTreeReaderValue<Float_t> rho_data(myReader_DATA, "rho");
   /*
   TTreeReaderValue<Float_t> probejet_neutEmEF_data(myReader_DATA, "probejet_neutEmEF");
   TTreeReaderValue<Float_t> probejet_neutHadEF_data(myReader_DATA, "probejet_neutHadEF");
@@ -198,6 +198,7 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
   */
    
   while (myReader_DATA.Next()) {
+    //  if(*rho_data < 17 ) continue;
     if(*alpha_data>alpha_cut) continue;
     //fill histos in bins of eta
     for(int i=0; i<n_eta-1; i++){
@@ -247,7 +248,7 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
   TTreeReaderValue<Float_t> MET_mc(myReader_MC, "MET");
   TTreeReaderValue<Float_t> sum_jets_pt_mc(myReader_MC, "sum_jets_pt");
   TTreeReaderValue<Float_t> jet3_pt_mc(myReader_MC, "jet3_pt");
-
+  TTreeReaderValue<Float_t> rho_mc(myReader_MC, "rho");
   
   TTreeReaderValue<Float_t> probejet_neutEmEF_mc(myReader_MC, "probejet_neutEmEF");
   TTreeReaderValue<Float_t> probejet_neutHadEF_mc(myReader_MC, "probejet_neutHadEF");
@@ -259,6 +260,7 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
   
 
   while (myReader_MC.Next()) {
+    // if(*rho_mc < 17 ) continue;
     if(*alpha_mc>alpha_cut) continue;
     //fill histos in bins of eta
     for(int i=0; i<n_eta-1; i++){

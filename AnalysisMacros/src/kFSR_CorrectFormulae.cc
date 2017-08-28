@@ -95,11 +95,13 @@ void CorrectionObject::kFSR_CorrectFormulae(){
   TTreeReaderValue<Float_t> asymmetry_data(myReader_DATA, "asymmetry");
   TTreeReaderValue<Float_t> B_data(myReader_DATA, "B");   
   TTreeReaderValue<Float_t> weight_data(myReader_DATA, "weight");
+  TTreeReaderValue<Float_t> rho_data(myReader_DATA, "rho");
   int idx = 0;
   
   cout << "starting to loop over DATA events." << endl;
 
   while (myReader_DATA.Next()) {
+    //   if(*rho_data < 16) continue;
     for(int j=0; j<n_eta-1; j++){
       if(fabs(*probejet_eta_data)>eta_bins[j+1] || fabs(*probejet_eta_data)<eta_bins[j]) continue;
       for(int i=0; i<n_alpha; i++){
@@ -127,9 +129,11 @@ void CorrectionObject::kFSR_CorrectFormulae(){
    TTreeReaderValue<Float_t> asymmetry_mc(myReader_MC, "asymmetry");
    TTreeReaderValue<Float_t> B_mc(myReader_MC, "B");
    TTreeReaderValue<Float_t> weight_mc(myReader_MC, "weight");
+   TTreeReaderValue<Float_t> rho_mc(myReader_MC, "rho");
    idx = 0;
 
    while (myReader_MC.Next()) {
+     //  if(*rho_mc < 16) continue;
      for(int j=0; j<n_eta-1; j++){
        if(fabs(*probejet_eta_mc)>eta_bins[j+1] || fabs(*probejet_eta_mc)<eta_bins[j]) continue;
        for(int i=0; i<n_alpha; i++){
@@ -283,21 +287,21 @@ void CorrectionObject::kFSR_CorrectFormulae(){
 
 	 if(norm_alref_rel_r>0){ //WHAT IS HAPPENING HERE? NO PROPER ERROR PROPAGATION !?! Ask other group that does kFSR-Extrapolation about error propagation
 	   ratio_al_rel_r[k][j][i] =   ratio_al_rel_r[k][j][i]/norm_alref_rel_r; //original
-	   //	   err_ratio_al_rel_r[k][j][i] = sqrt(abs(pow(err_ratio_al_rel_r[k][j][i],2)-pow(err_norm_alref_rel_r,2)));//Original
+	   err_ratio_al_rel_r[k][j][i] = sqrt(abs(pow(err_ratio_al_rel_r[k][j][i],2)-pow(err_norm_alref_rel_r,2)));//Original
 	   //  err_ratio_al_rel_r[k][j][i] = sqrt(abs(pow(err_ratio_al_rel_r[k][j][i]/ratio_al_rel_r[k][j][i],2)-pow(err_norm_alref_rel_r/norm_alref_rel_r,2)));
-	   err_ratio_al_rel_r[k][j][i] = sqrt(abs(pow(err_ratio_al_rel_r[k][j][i] / (ratio_al_rel_r[k][j][i]) ,2)+pow(err_norm_alref_rel_r / norm_alref_rel_r,2))) * ratio_al_rel_r[k][j][i] / norm_alref_rel_r ; //gaussian error propagation
+	   // err_ratio_al_rel_r[k][j][i] = sqrt(abs(pow(err_ratio_al_rel_r[k][j][i] / (ratio_al_rel_r[k][j][i]) ,2)+pow(err_norm_alref_rel_r / norm_alref_rel_r,2))) * ratio_al_rel_r[k][j][i] / norm_alref_rel_r ; //gaussian error propagation
 	  
-	   // if(i == al_ref) err_ratio_al_rel_r[k][j][i] = 0.; //TEST
+	    if(i == al_ref) err_ratio_al_rel_r[k][j][i] = 0.; 
 
 
 	 }
 	 if(norm_alref_mpf_r>0){
 	   ratio_al_mpf_r[k][j][i] =   ratio_al_mpf_r[k][j][i]/norm_alref_mpf_r;
-	   //err_ratio_al_mpf_r[k][j][i] = sqrt(abs(pow(err_ratio_al_mpf_r[k][j][i],2)-pow(err_norm_alref_mpf_r,2))); //Original
+	   err_ratio_al_mpf_r[k][j][i] = sqrt(abs(pow(err_ratio_al_mpf_r[k][j][i],2)-pow(err_norm_alref_mpf_r,2))); //Original
 	   //  err_ratio_al_mpf_r[k][j][i] = sqrt(abs(pow(err_ratio_al_mpf_r[k][j][i]/ratio_al_mpf_r[k][j][i],2)-pow(err_norm_alref_mpf_r/norm_alref_mpf_r,2)));
-	   err_ratio_al_mpf_r[k][j][i] = sqrt(abs(pow(err_ratio_al_mpf_r[k][j][i] / (ratio_al_mpf_r[k][j][i]) ,2)+pow(err_norm_alref_mpf_r / norm_alref_mpf_r,2))) * err_ratio_al_mpf_r[k][j][i] / norm_alref_mpf_r; //gaussian error propagation
+	   //err_ratio_al_mpf_r[k][j][i] = sqrt(abs(pow(err_ratio_al_mpf_r[k][j][i] / (ratio_al_mpf_r[k][j][i]) ,2)+pow(err_norm_alref_mpf_r / norm_alref_mpf_r,2))) * ratio_al_mpf_r[k][j][i] / norm_alref_mpf_r; //gaussian error propagation
 	  
-	   // if(i == al_ref) err_ratio_al_mpf_r[k][j][i] = 0.; //TEST
+	    if(i == al_ref) err_ratio_al_mpf_r[k][j][i] = 0.; 
 	 }
        }
      }

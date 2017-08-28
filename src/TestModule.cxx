@@ -111,7 +111,7 @@ using namespace uhh2;
     Event::Handle<int> tt_nvertices;
     Event::Handle<float> tt_probejet_eta;  Event::Handle<float> tt_probejet_phi; Event::Handle<float> tt_probejet_pt; Event::Handle<float> tt_probejet_ptRaw;
     Event::Handle<float> tt_barreljet_eta;  Event::Handle<float> tt_barreljet_phi; Event::Handle<float> tt_barreljet_pt; Event::Handle<float> tt_barreljet_ptRaw;
-    Event::Handle<float> tt_probejet_ptgen;         Event::Handle<float> tt_barreljet_ptgen;     
+    Event::Handle<float> tt_probejet_ptgen;         Event::Handle<float> tt_barreljet_ptgen;    
     Event::Handle<float> tt_pt_ave;
     Event::Handle<float> tt_alpha;
     Event::Handle<float> tt_rel_r; Event::Handle<float> tt_mpf_r; 
@@ -667,7 +667,7 @@ using namespace uhh2;
     tt_jet1_ptGen = ctx.declare_event_output<float>("jet1_ptGen");
     tt_jet2_ptGen = ctx.declare_event_output<float>("jet2_ptGen");
     tt_jet3_ptGen = ctx.declare_event_output<float>("jet3_ptGen");
-
+ 
     tt_probejet_neutEmEF = ctx.declare_event_output<float>("probejet_neutEmEF");
     tt_probejet_neutHadEF = ctx.declare_event_output<float>("probejet_neutHadEF");
     tt_probejet_chEmEF = ctx.declare_event_output<float>("probejet_chEmEF");
@@ -822,8 +822,8 @@ using namespace uhh2;
     Jet_printer.reset(new JetPrinter("Jet-Printer", 0));
     GenParticles_printer.reset(new GenParticlesPrinter(ctx));
 
-   debug =false;
-   //     debug =true;
+    debug =false;
+    //    debug =true;
     n_evt = 0;
     TString name_weights = ctx.get("MC_Weights_Path");
     apply_weights = (ctx.get("Apply_Weights") == "true" && isMC);
@@ -1764,7 +1764,7 @@ if(debug){
       int idx_jet_matching_genjet[genjets_n];
       double probejet_ptgen = -1; 
       double barreljet_ptgen = -1; 
-
+    
       //match genp to gen-jets
       int idx_j=0;
       int idx_genp_min = -1;
@@ -1789,6 +1789,8 @@ if(debug){
 	if(debug) cout << "the jet matching the genjet no. " << i << " is jet no. " << idx_matching_jet << endl;
       }
       /////////////////////
+
+
 
 
       for(Particle & genj : *event.genjets){
@@ -1878,6 +1880,7 @@ if(debug){
       else flavor_subleadingjet = -1;
       if(debug) cout << "subleadingjet is jet no. " << 1 << ", alpha = " << event.get(tt_alpha) << ", flavor of subleadingjet = " << flavor_subleadingjet << endl;
 
+    
       event.set(tt_flavorBarreljet,flavor_barreljet);   
       event.set(tt_responseBarreljet,response_barreljet);
       event.set(tt_barreljet_ptgen,barreljet_ptgen); 
@@ -1885,9 +1888,9 @@ if(debug){
       event.set(tt_responseProbejet,response_probejet);   
       event.set(tt_flavorLeadingjet,flavor_leadingjet);  
       event.set(tt_flavorSubleadingjet,flavor_subleadingjet);
-      event.set(tt_probejet_ptgen,probejet_ptgen);   
+      event.set(tt_probejet_ptgen,probejet_ptgen); 
 
-      //response of leading jet
+       //response of leading jet
       //find corresponding genjet
       int idx_corresponding_genjet = -1;
       for(unsigned int i=0; i<event.genjets->size(); i++){
@@ -1898,7 +1901,7 @@ if(debug){
       if(idx_corresponding_genjet != -1) response_jet1 = event.jets->at(0).pt() / event.genjets->at(idx_corresponding_genjet).pt();
       event.set(tt_response_leadingjet,response_jet1);  
      
-
+ 
 
     } //isMC
 
@@ -1911,8 +1914,8 @@ if(debug){
       event.set(tt_flavorSubleadingjet,-1);  
       event.set(tt_response_leadingjet,-1.); 
       event.set(tt_probejet_ptgen,-1.);  
-      event.set(tt_barreljet_ptgen,-1);   
-    }
+      event.set(tt_barreljet_ptgen,-1); 
+     }
    
     if(debug) {
       cout<<"After full Selection!!"<<endl;
