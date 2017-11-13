@@ -96,7 +96,8 @@ CorrectionObject::CorrectionObject(const TString & runnr, const TString & genera
       else if(_runnr == "FlateGH") _lumitag = "RunFlateGH  X.X fb^{-1}";
       else if(_runnr == "H") _lumitag = "RunH  8.5 fb^{-1}";
       else if(_runnr == "BCDEFearly") _lumitag = "RunBCDEFearly  19.7 fb^{-1}";
-      else if(_runnr == "BCDEFGH") _lumitag = "RunBCDEFGH  36.8 fb^{-1}";
+      //      else if(_runnr == "BCDEFGH") _lumitag = "RunBCDEFGH  36.8 fb^{-1}";
+      else if(_runnr == "BCDEFGH") _lumitag = "RunII ";//for flavor study plots
       else throw runtime_error("In constructor: Invalid RunNr. specified.");
     }
 

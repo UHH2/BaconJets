@@ -77,7 +77,8 @@ constexpr static float s_Pt_Ave220HF_cut  = 321;
 constexpr static float s_Pt_Ave300HF_cut  = 426;
 */
 //2016
- constexpr static float s_Pt_AveMC_cut   = 51;
+// constexpr static float s_Pt_AveMC_cut   = 51;
+ constexpr static float s_Pt_AveMC_cut   = 10;
  constexpr static float s_Pt_Ave40_cut   = 51;
  constexpr static float s_Pt_Ave60_cut   = 73;
  constexpr static float s_Pt_Ave80_cut   = 95;

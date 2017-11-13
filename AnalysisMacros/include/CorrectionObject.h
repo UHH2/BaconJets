@@ -88,7 +88,8 @@ using namespace std;
     void FullCycle_CorrectFormulae();
     void FullCycle_CorrectFormulae_eta();
     void MatchingPlots();
-    void GenResponsePlots();
+    void GenResponsePlots(TString flavor, TString ptbinning);
+    void GenResponsePlots_AllPtbinningOnePlot(TString flavor);
 
   private:
     TString _runnr;

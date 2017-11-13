@@ -139,7 +139,7 @@ bool Selection::DiJetAdvanced(uhh2::Event& evt)
     if (fabs((event->get(tt_jet2_pt) - event->get(tt_jet1_pt)) / (event->get(tt_jet2_pt) + event->get(tt_jet1_pt))) > s_asymm) return false;
 
     //(pTgen1 < 1.5*pThat || pTreco1 < 1.5* pTgen1)
-    if(!event->isRealData){
+    if(!event->isRealData && event->genInfo->binningValues().size()>0){
       if(event->genjets->size() < 1) return false;
       if(!(event->genjets->at(0).pt() < 1.5*event->genInfo->binningValues()[0] || event->jets->at(0).pt() < 1.5*event->genjets->at(0).pt())) return false;
     }

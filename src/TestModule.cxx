@@ -101,6 +101,7 @@ protected:
 
   Event::Handle<float> tt_jet1_ptGen;  Event::Handle<float> tt_jet2_ptGen;  Event::Handle<float> tt_jet3_ptGen;
   Event::Handle<float> tt_gen_pthat; Event::Handle<float> tt_gen_weight;  Event::Handle<float> tt_gen_PUpthat;
+  Event::Handle<int> tt_event;  Event::Handle<int> tt_run;
 
   //Different energy fractions in jets
   Event::Handle<float> tt_probejet_neutEmEF; Event::Handle<float> tt_probejet_neutHadEF; 
@@ -116,8 +117,16 @@ protected:
   Event::Handle<float> tt_barreljet_eta;  Event::Handle<float> tt_barreljet_phi; Event::Handle<float> tt_barreljet_pt; Event::Handle<float> tt_barreljet_ptRaw;
   Event::Handle<float> tt_probejet_ptgen;         Event::Handle<float> tt_barreljet_ptgen;   
   Event::Handle<float> tt_probejet_ptptcl;         Event::Handle<float> tt_barreljet_ptptcl;   
+  Event::Handle<int> tt_probejet_statusptcl;         Event::Handle<int> tt_barreljet_statusptcl;   Event::Handle<int> tt_jet3_statusptcl;   
   Event::Handle<int> tt_jet1_genID;     Event::Handle<int> tt_jet2_genID;     Event::Handle<int> tt_jet3_genID;
   Event::Handle<int> tt_jet4_genID;     Event::Handle<int> tt_jet5_genID;     Event::Handle<int> tt_jet6_genID;
+
+  Event::Handle<float> tt_probejet_dRminParton;   Event::Handle<float> tt_barreljet_dRminParton;
+  Event::Handle<int> tt_parton1_genjetID;
+  Event::Handle<int> tt_parton2_genjetID;
+  Event::Handle<int> tt_parton1_jetID;
+  Event::Handle<int> tt_parton2_jetID;
+
   // Event::Handle<int> tt_jet1_ptclID;     Event::Handle<int> tt_jet2_ptclID;     Event::Handle<int> tt_jet3_ptclID;
   // Event::Handle<int> tt_jet4_ptclID;     Event::Handle<int> tt_jet5_ptclID;     Event::Handle<int> tt_jet6_ptclID;
 
@@ -126,7 +135,9 @@ protected:
   Event::Handle<float> tt_rel_r; Event::Handle<float> tt_mpf_r; 
   Event::Handle<float> tt_asymmetry;
   Event::Handle<float> tt_B;
+  Event::Handle<float> tt_Bgen;
   Event::Handle<float> tt_MET;
+  Event::Handle<float> tt_genMET;
   Event::Handle<int> tt_nPU;
   Event::Handle<float> tt_ev_weight;
   Event::Handle<float> tt_jets_pt;//sum of jets pT
@@ -425,8 +436,8 @@ TestModule::TestModule(uhh2::Context & ctx) :
     else if (jetLabel == "AK8CHS"){
       //JEC-Version MC: V6 
       if(JEC_Version == "Summer16_03Feb2017_V4" || JEC_Version == "Summer16_03Feb2017_V5" || JEC_Version == "Summer16_03Feb2017_V6" || JEC_Version == "Summer16_03Feb2017_V7"){
-	  JEC_corr  = JERFiles::Summer16_03Feb2017_V7_L123_AK8PFchs_MC;   
-	  JEC_corr_L1RC         = JERFiles::Summer16_03Feb2017_V7_L1RC_AK8PFchs_MC;
+	  JEC_corr      = JERFiles::Summer16_03Feb2017_V7_L123_AK8PFchs_MC;   
+	  JEC_corr_L1RC = JERFiles::Summer16_03Feb2017_V7_L1RC_AK8PFchs_MC;
 	  cout << "This is MC, JECs used are: ";
 	  for(unsigned int i=0; i<JEC_corr.size(); i++) cout << JEC_corr[i] << ", ";
 	  cout << endl;
@@ -576,7 +587,7 @@ TestModule::TestModule(uhh2::Context & ctx) :
 	}
 	else if(JEC_Version == "Summer16_03Feb2017_V6"){
 	  //closure
-	  JEC_corr              = JERFiles::Summer16_03Feb2017_V6_G_L123_AK4PFchs_DATA;              //ReReco Data + Summer16 V7
+	  JEC_corr              = JERFiles::Summer16_03Feb2017_V6_G_L123_AK4PFchs_DATA;              //ReReco Data + Summer16 V4
 	  JEC_corr_L1RC         = JERFiles::Summer16_03Feb2017_V6_G_L1RC_AK4PFchs_DATA;
 	  JEC_corr_BCD          = JERFiles::Summer16_03Feb2017_V6_BCD_L123_AK4PFchs_DATA;
 	  JEC_corr_BCD_L1RC     = JERFiles::Summer16_03Feb2017_V6_BCD_L1RC_AK4PFchs_DATA;
@@ -595,7 +606,7 @@ TestModule::TestModule(uhh2::Context & ctx) :
       if(!ClosureTest){
 	//JEC-Version Data: V4
 	if(JEC_Version == "Summer16_03Feb2017_V4"){
-	  JEC_corr              = JERFiles::Summer16_03Feb2017_V4_G_L123_noRes_AK8PFchs_DATA;              //ReReco Data + Summer16 V7
+	  JEC_corr              = JERFiles::Summer16_03Feb2017_V4_G_L123_noRes_AK8PFchs_DATA;              //ReReco Data + Summer16 V4
 	  JEC_corr_L1RC         = JERFiles::Summer16_03Feb2017_V4_G_L1RC_AK8PFchs_DATA;
 	  JEC_corr_BCD          = JERFiles::Summer16_03Feb2017_V4_BCD_L123_noRes_AK8PFchs_DATA;
 	  JEC_corr_BCD_L1RC     = JERFiles::Summer16_03Feb2017_V4_BCD_L1RC_AK8PFchs_DATA;
@@ -652,7 +663,6 @@ TestModule::TestModule(uhh2::Context & ctx) :
 	else throw runtime_error("In TestModule.cxx: Invalid JEC_Version for closure on AK4PUPPI, DATA specified.");
       }
     }
-
   }
 //DATA
 
@@ -708,6 +718,31 @@ TestModule::TestModule(uhh2::Context & ctx) :
 	JLC_H.reset(new JetLeptonCleaner(ctx, JEC_corr_H));
       }
       else{
+	jet_corrector.reset(new JetCorrector(ctx, JEC_corr));	
+	jetleptoncleaner.reset(new JetLeptonCleaner(ctx, JEC_corr));
+      }
+    }
+    //MC
+    //For MC: only one version of JECs exists
+    else if(isMC){
+      jet_corrector.reset(new JetCorrector(ctx, JEC_corr));
+      jetleptoncleaner.reset(new JetLeptonCleaner(ctx, JEC_corr));
+    }
+  }//AK4PUPPI
+  else if(jetLabel == "AK8CHS"){
+    //DATA
+    if(!isMC){
+      if(split_JEC_DATA){ //these only exist for DATA 
+	jet_corrector_BCD.reset(new JetCorrector(ctx, JEC_corr_BCD, JEC_corr_BCD_L1RC));
+	jet_corrector_EFearly.reset(new JetCorrector(ctx, JEC_corr_EFearly, JEC_corr_EFearly_L1RC));
+	jet_corrector_FlateG.reset(new JetCorrector(ctx, JEC_corr_FlateG, JEC_corr_FlateG_L1RC));
+	jet_corrector_H.reset(new JetCorrector(ctx, JEC_corr_H, JEC_corr_H_L1RC));
+	JLC_BCD.reset(new JetLeptonCleaner(ctx, JEC_corr_BCD));
+	JLC_EFearly.reset(new JetLeptonCleaner(ctx, JEC_corr_EFearly));
+	JLC_FlateG.reset(new JetLeptonCleaner(ctx, JEC_corr_FlateG));
+	JLC_H.reset(new JetLeptonCleaner(ctx, JEC_corr_H));
+      }
+      else{
 	jet_corrector.reset(new JetCorrector(ctx, JEC_corr, JEC_corr_L1RC));	
 	jetleptoncleaner.reset(new JetLeptonCleaner(ctx, JEC_corr));
       }
@@ -718,17 +753,16 @@ TestModule::TestModule(uhh2::Context & ctx) :
       jet_corrector.reset(new JetCorrector(ctx, JEC_corr, JEC_corr_L1RC));
       jetleptoncleaner.reset(new JetLeptonCleaner(ctx, JEC_corr));
     }
-  }
-
+  }//AK8CHS
     
   //JER Smearing for corresponding JEC-Version
   if(isMC){
-    if(JEC_Version == "Summer16_23Sep2016_V4") jetER_smearer.reset(new GenericJetResolutionSmearer(ctx, "jets", "genjets", true, JERSmearing::SF_13TeV_2016_03Feb2017)); 
-    else if(JEC_Version == "Summer16_03Feb2017_V3") jetER_smearer.reset(new GenericJetResolutionSmearer(ctx, "jets", "genjets", true, JERSmearing::SF_13TeV_2016_03Feb2017)); 
-    else if(JEC_Version == "Summer16_03Feb2017_V4") jetER_smearer.reset(new GenericJetResolutionSmearer(ctx, "jets", "genjets", true, JERSmearing::SF_13TeV_2016_03Feb2017));
-    else if(JEC_Version == "Summer16_03Feb2017_V5") jetER_smearer.reset(new GenericJetResolutionSmearer(ctx, "jets", "genjets", true, JERSmearing::SF_13TeV_2016_03Feb2017));
-    else if(JEC_Version == "Summer16_03Feb2017_V6") jetER_smearer.reset(new GenericJetResolutionSmearer(ctx, "jets", "genjets", true, JERSmearing::SF_13TeV_2016_03Feb2017));
-    else throw runtime_error("In TestModule.cxx: When setting up JER smearer, invalid 'JEC_Version' was specified.");
+    if(JEC_Version == "Summer16_23Sep2016_V4") 
+      jetER_smearer.reset(new GenericJetResolutionSmearer(ctx, "jets", "genjets", true, JERSmearing::SF_13TeV_2016_03Feb2017)); 
+    else 
+      if(JEC_Version == "Summer16_03Feb2017_V3" || JEC_Version == "Summer16_03Feb2017_V4" || JEC_Version == "Summer16_03Feb2017_V5" || JEC_Version == "Summer16_03Feb2017_V6" || JEC_Version == "Summer16_03Feb2017_V7") 
+	jetER_smearer.reset(new GenericJetResolutionSmearer(ctx, "jets", "genjets", true, JERSmearing::SF_13TeV_2016_03Feb2017)); 
+      else throw runtime_error("In TestModule.cxx: When setting up JER smearer, invalid 'JEC_Version' was specified.");
   }
   
   
@@ -766,6 +800,9 @@ TestModule::TestModule(uhh2::Context & ctx) :
   tt_probejet_photonEF = ctx.declare_event_output<float>("probejet_photonEF");
   tt_probejet_muonEF = ctx.declare_event_output<float>("probejet_muonEF");
   
+    tt_event = ctx.declare_event_output<int>("event");
+    tt_run = ctx.declare_event_output<int>("run");
+
     tt_nvertices = ctx.declare_event_output<int>("nvertices");
     tt_nGoodvertices = ctx.declare_event_output<int>("nGoodvertices");
     tt_probejet_eta = ctx.declare_event_output<float>("probejet_eta");
@@ -774,19 +811,26 @@ TestModule::TestModule(uhh2::Context & ctx) :
     tt_probejet_ptgen = ctx.declare_event_output<float>("probejet_ptgen");
     tt_probejet_ptRaw = ctx.declare_event_output<float>("probejet_ptRaw");
     tt_probejet_ptptcl = ctx.declare_event_output<float>("probejet_ptptcl");
+    tt_probejet_dRminParton = ctx.declare_event_output<float>("probejet_dRminParton");
+    tt_barreljet_dRminParton = ctx.declare_event_output<float>("barreljet_dRminParton");
     tt_barreljet_eta = ctx.declare_event_output<float>("barreljet_eta");
     tt_barreljet_phi = ctx.declare_event_output<float>("barreljet_phi");
     tt_barreljet_pt = ctx.declare_event_output<float>("barreljet_pt");
     tt_barreljet_ptgen = ctx.declare_event_output<float>("barreljet_ptgen");
     tt_barreljet_ptRaw = ctx.declare_event_output<float>("barreljet_ptRaw");
     tt_barreljet_ptptcl = ctx.declare_event_output<float>("barreljet_ptptcl");
+    tt_barreljet_statusptcl = ctx.declare_event_output<int>("barreljet_status_ptcl");
+    tt_probejet_statusptcl = ctx.declare_event_output<int>("probejet_status_ptcl");
+    tt_jet3_statusptcl = ctx.declare_event_output<int>("jet3_status_ptcl");
     tt_pt_ave = ctx.declare_event_output<float>("pt_ave");
     tt_alpha = ctx.declare_event_output<float>("alpha");
     tt_rel_r = ctx.declare_event_output<float>("rel_r");
     tt_mpf_r = ctx.declare_event_output<float>("mpf_r");
     tt_asymmetry = ctx.declare_event_output<float>("asymmetry");
     tt_B = ctx.declare_event_output<float>("B");
+    tt_Bgen = ctx.declare_event_output<float>("genB");
     tt_MET = ctx.declare_event_output<float>("MET");
+    tt_genMET = ctx.declare_event_output<float>("genMET");
     tt_nPU = ctx.declare_event_output<int>("nPU");
     tt_ev_weight = ctx.declare_event_output<float>("weight");
     tt_jets_pt= ctx.declare_event_output<float>("sum_jets_pt");
@@ -805,6 +849,11 @@ TestModule::TestModule(uhh2::Context & ctx) :
     tt_jet4_genID =  ctx.declare_event_output<int>("jet4_genID");
     tt_jet5_genID =  ctx.declare_event_output<int>("jet5_genID");
     tt_jet6_genID =  ctx.declare_event_output<int>("jet6_genID");
+    tt_parton1_genjetID =  ctx.declare_event_output<int>("parton1_genjetID");
+    tt_parton2_genjetID =  ctx.declare_event_output<int>("parton2_genjetID");
+    tt_parton1_jetID =  ctx.declare_event_output<int>("parton1_jetID");
+    tt_parton2_jetID =  ctx.declare_event_output<int>("parton2_jetID");
+
 
     tt_rho = ctx.declare_event_output<float>("rho");
     tt_Zpv = ctx.declare_event_output<float>("Zpv");
@@ -1140,7 +1189,8 @@ TestModule::TestModule(uhh2::Context & ctx) :
     int n_jets_beforeCleaner = event.jets->size();
 
     //JetID
-    if(jetLabel == "AK4CHS" || jetLabel == "AK8CHS" || jetLabel == "AK4PUPPI" ) jetcleaner->process(event);
+    //    if(jetLabel == "AK4CHS" || jetLabel == "AK8CHS" || jetLabel == "AK4PUPPI" ) jetcleaner->process(event);
+    if(jetLabel == "AK4CHS" || jetLabel == "AK8CHS") jetcleaner->process(event);
     int n_jets_afterCleaner = event.jets->size();
     //discard events if not all jets fulfill JetID instead of just discarding single jets
     if (n_jets_beforeCleaner != n_jets_afterCleaner) return false;
@@ -1238,7 +1288,16 @@ TestModule::TestModule(uhh2::Context & ctx) :
     if(apply_BCD+apply_EFearly+apply_FlateG+apply_H+apply_global != 1) throw runtime_error("In TestModule.cxx: Sum of apply_* when applying JECs is not == 1. Fix this.");
 
     h_beforeJEC->fill(event);
-
+    if(debug){     
+      cout<<"Before JEC "<<endl;
+      cout << " Evt# "<<event.event<<" Run: "<<event.run<<" " << endl;
+      cout<< "MET: "<< event.met->pt() <<" jets.size() = "<<event.jets->size()<<" Njets = "<<jet_n<<endl;
+      if(event.genmet) cout<<" genMET: "<<event.genmet->pt()<<endl;
+      for(unsigned int i=0;i<event.jets->size();i++){
+	Jet* jet = &event.jets->at(i);
+	std::cout<<"jet #"<<i<<" with eta = "<<jet->eta()<<" and not-corrected pt = "<<jet->pt()<<std::endl<<endl;
+     }
+   }
 
   //Second: Apply proper JECs
     if(apply_BCD){
@@ -1337,7 +1396,6 @@ if(debug){
     float jet1_phi = jet1->phi(); float jet2_phi = jet2->phi();
     float pt_ave = (jet1_pt + jet2_pt)/2.;
 
-
 //###############################  Declare Probe and Barrel Jet  ###########################################
 
     Jet* jet_probe = jet1; Jet* jet_barrel = jet2;
@@ -1377,7 +1435,8 @@ if(debug){
     float gen_weight = 0;
     if(!event.isRealData){
       gen_weight = event.weight;
-      gen_pthat = event.genInfo->binningValues()[0];// only for pythia8 samples //todo: for herwig, madgraph
+      if(event.genInfo->binningValues().size()>0) 
+	gen_pthat = event.genInfo->binningValues()[0];// only for pythia8 samples //todo: for herwig, madgraph
     }
     float nvertices = event.pvs->size(); 
     float nPU = 0 ;//todo for data?
@@ -1430,6 +1489,7 @@ if(debug){
     float mpf_r = 1 + (met.Px()*pt.Px() + met.Py()*pt.Py())/(pt.Px()*pt.Px() + pt.Py()*pt.Py());
     float B = (met.Px()*pt.Px() + met.Py()*pt.Py())/((probejet_pt + barreljet_pt) * sqrt(pt.Px()*pt.Px() + pt.Py()*pt.Py())); //vec_MET*vec_ptbarr/(2ptave*ptbarr)
 
+   
     float jets_pt = 0;
     for(int i=2;i<jet_n;i++){
       jets_pt += ((Jet*)&event.jets->at(i))->pt();
@@ -1703,8 +1763,9 @@ if(debug){
     event.set(tt_jet1_ptGen,genjet1_pt);
     event.set(tt_jet2_ptGen,genjet2_pt);
     event.set(tt_jet3_ptGen,genjet3_pt);
+    event.set(tt_event,event.event);
+    event.set(tt_run,event.run);
     event.set(tt_nvertices,nvertices);
-
     event.set(tt_probejet_neutEmEF,jet_probe->neutralEmEnergyFraction());
     event.set(tt_probejet_neutHadEF,jet_probe->neutralHadronEnergyFraction());
     event.set(tt_probejet_chEmEF,jet_probe->chargedEmEnergyFraction());
@@ -1788,16 +1849,19 @@ if(debug){
       cout << " Evt# "<<event.event<<" Run: "<<event.run<<" " << endl;
     }
 
-    if(!sel.DiJet()) return false;
     h_nocuts->fill(event);
     h_lumi_nocuts->fill(event);
 
+    if(!sel.DiJet()) return false;
+   
+
     //Pu_pt_hat/pt_hat Selection
-    if(!event.isRealData){
+    if(!event.isRealData && event.genInfo->binningValues().size()>0){
       if(!sel.PUpthat(event)) return false;
+      if(event.genInfo->binningValues()[0]>0 && pt_ave>event.genInfo->binningValues()[0]*10) return false; //TEST: suppress crazy events
     }
-    h_nocuts->fill(event);
-    h_lumi_nocuts->fill(event);
+    // h_nocuts->fill(event);
+    // h_lumi_nocuts->fill(event);
 
     //MET/pt - Cut
     if(apply_METoverPt_cut && event.get(tt_MET)/(event.get(tt_jets_pt)+event.get(tt_barreljet_pt)+event.get(tt_probejet_pt))>0.2) return false; //skip events with large MET contribution  
@@ -1910,10 +1974,15 @@ if(debug){
       const unsigned int genjets_n = event.genjets->size();
       int idx_jet_matching_genjet[genjets_n];
       double probejet_ptgen = -1; 
-      double barreljet_ptgen = -1; 
+      double barreljet_ptgen = -1;
+      double probejet_drminparton=100;
+      double barreljet_drminparton=100; 
+      double barreljet_phigen = -1; 
       double probejet_ptptcl = -1; 
       double barreljet_ptptcl = -1; 
-
+      int probejet_statusptcl = -1;
+      int barreljet_statusptcl = -1;
+      int jet3_statusptcl = -1;
       //match genp to gen-jets
       int idx_j=0;
       int idx_genp_min = -1;
@@ -1924,13 +1993,17 @@ if(debug){
 	idx_matched_jets[i] = -1;
 	idx_matched_RecoGenjets[i] = -1;
       }
-
+      int idx_parton_genJet[4]; int idx_parton_recoJet[4];
+      for(int i=0; i<4; i++){
+	idx_parton_genJet[i]=-1; 
+	idx_parton_recoJet[i]=-1;
+      }
       //matching gen- and reco-jets
       for(unsigned int i=0; i<event.genjets->size(); i++){
 	double dR_min = 99999; int idx_matching_jet = -1;
 	for(unsigned int j=0; j<event.jets->size(); j++){
 	  double dR = deltaR(event.jets->at(j), event.genjets->at(i));
-	  if(debug) cout << "dR between GenJet " << i << " and RecoJet " << j << ": " << dR << endl;
+	  //	  if(debug) cout << "dR between GenJet " << i << " and RecoJet " << j << ": " << dR << endl;
 	  if(dR<dR_min){
 	    dR_min = dR; 
 	    if(dR_min<dr_cut) idx_matching_jet = j;
@@ -1946,22 +2019,28 @@ if(debug){
       for(Particle & genj : *event.genjets){
 	double dr_min = 99999;
 	double dr_cut = 0;
-	if(jetLabel == "AK4CHS" || jetLabel == "AK4PUPPI") dr_cut = 0.2;
-	else if (jetLabel == "AK8CHS" || jetLabel == "AK8PUPPI")dr_cut = 0.4;
+	if(jetLabel == "AK4CHS" || jetLabel == "AK4PUPPI") dr_cut = 0.4; //TEST: for matching to parton use the full cone size
+	else if (jetLabel == "AK8CHS" || jetLabel == "AK8PUPPI") dr_cut = 0.8; //TEST: for matching to parton use the full cone size
 	else throw runtime_error("TestModule.cxx: Invalid jet-label specified.");
 
-	int idx_g = 0;
+       	int idx_g = 0;
 	for(GenParticle & genp: *event.genparticles){
+	  //	  if(genp.status()<2) continue;//TEST it does not make sense to look at status 1 particles, since we know nothing about them
+	  //	  if(genp.status()==1 && genp.pt()<20) continue;//TEST it does not make sense to look at status 1 particles with low pt, since we know nothing about them
 	  double dr = deltaR(genj,genp);
-	  if(dr < dr_min){
+	  //  if(dr < dr_min){
+	  if(dr < dr_min && genp.status()>1){ //TEST it does not make sense to look at status 1 particles, since we know nothing about them
+	  //	  if(dr < dr_min && (genp.status()>1 || genp.pt()>25)){ //TEST it does not make sense to look at status 1 particles with low pt, since we know nothing about them
 	    dr_min = dr;
 	    idx_genp_min = idx_g;	
 	  }	
-	  if(debug) cout << "dr between genjet " << idx_j << " and genp (flavor: " << genp.flavor() << ") " << idx_g << "= " << dr << endl;
+	  //	  if(debug) cout << "dr between genjet " << idx_j << " and genp (flavor: " << genp.flavor() << ") " << idx_g << "= " << dr << endl;
 	  idx_g++;
 	}
-	if(dr_min <= dr_cut) {
+	//if(dr_min <= dr_cut) {
+	if(dr_min <= dr_cut && idx_genp_min>-1) {//TEST it does not make sense to look at status 1 particles, since we know nothing about them
 	  if(debug) cout << "genjet " << idx_j << " is matched to genparticle " << idx_genp_min << " of flavor " << event.genparticles->at(idx_genp_min).flavor() << " within dR = " << dr_min << ". " <<  endl; 
+	  if(idx_genp_min<4) idx_parton_genJet[idx_genp_min] = idx_j;
 	  if(idx_jet_matching_genjet[idx_j] >= 0) idx_matched_jets[idx_jet_matching_genjet[idx_j]] = idx_genp_min;
 	}
 	idx_j++;
@@ -1969,11 +2048,14 @@ if(debug){
 
       //only consider jets that could be matched to a genparticle, these shall take the partons flavor by definition
       //TEST
-      if(debug){
+      //      if(debug){
 	for (int i=0; i<jet_n; i++){
-	  if(idx_matched_jets[i] != -1) cout << "Jet no. " << i << " is matching genpart no. " << idx_matched_jets[i] << endl;
+	  if(idx_matched_jets[i] != -1){
+	    if(debug)	    cout << "Jet no. " << i << " is matching genpart no. " << idx_matched_jets[i] << endl;
+	    if(idx_matched_jets[i]<4) idx_parton_recoJet[idx_matched_jets[i]] = i;
+	  }
 	}
-      }
+	//      }
 
       // flavor-quantities
 
@@ -1994,34 +2076,66 @@ if(debug){
 	response_barreljet = jet_barrel->pt() / event.genparticles->at(idx_matched_jets[idx_barreljet]).pt();
         barreljet_ptptcl = event.genparticles->at(idx_matched_jets[idx_barreljet]).pt(); 
         barreljet_ptgen = event.genjets->at(idx_matched_RecoGenjets[idx_barreljet]).pt(); 
+        barreljet_phigen = event.genjets->at(idx_matched_RecoGenjets[idx_barreljet]).phi(); 
+	barreljet_statusptcl = event.genparticles->at(idx_matched_jets[idx_barreljet]).status();
       }
       else{
 	flavor_barreljet = -1;
 	response_barreljet = -1;
         barreljet_ptptcl = -1;
         barreljet_ptgen = -1;
+        barreljet_phigen = -1;
+	barreljet_statusptcl  = -1;
+	barreljet_drminparton = -1;
       }
-      if(debug) cout << "barreljet is jet no. " << idx_barreljet << ", alpha = " << event.get(tt_alpha) << ", flavor of barreljet = " << flavor_barreljet << endl;
-    
+
+     
+
 
       //also for probe jets
       int idx_probejet = fabs(idx_barreljet - 1);
       //obtain flavor of the probejet
       //-1: unmatched,  >0: flavor of matching genparticle 
       if(idx_matched_jets[idx_probejet] != -1){
+	// if(debug) cout<<" idx_matched_jets[idx_probejet] = "<<idx_matched_jets[idx_probejet]<<" idx_matched_RecoGenjets[idx_probejet] = "<<idx_matched_RecoGenjets[idx_probejet]
+	// 	      <<" idx_probejet = "<<idx_probejet<<endl;
+	// if(debug) cout<<"event.genparticles->at(idx_matched_jets[idx_probejet]).pt() = "<<event.genparticles->at(idx_matched_jets[idx_probejet]).pt()<<endl;
 	flavor_probejet = fabs(event.genparticles->at(idx_matched_jets[idx_probejet]).flavor());
+	//	if(debug) cout<<"1 event.genjets->at(idx_matched_RecoGenjets[idx_probejet]).pt() = "<<event.genjets->at(idx_matched_RecoGenjets[idx_probejet]).pt()<<endl;
 	response_probejet = jet_probe->pt() / event.genparticles->at(idx_matched_jets[idx_probejet]).pt();
+	//	if(debug) cout<<"2 event.genjets->at(idx_matched_RecoGenjets[idx_probejet]).pt() = "<<event.genjets->at(idx_matched_RecoGenjets[idx_probejet]).pt()<<endl;
 	probejet_ptptcl = event.genparticles->at(idx_matched_jets[idx_probejet]).pt();
+	//	if(debug) cout<<"3 event.genjets->at(idx_matched_RecoGenjets[idx_probejet]).pt() = "<<event.genjets->at(idx_matched_RecoGenjets[idx_probejet]).pt()<<endl;
+	probejet_statusptcl = event.genparticles->at(idx_matched_jets[idx_probejet]).status(); 
+	//	if(debug) cout<<"4 event.genjets->at(idx_matched_RecoGenjets[idx_probejet]).pt() = "<<event.genjets->at(idx_matched_RecoGenjets[idx_probejet]).pt()<<endl;
 	probejet_ptgen = event.genjets->at(idx_matched_RecoGenjets[idx_probejet]).pt();
+	//	if(debug) cout<<"5 event.genjets->at(idx_matched_RecoGenjets[idx_probejet]).pt() = "<<event.genjets->at(idx_matched_RecoGenjets[idx_probejet]).pt()<<endl;
       }
       else{ 
 	flavor_probejet = -1;
 	response_probejet = -1;
         probejet_ptptcl = -1;
         probejet_ptgen = -1;
+	probejet_statusptcl = -1;
+	probejet_drminparton = -1;
+      } 
+      //find the closest parton to the jet even if not matched (to check dR matching)
+      for(GenParticle & genp: *event.genparticles){  
+	if(idx_matched_RecoGenjets[idx_probejet]!=-1){
+	  double dr = deltaR(event.genjets->at(idx_matched_RecoGenjets[idx_probejet]),genp);
+	  if(probejet_drminparton>dr) probejet_drminparton = dr;       
+	}
+	if(idx_matched_RecoGenjets[idx_barreljet]!=-1){
+	  double dr = deltaR(event.genjets->at(idx_matched_RecoGenjets[idx_barreljet]),genp);
+	  if(barreljet_drminparton>dr) barreljet_drminparton = dr;   
+	}
       }
-      if(debug) cout << "probejet is jet no. " << idx_probejet << ", alpha = " << event.get(tt_alpha) << ", flavor of probejet = " << flavor_probejet << endl;
-      
+      if(debug) cout << "barreljet is jet no. " << idx_barreljet << ", alpha = " << event.get(tt_alpha) << ", flavor of barreljet = " << flavor_barreljet 
+		     <<", status of barrel jet = "<<barreljet_statusptcl<<" the closest parton with dR = "<<barreljet_drminparton<< endl;
+      if(debug) cout << "probejet is jet no. " << idx_probejet << ", alpha = " << event.get(tt_alpha) << ", flavor of probejet = " << flavor_probejet <<" status of probejet = " <<
+		  probejet_statusptcl <<" the closest parton with dR = "<<probejet_drminparton<< endl;
+      if(debug)
+	if(probejet_drminparton>0.4 || barreljet_drminparton>0.4) cout<<"AAAAAAAAAAAAAAAAA! LOOK!"<<endl;
       
       //same for leading jet
       //-1: unmatched, 0: alpha too large, >0: flavor of matching genparticle 
@@ -2039,9 +2153,15 @@ if(debug){
       //same for 3rd jet
       //-1: unmatched, 0: alpha too large, >0: flavor of matching genparticle 
       if(jet_n>2){
-      if(idx_matched_jets[2] != -1) flavor_3rdjet = fabs(event.genparticles->at(idx_matched_jets[2]).flavor());
-      else flavor_3rdjet = -1;
-      if(debug) cout << "3rd is jet no. " << 2 << ", alpha = " << event.get(tt_alpha) << ", flavor of the 3rd jet = " << flavor_3rdjet << endl;
+	if(idx_matched_jets[2] != -1) {
+	  flavor_3rdjet = fabs(event.genparticles->at(idx_matched_jets[2]).flavor());
+	  jet3_statusptcl = event.genparticles->at(idx_matched_jets[2]).status();
+	}
+	else{
+	  flavor_3rdjet = -1;
+	  jet3_statusptcl = -1;
+	}
+	if(debug) cout << "3rd is jet no. " << 2 << ", alpha = " << event.get(tt_alpha) << ", flavor of the 3rd jet = " << flavor_3rdjet <<", status = "<<jet3_statusptcl<< endl;
       }
       else{
 	flavor_3rdjet = -1;  
@@ -2057,7 +2177,12 @@ if(debug){
       event.set(tt_flavorSubleadingjet,flavor_subleadingjet);
       event.set(tt_probejet_ptgen,probejet_ptgen);   
       event.set(tt_probejet_ptptcl,probejet_ptptcl); 
-      if(barreljet_ptgen<0 || probejet_ptgen<0) return false;// TEST store only matched events   
+      event.set(tt_barreljet_statusptcl,barreljet_statusptcl);
+      event.set(tt_probejet_statusptcl,probejet_statusptcl);
+      event.set(tt_jet3_statusptcl,jet3_statusptcl);
+      event.set(tt_probejet_dRminParton,probejet_drminparton);
+      event.set(tt_barreljet_dRminParton,barreljet_drminparton);
+      //      if(barreljet_ptgen<0 || probejet_ptgen<0) return false;// TEST store only matched events   
       if (debug) cout << "probejet_ptgen = "<<probejet_ptgen<<" barreljet_ptgen = "<<barreljet_ptgen<< " probejet_ptptcl = "<<probejet_ptptcl<<" barreljet_ptptcl = "<<barreljet_ptptcl<<endl;
       //response of leading jet
       //find corresponding genjet
@@ -2100,13 +2225,41 @@ if(debug){
       // 	if(idx_matched_jets[idptcl]==4)  event.set(tt_jet5_ptclID,idptcl);
       // 	if(idx_matched_jets[idptcl]==5)  event.set(tt_jet6_ptclID,idptcl);
       // }
-    event.set(tt_genjet_n,event.genjets->size());
-    int genptcl_n = 0;
-    for(GenParticle & genp: *event.genparticles){
-      if(genp.pt()>0) genptcl_n++;
-    }
-    event.set(tt_genptcl_n,genptcl_n);
+      event.set(tt_parton1_jetID,idx_parton_recoJet[2]);
+      event.set(tt_parton2_jetID,idx_parton_recoJet[3]);
+      event.set(tt_parton1_genjetID,idx_parton_genJet[2]);
+      event.set(tt_parton2_genjetID,idx_parton_genJet[3]);
+      if(debug){
+	for(int i=0; i<4; i++){
+	  cout<<" parton # "<<i<<" genJET = "<<idx_parton_genJet[i]<<" recoJET = "<<idx_parton_recoJet[i]<<endl;
+	}      
+      }
 
+      event.set(tt_genjet_n,event.genjets->size());
+      int genptcl_n = 0;
+      for(GenParticle & genp: *event.genparticles){
+	//      if(genp.status()<2) continue;//TEST it does not make sense to look at status 1 particles, since we know nothing about them
+	if(genp.pt()>0) genptcl_n++;
+      }
+      event.set(tt_genptcl_n,genptcl_n);
+
+    //calculate B from GEN jets and MET
+    TVector2 ptgen, genmet;
+    if(event.genmet) genmet.Set(event.genmet->pt() * cos(event.genmet->phi()),event.genmet->pt() * sin(event.genmet->phi()));
+    ptgen.Set(barreljet_ptgen * cos(barreljet_phigen),barreljet_ptgen* sin(barreljet_phigen));
+    float Bgen = (genmet.Px()*ptgen.Px() + genmet.Py()*ptgen.Py())/((probejet_ptgen + barreljet_ptgen) * sqrt(ptgen.Px()*ptgen.Px() + ptgen.Py()*ptgen.Py())); //vec_MET*vec_ptbarr/(2ptave*ptbarr)
+    event.set(tt_Bgen,Bgen);
+    if(event.genmet) event.set(tt_genMET,event.genmet->pt());
+    else event.set(tt_genMET,-1);
+    if(debug){
+      if(event.genmet){
+	cout<<" genMET: pt = "<<event.genmet->pt()<<endl;
+	genmet.Print();
+      }
+      cout<<" ptGen: "<<endl;
+      ptgen.Print();
+    }
+    if(debug) cout<<" B_gen = "<<Bgen<<" B_reco = "<<event.get(tt_B)<<endl;
     } //isMC
 
     else{
@@ -2125,6 +2278,9 @@ if(debug){
       event.set(tt_dR_jet3_RECO_GEN,-1);
       event.set(tt_genptcl_n,-1);
       event.set(tt_genjet_n,-1);
+      event.set(tt_probejet_statusptcl,-1);
+      event.set(tt_barreljet_statusptcl,-1);
+      event.set(tt_jet3_statusptcl,-1);
       // event.set(tt_jet1_ptclID,-1);
       // event.set(tt_jet2_ptclID,-1);
       // event.set(tt_jet3_ptclID,-1);
@@ -2137,14 +2293,25 @@ if(debug){
       event.set(tt_jet4_genID,-1);
       event.set(tt_jet5_genID,-1);
       event.set(tt_jet6_genID,-1);
+      event.set(tt_Bgen,-1);
+      event.set(tt_genMET,-1);
+      event.set(tt_parton1_genjetID,-1);
+      event.set(tt_parton2_genjetID,-1);
+      event.set(tt_parton1_jetID,-1);                                                                                                               
+      event.set(tt_parton2_jetID,-1);                                                                                                               
+      event.set(tt_probejet_dRminParton,-1);
+      event.set(tt_barreljet_dRminParton,-1);
     }
+
    
     if(debug) {
       cout<<"After full Selection!!"<<endl;
-      cout<<" jets.size() = "<<event.jets->size()<<" genjets.size() = "<<event.genjets->size()<<" genparticles.size() = "<<event.genparticles->size()<<endl;
-      cout<<"GENid for jet1 =  "<<event.get(tt_jet1_genID)<<" for jet2 = "<<event.get(tt_jet2_genID)<<" for jet3 ="<<event.get(tt_jet3_genID)<<" for jet4 = "
-	  <<event.get(tt_jet4_genID)<<" for jet5 = "<<event.get(tt_jet5_genID)<<" for jet6 ="<<event.get(tt_jet6_genID)<<" "<<endl;
+      // cout<<" jets.size() = "<<event.jets->size()<<" genjets.size() = "<<event.genjets->size()<<" genparticles.size() = "<<event.genparticles->size()<<endl;
+      // cout<<"GENid for jet1 =  "<<event.get(tt_jet1_genID)<<" for jet2 = "<<event.get(tt_jet2_genID)<<" for jet3 ="<<event.get(tt_jet3_genID)<<" for jet4 = "
+      // 	  <<event.get(tt_jet4_genID)<<" for jet5 = "<<event.get(tt_jet5_genID)<<" for jet6 ="<<event.get(tt_jet6_genID)<<" "<<endl;
       cout << " Evt# "<<event.event<<" Run: "<<event.run<<" " << endl<<endl;
+      cout<<"parton - GEN jet "<<event.get(tt_parton1_genjetID)<<" "<<event.get(tt_parton2_genjetID)<<" parton - RECO jet "<<event.get(tt_parton1_jetID)<<" "<<event.get(tt_parton2_jetID)<<endl;
+      cout << endl << "--------- END EVENT --------" << endl << endl;
     }
 
     //    event.set(tt_partonFlavor,flavor);
@@ -2152,7 +2319,7 @@ if(debug){
 
     event.set(tt_dR_jet3_barreljet,dR_jet3_barreljet);
     event.set(tt_dR_jet3_probejet,dR_jet3_probejet);   
-
+    if(debug) cout<<"parton - GEN jet "<<event.get(tt_parton1_genjetID)<<" "<<event.get(tt_parton2_genjetID)<<" parton - RECO jet "<<event.get(tt_parton1_jetID)<<" "<<event.get(tt_parton2_jetID)<<endl;
     return true;
   }
 
