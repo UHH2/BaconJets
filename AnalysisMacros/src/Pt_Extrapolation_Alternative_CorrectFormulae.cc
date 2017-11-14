@@ -589,9 +589,10 @@ if(mpfMethod){
     //   for(int f=0;f<n_alpha_cut;f++){
    
     if(CorrectionObject::_runnr != "BCDEFGH"){
-        kfsr_mpf = new TFile(CorrectionObject::_input_path+"RunBCDEFGH/Histo_Res_MPF_L1_"+CorrectionObject::_generator_tag+"_AK4PFchs.root","READ");
-	hist_kfsr_fit_mpf = (TH1D*)kfsr_mpf->Get("hist_kfsr_fit_mpf");
-	hist_kfsr_mpf = (TH1D*)kfsr_mpf->Get("kfsr_mpf");
+      kfsr_mpf = new TFile(CorrectionObject::_input_path+"RunBCDEFGH/Histo_Res_MPF_L1_"+CorrectionObject::_generator_tag+"_AK4PFchs.root","READ");
+      hist_kfsr_fit_mpf = (TH1D*)kfsr_mpf->Get("hist_kfsr_fit_mpf");
+      //      kfsr_mpf = new TFile(CorrectionObject::_outpath+"Histo_KFSR_MPF_"+CorrectionObject::_generator_tag+"_L1.root","READ");
+      hist_kfsr_mpf = (TH1D*)kfsr_mpf->Get("kfsr_mpf");
     }
     
      else{
@@ -613,7 +614,6 @@ if(mpfMethod){
 	  else kfsr_fit_mpf->SetParameters(0.9,2,40); //CLOSURETEST
 	  fit_fullrange = true;
 	}
-	/*
 	if(CorrectionObject::_runnr == "BCD"){
 	  //	  kfsr_fit_mpf->SetParameters(1,100,500);
 	  kfsr_fit_mpf->SetParameters(1,3,-70);      
@@ -627,6 +627,7 @@ if(mpfMethod){
 	  else kfsr_fit_mpf->SetParameters(0.9,2,34); //RES
 	}
 	else if(CorrectionObject::_runnr == "FlateG"){
+	  cout<<"HELLO ANYBODY? MPF"<<endl;
 	  if(!CorrectionObject::_closuretest) kfsr_fit_mpf->SetParameters(1,100,300); //RES
 	  else{ kfsr_fit_mpf->SetParameters(0.7,40,160);
 	    fit_fullrange = true;
@@ -638,7 +639,6 @@ if(mpfMethod){
 	  else kfsr_fit_mpf->SetParameters(1.,150,250); //CLOSURETEST
 	  fit_fullrange = true;
 	}
-	*/
 	}
       }    
     else throw runtime_error("PTextrapolation, MPF kFSR-fit: Invalid generator specified.");
@@ -974,9 +974,10 @@ if(mpfMethod){
     //  for(int f=0;f<n_alpha_cut;f++){
     
     if(CorrectionObject::_runnr != "BCDEFGH"){
-        kfsr_dijet = new TFile(CorrectionObject::_input_path+"RunBCDEFGH/Histo_Res_DiJet_L1_"+CorrectionObject::_generator_tag+"_AK4PFchs.root","READ");
-	hist_kfsr_fit_dijet = (TH1D*)kfsr_dijet->Get("hist_kfsr_fit_dijet");
-	hist_kfsr_dijet = (TH1D*)kfsr_dijet->Get("kfsr_dijet");
+      kfsr_dijet = new TFile(CorrectionObject::_input_path+"RunBCDEFGH/Histo_Res_DiJet_L1_"+CorrectionObject::_generator_tag+"_AK4PFchs.root","READ");
+      hist_kfsr_fit_dijet = (TH1D*)kfsr_dijet->Get("hist_kfsr_fit_dijet");
+      //      kfsr_dijet = new TFile(CorrectionObject::_outpath+"Histo_KFSR_DiJet_"+CorrectionObject::_generator_tag+"_L1.root","READ");
+      hist_kfsr_dijet = (TH1D*)kfsr_dijet->Get("kfsr_dijet");
     }
     
     else{
@@ -1000,9 +1001,9 @@ if(mpfMethod){
 	  //fit_fullrange = true;
 	  fit_285 = true;
 	}
-	/*
-	//RunBCD
-	if(CorrectionObject::_runnr == "BCD"){ 
+	
+	/*	//RunBCD
+      	if(CorrectionObject::_runnr == "BCD"){ 
 	  if(CorrectionObject::_closuretest) kfsr_fit_dijet->SetParameters(-2,500,150.); //Closure Test
 	  if(!CorrectionObject::_closuretest) kfsr_fit_dijet->SetParameters(6, 700, -100.); //reweighted MC, RES
 	
@@ -1020,7 +1021,7 @@ if(mpfMethod){
 	else if(CorrectionObject::_runnr == "FlateG"){
 	  if(CorrectionObject::_closuretest) kfsr_fit_dijet->SetParameters(-5,2000,300); //CLOSURETEST
 	  if(!CorrectionObject::_closuretest)  kfsr_fit_dijet->SetParameters(1,3000,300.); //RES
-	  
+	  cout<<"HELLO ANYBODY? pt-balance"<<endl;  
 	fit_fullrange = false;
 	fit_285 = true; 	
 	}
@@ -1032,12 +1033,11 @@ if(mpfMethod){
 	fit_285 = true;
 	  
 	}
+       
 	else kfsr_fit_dijet->SetParameters(0,0,200.); 
 	*/
-	}
-	
-      }
-    
+	}	
+    }    
     else throw runtime_error("PTextrapolation: Invalid generator specified.");
 
     //Finally perform the fit 

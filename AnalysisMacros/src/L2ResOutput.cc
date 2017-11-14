@@ -20,9 +20,18 @@ void CorrectionObject::L2ResOutput(){
   TFile* f_Res_mpf = new TFile(CorrectionObject::_outpath+"Histo_Res_MPF_L1_"+CorrectionObject::_generator_tag+"_"+CorrectionObject::_jettag+".root","READ");
   TFile* f_Res_dijet = new TFile(CorrectionObject::_outpath+"Histo_Res_DiJet_L1_"+CorrectionObject::_generator_tag+"_"+CorrectionObject::_jettag+".root","READ");  
 
+
   TFile* f_Res_mpf_old   = new TFile("/nfs/dust/cms/user/multh/JEC/2016ReReco/Residuals/Summer16_03Feb2017_V3/AK4CHS/MC_Reweighted_chsMET_NewSF/Run"+CorrectionObject::_runnr+"/Histo_Res_MPF_L1_"+CorrectionObject::_generator_tag+"_"+CorrectionObject::_jettag+".root","READ");
   TFile* f_Res_dijet_old = new TFile("/nfs/dust/cms/user/multh/JEC/2016ReReco/Residuals/Summer16_03Feb2017_V3/AK4CHS/MC_Reweighted_chsMET_NewSF/Run"+CorrectionObject::_runnr+"/Histo_Res_DiJet_L1_"+CorrectionObject::_generator_tag+"_"+CorrectionObject::_jettag+".root","READ");  
    cout<<"After files"<<endl;
+// =======
+//   // TFile* f_Res_mpf_old   = new TFile("/nfs/dust/cms/user/multh/JEC/2016ReReco/Residuals/Summer16_03Feb2017_V3/AK4CHS/MC_Reweighted_chsMET/Run"+CorrectionObject::_runnr+"/Histo_Res_MPF_L1_"+CorrectionObject::_generator_tag+"_"+CorrectionObject::_jettag+".root","READ");
+//   // TFile* f_Res_dijet_old = new TFile("/nfs/dust/cms/user/multh/JEC/2016ReReco/Residuals/Summer16_03Feb2017_V3/AK4CHS/MC_Reweighted_chsMET/Run"+CorrectionObject::_runnr+"/Histo_Res_DiJet_L1_"+CorrectionObject::_generator_tag+"_"+CorrectionObject::_jettag+".root","READ");  
+
+//  TFile* f_Res_mpf_old   = new TFile("/nfs/dust/cms/user/multh/JEC/2016ReReco/Residuals/Summer16_03Feb2017_V3/AK4CHS/MC_Reweighted_chsMET/Run"+CorrectionObject::_runnr+"/Histo_Res_MPF_L1_"+CorrectionObject::_generator_tag+"_AK4PFchs.root","READ");
+//   TFile* f_Res_dijet_old = new TFile("/nfs/dust/cms/user/multh/JEC/2016ReReco/Residuals/Summer16_03Feb2017_V3/AK4CHS/MC_Reweighted_chsMET/Run"+CorrectionObject::_runnr+"/Histo_Res_DiJet_L1_"+CorrectionObject::_generator_tag+"_AK4PFchs.root","READ");  
+
+// >>>>>>> 03Feb_Anastasia_v2
   TString JetDescrib;                                                                                                                            
   if (CorrectionObject::_collection=="AK4CHS") JetDescrib = "Anti-k_{t} R = 0.4, PF+CHS";
   if (CorrectionObject::_collection=="AK4Puppi") JetDescrib = "Anti-k_{t} R = 0.4, PF+PUPPI";
@@ -284,9 +293,17 @@ void CorrectionObject::L2ResOutput(){
     f_Res_dijet_diff_var = new TFile(CorrectionObject::_outpath+"Histo_Res_DiJet_L1_"+CorrectionObject::_generator_tag+"_"+CorrectionObject::_jettag+"_"+var+".root","READ"); 
 
 
+
     f_Res_mpf_old_var   = new TFile("/nfs/dust/cms/user/multh/JEC/2016ReReco/Residuals/Summer16_03Feb2017_V3/AK4CHS/MC_Reweighted_chsMET_NewSF/Run"+CorrectionObject::_runnr+"/Histo_Res_MPF_L1_"+CorrectionObject::_generator_tag+"_"+CorrectionObject::_jettag+".root","READ");
     f_Res_dijet_old_var = new TFile("/nfs/dust/cms/user/multh/JEC/2016ReReco/Residuals/Summer16_03Feb2017_V3/AK4CHS/MC_Reweighted_chsMET_NewSF/Run"+CorrectionObject::_runnr+"/Histo_Res_DiJet_L1_"+CorrectionObject::_generator_tag+"_"+CorrectionObject::_jettag+".root","READ");  
    cout<<"After files"<<endl;
+// =======
+//     // f_Res_mpf_old_var   = new TFile("/nfs/dust/cms/user/multh/JEC/2016ReReco/Residuals/Summer16_03Feb2017_V3/AK4CHS/MC_Reweighted_chsMET/Run"+CorrectionObject::_runnr+"/Histo_Res_MPF_L1_"+CorrectionObject::_generator_tag+"_"+CorrectionObject::_jettag+".root","READ");
+//     // f_Res_dijet_old_var = new TFile("/nfs/dust/cms/user/multh/JEC/2016ReReco/Residuals/Summer16_03Feb2017_V3/AK4CHS/MC_Reweighted_chsMET/Run"+CorrectionObject::_runnr+"/Histo_Res_DiJet_L1_"+CorrectionObject::_generator_tag+"_"+CorrectionObject::_jettag+".root","READ");  
+//     f_Res_mpf_old_var   = new TFile("/nfs/dust/cms/user/multh/JEC/2016ReReco/Residuals/Summer16_03Feb2017_V3/AK4CHS/MC_Reweighted_chsMET/Run"+CorrectionObject::_runnr+"/Histo_Res_MPF_L1_"+CorrectionObject::_generator_tag+"_AK4PFchs.root","READ");
+//     f_Res_dijet_old_var = new TFile("/nfs/dust/cms/user/multh/JEC/2016ReReco/Residuals/Summer16_03Feb2017_V3/AK4CHS/MC_Reweighted_chsMET/Run"+CorrectionObject::_runnr+"/Histo_Res_DiJet_L1_"+CorrectionObject::_generator_tag+"_AK4PFchs.root","READ");  
+
+// >>>>>>> 03Feb_Anastasia_v2
 
     res_logpt_mpf_kfsrfit_var[i] = (TH1D*)f_Res_mpf_var->Get("res_logpt_mpf");
     res_logpt_dijet_kfsrfit_var[i] = (TH1D*)f_Res_dijet_var->Get("res_logpt_dijet");
@@ -353,7 +370,8 @@ void CorrectionObject::L2ResOutput(){
   
  TCanvas *c6 = new TCanvas();
   tdrCanvas(c6,"L2res_logpt_MPF_kFSRfit_ptDepend_diff",h,4,10,kSquare,CorrectionObject::_lumitag);
-  h->GetYaxis()->SetTitle("new - prev. iteration");
+  //  h->GetYaxis()->SetTitle("new - prev. iteration");
+  h->GetYaxis()->SetTitle("new - Summer16_03Feb_V4_AK4CHS");
   h->GetYaxis()->SetRangeUser(-0.3,0.3);
    res_logpt_mpf_diff->SetLineColor(kBlack);
   res_logpt_mpf_diff->Draw("E1 SAME");
@@ -378,7 +396,8 @@ void CorrectionObject::L2ResOutput(){
   
   TCanvas *c8 = new TCanvas();
   tdrCanvas(c8,"L2res_logpt_DiJet_kFSRfit_ptDepend",h,4,10,kSquare,CorrectionObject::_lumitag);
-  h->GetYaxis()->SetTitle("new - prev. iteration");
+  //  h->GetYaxis()->SetTitle("new - prev. iteration");
+  h->GetYaxis()->SetTitle("new - Summer16_03Feb_V4_AK4CHS");
   h->GetYaxis()->SetRangeUser(-0.3,0.3);
   res_logpt_dijet_diff->SetLineColor(kBlack);
   res_logpt_dijet_diff->Draw("E1 SAME");

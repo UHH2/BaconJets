@@ -294,14 +294,8 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
 	}
       }
     }
-  }
-  
-
-
-
- 
-
-  ofstream output;
+}
+ofstream output;
   output.open(CorrectionObject::_outpath+"plots/control/Number_Events_Pt_Eta_bins_"+CorrectionObject::_generator_tag+"_"+CorrectionObject::_jettag+".txt");
     
 
@@ -448,7 +442,8 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
       pair <double,double> B_data = GetValueAndError(hdata_B[j][i]);
 
       //build MPF and pt_bal and their errors
-
+      if(i==(n_eta-2))
+	 cout<<"j = "<<j<<" A_mc.first = "<<A_mc.first<<" A_mc.second = "<<A_mc.second<<endl;
 
       pair<double,double> res_mc_rel_r,res_data_rel_r;
       pair<double,double> res_mc_mpf_r,res_data_mpf_r;
@@ -470,6 +465,9 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
       err_rel_data[i][j] = res_data_rel_r.second;
       val_mpf_data[i][j] = res_data_mpf_r.first;
       err_mpf_data[i][j] = res_data_mpf_r.second;
+      if(i==(n_eta-2))
+       	cout<<"j = "<<j<<"  val_rel_mc[i][j] = "<< val_rel_mc[i][j]<<endl;
+
     }
   }
 
@@ -815,10 +813,7 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
     tex->DrawLatex(0.47,0.85,"Data, " + text);
     //tex_lumi->DrawLatex(0.50,0.91,CorrectionObject::_lumitag+"(13TeV)");
     c4->SaveAs(CorrectionObject::_outpath+"plots/control/A_NormDistribution_DATA_" + CorrectionObject::_generator_tag + "_eta_" + eta_range2[i] + "_" + eta_range2[i+1] + ".pdf");    
-
-
-
-    ///MET over sum pt
+///MET over sum pt
     TCanvas* c5 = new TCanvas();
     tdrCanvas(c5,"c5",h,4,10,kSquare,"MC");
     TLegend leg5 = tdrLeg(0.22,0.6,0.88,0.79);

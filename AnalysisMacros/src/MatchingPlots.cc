@@ -335,6 +335,8 @@ void CorrectionObject::MatchingPlots(){
       //get <A> and error on <A>
       pair <double,double> A_mc = GetValueAndError(hmc_asymmetry[j][i]);
       pair <double,double> B_mc = GetValueAndError(hmc_B[j][i]);
+       if(i==(n_eta-2))
+	 cout<<"j = "<<j<<" A_mc.first = "<<A_mc.first<<" A_mc.second = "<<A_mc.second<<endl;
 
       pair <double,double> A_data = GetValueAndError(hdata_asymmetry[j][i]);
  
@@ -371,6 +373,9 @@ void CorrectionObject::MatchingPlots(){
     
       val_rel_mc[i][j] = res_mc_rel_r.first;
       err_rel_mc[i][j] = res_mc_rel_r.second;
+      if(i==(n_eta-2))
+       	cout<<"j = "<<j<<"  val_rel_mc[i][j] = "<< val_rel_mc[i][j]<<endl;
+
       val_mpf_mc[i][j] = res_mc_mpf_r.first;
       err_mpf_mc[i][j] = res_mc_mpf_r.second;
 

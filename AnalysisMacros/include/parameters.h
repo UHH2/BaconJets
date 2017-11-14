@@ -30,14 +30,15 @@ const int triggerVal[n_trigger] = {40, 60, 80, 140, 200, 260, 320, 400, 500};
 
 
 //Pt bins:
-/*
+//Special weights for the MC based study
+
 const int n_pt = 16;
 const TString pt_range[n_pt]= {"10","20","30","40","51", "73", "95", "129", "163", "230", "299", "365", "453", "566", "1000", "2000"};
 const double pt_bins[n_pt]       = {10,20, 30, 40, 51, 73, 95, 129, 163, 230, 299, 365, 453, 566, 1000, 2000};
-*/
-const int n_pt = 12;
-const TString pt_range[n_pt]= {"51", "73", "95", "129", "163", "230", "299", "365", "453", "566", "1000", "2000"};
-const double pt_bins[n_pt]       = {51, 73, 95, 129, 163, 230, 299, 365, 453, 566, 1000, 2000};
+
+/* const int n_pt = 12; */
+/* const TString pt_range[n_pt]= {"51", "73", "95", "129", "163", "230", "299", "365", "453", "566", "1000", "2000"}; */
+/* const double pt_bins[n_pt]       = {51, 73, 95, 129, 163, 230, 299, 365, 453, 566, 1000, 2000}; */
 
 
 //Eta bins:

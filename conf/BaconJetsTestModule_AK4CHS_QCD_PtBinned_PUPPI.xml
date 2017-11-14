@@ -8,7 +8,7 @@
 <!ENTITY CACHEABLE           "False">
 <!-- <!ENTITY OUTdir              "/nfs/dust/cms/user/multh/JEC/2016ReReco/Residuals/Summer16_03Feb2017_V3/AK4PUPPI/MC_Reweighted_chsMET_NewSF/"> -->
 <!--<!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JEC_Summer16_V8_ReWeighted/">-->
-<!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JEC_Summer16_V8_NotWeighted_PUPPI_L1L2L3/">
+<!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JEC_Summer16_V8_NotWeighted_PUPPI/">
 
 <!ENTITY b_closuretest       "false">
 <!ENTITY jec_version         "Summer16_03Feb2017_V4">
@@ -95,7 +95,6 @@
 
 <!-- For Weight Calculation -->
 <!-- Weight Calculation -->
-<!--
  <InputData Lumi="0.518" NEventsMax="&NEVT;" Type="MC" Version="QCDPt50to80_pythia8_AK4PUPPI" Cacheable="&CACHEABLE;">
           &QCDPt50to80_pythia8_AK4PUPPI;
           <InputTree Name="AnalysisTree"/>
@@ -161,7 +160,6 @@
           <InputTree Name="AnalysisTree"/>
           <OutputTree Name="AnalysisTree"/>
      </InputData>
--->
 
 <!-- DATA -->
 
@@ -235,16 +233,10 @@
 
      
       <Item Name="lumi_file" Value="/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/data/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.root"/>
-      <!--
-      	 <Item Name="pileup_directory"           Value="/afs/desy.de/user/k/karavdia/CMSSW_8_0_20/src/UHH2/BaconJets/data/PileUp/80X/PileUP_MC_pythia8_PUFlat.root"/>
-	 <Item Name="pileup_directory_data"      Value="/afs/desy.de/user/k/karavdia/CMSSW_8_0_20/src/UHH2/BaconJets/data/PileUp/80X/PileUP_MC_pythia8_PUFlat.root"/>
-	 <Item Name="pileup_directory_data_up"   Value="/afs/desy.de/user/k/karavdia/CMSSW_8_0_20/src/UHH2/BaconJets/data/PileUp/80X/PileUP_MC_pythia8_PUFlat.root"/>
-	 <Item Name="pileup_directory_data_down" Value="/afs/desy.de/user/k/karavdia/CMSSW_8_0_20/src/UHH2/BaconJets/data/PileUp/80X/PileUP_MC_pythia8_PUFlat.root"/> 
-	 <Item Name="pileup_directory_data"      Value="/afs/desy.de/user/k/karavdia/CMSSW_8_0_20/src/UHH2/BaconJets/data/PileUp/80X/800pb/nPU_minBiasXsec71300.root"/>
-	 <Item Name="pileup_directory_data_up"   Value="/afs/desy.de/user/k/karavdia/CMSSW_8_0_20/src/UHH2/BaconJets/data/PileUp/80X/800pb/nPU_minBiasXsec80000.root"/>
-	 <Item Name="pileup_directory_data_down" Value="/afs/desy.de/user/k/karavdia/CMSSW_8_0_20/src/UHH2/BaconJets/data/PileUp/80X/800pb/nPU_minBiasXsec58000.root"/> -->
-
-
+      <Item Name="pileup_directory"          Value="/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/data/MyMCPileupHistogram.root"/>    
+      <Item Name="pileup_directory_data"     Value="/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/data/MyDataPileupHistogram.root"/>
+      <Item Name="pileup_directory_data_up"  Value="/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/data/MyDataPileupHistogram_72383.root"/>
+      <Item Name="pileup_directory_data_down" Value="/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/data/MyDataPileupHistogram_66017.root"/>
       <Item Name="lumihists_lumi_per_bin" Value="500."/>
 
 

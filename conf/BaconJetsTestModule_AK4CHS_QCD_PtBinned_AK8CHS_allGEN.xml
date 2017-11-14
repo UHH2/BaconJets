@@ -9,7 +9,8 @@
 <!-- <!ENTITY OUTdir              "/nfs/dust/cms/user/multh/JEC/2016ReReco/Residuals/Summer16_03Feb2017_V3/AK4CHS/MC_Reweighted_chsMET_NewSF/"> -->
 <!--<!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JEC_Summer16_V8_ReWeighted/">-->
 <!-- <!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JEC_Summer16_V8_NotWeighted_CHS_Zpv_PUreweight80000/">-->
-<!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JEC_Summer16_V8_NotWeighted_AK8CHS_woJERSFs/">
+<!--<!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JEC_Summer16_V8_NotWeighted_CHS_Zpv_PUreweight_jet3above25GeV/">-->
+<!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JERC_flavorStudies/JEC_Summer16_03Feb2017_V4_AK8CHS/">
 
 <!ENTITY b_closuretest       "false">
 <!ENTITY jec_version         "Summer16_03Feb2017_V4">
@@ -18,7 +19,8 @@
 <!ENTITY Cut_PATH            "/nfs/dust/cms/user/multh/JEC/2016ReReco/Residuals/Summer16_03Feb2017_V3/AK4CHS/EtaPhiCut/">
 
 <!ENTITY APPLY_METoverPTcut  "false">  <!--Apply MET Cut-->
-<!ENTITY APPLY_EtaPhi_cut    "true">   <!--Apply Eta Phi cleaning during ECAL problems -->
+<!-- <!ENTITY APPLY_EtaPhi_cut    "true"> -->  <!--Apply Eta Phi cleaning during ECAL problems -->
+<!ENTITY APPLY_EtaPhi_cut    "false">   <!--Apply Eta Phi cleaning during ECAL problems -->
 <!-- <!ENTITY APPLY_LUMIWEIGHTS   "false"> -->
 <!ENTITY APPLY_LUMIWEIGHTS   "false"> 
 <!ENTITY APPLY_UNFLATTENING  "false">
@@ -26,37 +28,32 @@
 <!ENTITY TRIGGER_FWD         "true"> <!--Trigger Flag -->
 
 <!--
-<!ENTITY QCDPt15to7000_pythia8_AK4CHS_Flat SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3_EGReg/MC_QCD_FlatP6_pythia8_PUpthat_EGReg_chsMET.xml">
-<!ENTITY QCDPt15to7000_pythia8_AK4CHS_Fwd SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3_EGReg/MC_QCD_FwdEnriched_Flat_pythia8_PUpthat_EGReg_chsMET.xml">
+<!ENTITY QCDPt15to7000_pythia8_AK8CHS_Flat SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3_EGReg/MC_QCD_FlatP6_pythia8_PUpthat_EGReg_chsMET.xml">
+<!ENTITY QCDPt15to7000_pythia8_AK8CHS_Fwd SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3_EGReg/MC_QCD_FwdEnriched_Flat_pythia8_PUpthat_EGReg_chsMET.xml">
 -->
+<!ENTITY QCDPt15to30_pythia8_AK8CHS           SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3/MC_QCD_Pt_15to30_allGENparticles.xml">
+<!ENTITY QCDPt30to50_pythia8_AK8CHS           SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3/MC_QCD_Pt_30to50_allGENparticles.xml">
+<!ENTITY QCDPt50to80_pythia8_AK8CHS           SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3/MC_QCD_Pt_50to80_allGENparticles.xml">
+<!ENTITY QCDPt80to120_pythia8_AK8CHS          SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3/MC_QCD_Pt_80to120_allGENparticles_TMP.xml">
+<!ENTITY QCDPt120to170_pythia8_AK8CHS         SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3/MC_QCD_Pt_120to170_allGENparticles_TMP.xml">
+<!ENTITY QCDPt170to300_pythia8_AK8CHS         SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3/MC_QCD_Pt_170to300_allGENparticles.xml">
+<!ENTITY QCDPt300to470_pythia8_AK8CHS         SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3/MC_QCD_Pt_300to470_allGENparticles.xml">
+<!ENTITY QCDPt470to600_pythia8_AK8CHS         SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3/MC_QCD_Pt_470to600_allGENparticles.xml">
+<!ENTITY QCDPt600to800_pythia8_AK8CHS         SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3/MC_QCD_Pt_600to800_allGENparticles.xml">
+<!ENTITY QCDPt800to1000_pythia8_AK8CHS        SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3/MC_QCD_Pt_800to1000_allGENparticles.xml">
+<!ENTITY QCDPt1000to1400_pythia8_AK8CHS       SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3/MC_QCD_Pt_1000to1400_allGENparticles.xml">
+<!ENTITY QCDPt1400to1800_pythia8_AK8CHS       SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3/MC_QCD_Pt_1400to1800_allGENparticles.xml">
+<!ENTITY QCDPt1800to2400_pythia8_AK8CHS       SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3/MC_QCD_Pt_1800to2400_allGENparticles.xml">
+<!ENTITY QCDPt2400to3200_pythia8_AK8CHS       SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3/MC_QCD_Pt_2400to3200_allGENparticles.xml">
+<!ENTITY QCDPt3200toInf_pythia8_AK8CHS        SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3/MC_QCD_Pt_3200toInf_allGENparticles.xml">
 
-<!ENTITY QCDPt50to80_pythia8_AK8CHS           SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3_EGReg/MC_QCD_Pt_50to80_EGReg_chsMET.xml">
-<!ENTITY QCDPt80to120_pythia8_AK8CHS          SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3_EGReg/MC_QCD_Pt_80to120_EGReg_chsMET.xml">
-<!ENTITY QCDPt120to170_pythia8_AK8CHS         SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3_EGReg/MC_QCD_Pt_120to170_EGReg_chsMET.xml">
-<!ENTITY QCDPt170to300_pythia8_AK8CHS         SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3_EGReg/MC_QCD_Pt_170to300_EGReg_chsMET.xml">
-<!ENTITY QCDPt300to470_pythia8_AK8CHS         SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3_EGReg/MC_QCD_Pt_300to470_EGReg_chsMET.xml">
-<!ENTITY QCDPt470to600_pythia8_AK8CHS         SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3_EGReg/MC_QCD_Pt_470to600_EGReg_chsMET.xml">
-<!ENTITY QCDPt600to800_pythia8_AK8CHS         SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3_EGReg/QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8.xml">
-<!ENTITY QCDPt600to800_pythia8_AK8CHS_ext1    SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3_EGReg/QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8_ext1.xml">
-<!ENTITY QCDPt800to1000_pythia8_AK8CHS        SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3_EGReg/QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8.xml">
-<!ENTITY QCDPt800to1000_pythia8_AK8CHS_ext1   SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3_EGReg/QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8_ext1.xml">
-<!ENTITY QCDPt1000to1400_pythia8_AK8CHS       SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3_EGReg/QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8.xml">
-<!ENTITY QCDPt1000to1400_pythia8_AK8CHS_ext1  SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3_EGReg/QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8_ext1.xml">
-<!ENTITY QCDPt1400to1800_pythia8_AK8CHS       SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3_EGReg/QCD_Pt_1400to1800_TuneCUETP8M1_13TeV_pythia8.xml">
-<!ENTITY QCDPt1400to1800_pythia8_AK8CHS_ext1  SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3_EGReg/QCD_Pt_1400to1800_TuneCUETP8M1_13TeV_pythia8_ext1.xml">
-<!ENTITY QCDPt1800to2400_pythia8_AK8CHS       SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3_EGReg/QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8.xml">
-<!ENTITY QCDPt1800to2400_pythia8_AK8CHS_ext1  SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3_EGReg/QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8_ext1.xml">
-<!ENTITY QCDPt2400to3200_pythia8_AK8CHS       SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3_EGReg/QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8.xml">
-<!ENTITY QCDPt2400to3200_pythia8_AK8CHS_ext1  SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3_EGReg/QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8_ext1.xml">
-<!ENTITY QCDPt3200toInf_pythia8_AK8CHS        SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3_EGReg/MC_QCD_Pt_3200toInf_EGReg_chsMET.xml">
-
-<!-- <!ENTITY DATA_RunB_AK4CHS SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_8_0_20/src/UHH2/common/datasets/RunII_80X_v2/DATA_JetHT_ReReco_RunB.xml">
-<!ENTITY DATA_RunC_AK4CHS SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_8_0_20/src/UHH2/common/datasets/RunII_80X_v2/DATA_JetHT_ReReco_RunC.xml">
-<!ENTITY DATA_RunD_AK4CHS SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_8_0_20/src/UHH2/common/datasets/RunII_80X_v2/DATA_JetHT_ReReco_RunD.xml">
-<!ENTITY DATA_RunE_AK4CHS SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_8_0_20/src/UHH2/common/datasets/RunII_80X_v2/DATA_JetHT_ReReco_RunE.xml">
-<!ENTITY DATA_RunF_AK4CHS SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_8_0_20/src/UHH2/common/datasets/RunII_80X_v2/DATA_JetHT_ReReco_RunF.xml">
-<!ENTITY DATA_RunG_AK4CHS SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_8_0_20/src/UHH2/common/datasets/RunII_80X_v2/DATA_JetHT_ReReco_RunG.xml">
-<!ENTITY DATA_RunH_AK4CHS SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_8_0_20/src/UHH2/common/datasets/RunII_80X_v2/DATA_JetHT_RunH_full.xml"> -->
+<!-- <!ENTITY DATA_RunB_AK8CHS SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_8_0_20/src/UHH2/common/datasets/RunII_80X_v2/DATA_JetHT_ReReco_RunB.xml">
+<!ENTITY DATA_RunC_AK8CHS SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_8_0_20/src/UHH2/common/datasets/RunII_80X_v2/DATA_JetHT_ReReco_RunC.xml">
+<!ENTITY DATA_RunD_AK8CHS SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_8_0_20/src/UHH2/common/datasets/RunII_80X_v2/DATA_JetHT_ReReco_RunD.xml">
+<!ENTITY DATA_RunE_AK8CHS SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_8_0_20/src/UHH2/common/datasets/RunII_80X_v2/DATA_JetHT_ReReco_RunE.xml">
+<!ENTITY DATA_RunF_AK8CHS SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_8_0_20/src/UHH2/common/datasets/RunII_80X_v2/DATA_JetHT_ReReco_RunF.xml">
+<!ENTITY DATA_RunG_AK8CHS SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_8_0_20/src/UHH2/common/datasets/RunII_80X_v2/DATA_JetHT_ReReco_RunG.xml">
+<!ENTITY DATA_RunH_AK8CHS SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_8_0_20/src/UHH2/common/datasets/RunII_80X_v2/DATA_JetHT_RunH_full.xml"> -->
 
 <!ENTITY DATA_RunB_AK8CHS SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3/DATA_JetHT_Run2016B_03Feb.xml">
 <!ENTITY DATA_RunC_AK8CHS SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3/DATA_JetHT_Run2016C_03Feb.xml">
@@ -70,8 +67,8 @@
 
 
 <!--
-<ConfigParse NEventsBreak="0" FileSplit="10" AutoResubmit="5"/>
-<ConfigSGE RAM ="4" DISK ="3" Mail="xxx@desy.de" Notification="as" Workdir="/nfs/dust/cms/user/karavdia/workdir_Summer16_03Feb2017_RunBCDEFGH_nominal_AK8CHS"/>
+<ConfigParse NEventsBreak="0" FileSplit="17" AutoResubmit="5"/>
+<ConfigSGE RAM ="4" DISK ="3" Mail="anastasia.karavdina@desy.de" Notification="as" Workdir="/nfs/dust/cms/user/karavdia/workdir_Summer16_03Feb2017_RunBCDEFGH_nominal_AK8CHS_pythia8"/>
 -->
 
 <!-- OutputLevel controls which messages are printed; set to VERBOSE or DEBUG for more verbosity, to WARNING or ERROR for less -->
@@ -87,12 +84,25 @@
 <!-- For Weight Calculation -->
 <!-- Weight Calculation -->
 
+ <InputData Lumi="0.022" NEventsMax="&NEVT;" Type="MC" Version="QCDPt15to30_pythia8_AK8CHS" Cacheable="&CACHEABLE;">
+          &QCDPt15to30_pythia8_AK8CHS;
+          <InputTree Name="AnalysisTree"/>
+          <OutputTree Name="AnalysisTree"/>
+     </InputData>
+
+ <InputData Lumi="0.071" NEventsMax="&NEVT;" Type="MC" Version="QCDPt30to50_pythia8_AK8CHS" Cacheable="&CACHEABLE;">
+          &QCDPt30to50_pythia8_AK8CHS;
+          <InputTree Name="AnalysisTree"/>
+          <OutputTree Name="AnalysisTree"/>
+     </InputData>
+
  <InputData Lumi="0.518" NEventsMax="&NEVT;" Type="MC" Version="QCDPt50to80_pythia8_AK8CHS" Cacheable="&CACHEABLE;">
           &QCDPt50to80_pythia8_AK8CHS;
           <InputTree Name="AnalysisTree"/>
           <OutputTree Name="AnalysisTree"/>
      </InputData>
-<InputData Lumi="5.283" NEventsMax="&NEVT;" Type="MC" Version="QCDPt80to120_pythia8_AK8CHS" Cacheable="&CACHEABLE;">
+
+<InputData Lumi="5.284" NEventsMax="&NEVT;" Type="MC" Version="QCDPt80to120_pythia8_AK8CHS" Cacheable="&CACHEABLE;">
           &QCDPt80to120_pythia8_AK8CHS;
           <InputTree Name="AnalysisTree"/>
           <OutputTree Name="AnalysisTree"/>
@@ -102,48 +112,48 @@
           <InputTree Name="AnalysisTree"/>
           <OutputTree Name="AnalysisTree"/>
      </InputData>
-<InputData Lumi="125.998" NEventsMax="&NEVT;" Type="MC" Version="QCDPt170to300_pythia8_AK8CHS" Cacheable="&CACHEABLE;">
+<InputData Lumi="124.506" NEventsMax="&NEVT;" Type="MC" Version="QCDPt170to300_pythia8_AK8CHS" Cacheable="&CACHEABLE;">
           &QCDPt170to300_pythia8_AK8CHS;
           <InputTree Name="AnalysisTree"/>
           <OutputTree Name="AnalysisTree"/>
      </InputData>
-<InputData Lumi="2841.593" NEventsMax="&NEVT;" Type="MC" Version="QCDPt300to470_pythia8_AK8CHS" Cacheable="&CACHEABLE;">
+<InputData Lumi="2863.624" NEventsMax="&NEVT;" Type="MC" Version="QCDPt300to470_pythia8_AK8CHS" Cacheable="&CACHEABLE;">
           &QCDPt300to470_pythia8_AK8CHS;
           <InputTree Name="AnalysisTree"/>
           <OutputTree Name="AnalysisTree"/>
      </InputData>
-<InputData Lumi="6100.393" NEventsMax="&NEVT;" Type="MC" Version="QCDPt470to600_pythia8_AK8CHS" Cacheable="&CACHEABLE;">
+<InputData Lumi="6108.289" NEventsMax="&NEVT;" Type="MC" Version="QCDPt470to600_pythia8_AK8CHS" Cacheable="&CACHEABLE;">
           &QCDPt470to600_pythia8_AK8CHS;
           <InputTree Name="AnalysisTree"/>
           <OutputTree Name="AnalysisTree"/>
      </InputData>
-<InputData Lumi="72315.548" NEventsMax="&NEVT;" Type="MC" Version="QCDPt600to800_pythia8_AK8CHS" Cacheable="&CACHEABLE;">
-          &QCDPt600to800_pythia8_AK8CHS; &QCDPt600to800_pythia8_AK8CHS_ext1;
+<InputData Lumi="72315.54842" NEventsMax="&NEVT;" Type="MC" Version="QCDPt600to800_pythia8_AK8CHS" Cacheable="&CACHEABLE;">
+          &QCDPt600to800_pythia8_AK8CHS;
           <InputTree Name="AnalysisTree"/>
           <OutputTree Name="AnalysisTree"/>
      </InputData>
-<InputData Lumi="609694.175" NEventsMax="&NEVT;" Type="MC" Version="QCDPt800to1000_pythia8_AK8CHS" Cacheable="&CACHEABLE;">
-          &QCDPt800to1000_pythia8_AK8CHS; &QCDPt800to1000_pythia8_AK8CHS_ext1;
+<InputData Lumi="609694.216" NEventsMax="&NEVT;" Type="MC" Version="QCDPt800to1000_pythia8_AK8CHS" Cacheable="&CACHEABLE;">
+          &QCDPt800to1000_pythia8_AK8CHS;
           <InputTree Name="AnalysisTree"/>
           <OutputTree Name="AnalysisTree"/>
      </InputData>
-<InputData Lumi="1059141.459" NEventsMax="&NEVT;" Type="MC" Version="QCDPt1000to1400_pythia8_AK8CHS" Cacheable="&CACHEABLE;">
-          &QCDPt1000to1400_pythia8_AK8CHS; &QCDPt1000to1400_pythia8_AK8CHS_ext1;
+<InputData Lumi="1058619.815" NEventsMax="&NEVT;" Type="MC" Version="QCDPt1000to1400_pythia8_AK8CHS" Cacheable="&CACHEABLE;">
+          &QCDPt1000to1400_pythia8_AK8CHS;
           <InputTree Name="AnalysisTree"/>
           <OutputTree Name="AnalysisTree"/>
      </InputData>
-<InputData Lumi="3394810.420" NEventsMax="&NEVT;" Type="MC" Version="QCDPt1400to1800_pythia8_AK8CHS" Cacheable="&CACHEABLE;">
-          &QCDPt1400to1800_pythia8_AK8CHS; &QCDPt1400to1800_pythia8_AK8CHS_ext1;
+<InputData Lumi="3400665.757" NEventsMax="&NEVT;" Type="MC" Version="QCDPt1400to1800_pythia8_AK8CHS" Cacheable="&CACHEABLE;">
+          &QCDPt1400to1800_pythia8_AK8CHS;
           <InputTree Name="AnalysisTree"/>
           <OutputTree Name="AnalysisTree"/>
      </InputData>
-<InputData Lumi="16852065.807" NEventsMax="&NEVT;" Type="MC" Version="QCDPt1800to2400_pythia8_AK8CHS" Cacheable="&CACHEABLE;">
-          &QCDPt1800to2400_pythia8_AK8CHS; &QCDPt1800to2400_pythia8_AK8CHS_ext1;
+<InputData Lumi="16766292.858" NEventsMax="&NEVT;" Type="MC" Version="QCDPt1800to2400_pythia8_AK8CHS" Cacheable="&CACHEABLE;">
+          &QCDPt1800to2400_pythia8_AK8CHS; 
           <InputTree Name="AnalysisTree"/>
           <OutputTree Name="AnalysisTree"/>
      </InputData>
-<InputData Lumi="144125092.792" NEventsMax="&NEVT;" Type="MC" Version="QCDPt2400to3200_pythia8_AK8CHS" Cacheable="&CACHEABLE;">
-          &QCDPt2400to3200_pythia8_AK8CHS; &QCDPt2400to3200_pythia8_AK8CHS_ext1;
+<InputData Lumi="145575938.423" NEventsMax="&NEVT;" Type="MC" Version="QCDPt2400to3200_pythia8_AK8CHS" Cacheable="&CACHEABLE;">
+          &QCDPt2400to3200_pythia8_AK8CHS;
           <InputTree Name="AnalysisTree"/>
           <OutputTree Name="AnalysisTree"/>
      </InputData>
@@ -152,9 +162,9 @@
           <InputTree Name="AnalysisTree"/>
           <OutputTree Name="AnalysisTree"/>
      </InputData>
-
 <!-- DATA -->
- <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_RunB_AK8CHS" Cacheable="&CACHEABLE;">
+ <!--
+<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_RunB_AK8CHS" Cacheable="&CACHEABLE;">
        &DATA_RunB_AK8CHS;
        <InputTree Name="AnalysisTree"/>
        <OutputTree Name="AnalysisTree"/>
@@ -199,19 +209,19 @@
        <InputTree Name="AnalysisTree"/>
        <OutputTree Name="AnalysisTree"/>
   </InputData> 
-
+-->
     <UserConfig>
       <Item Name="PrimaryVertexCollection" Value="offlineSlimmedPrimaryVertices"/>
       <Item Name="GenParticleCollection"   Value="GenParticles"/>
       <Item Name="ElectronCollection"      Value="slimmedElectronsUSER"/>
       <Item Name="MuonCollection"          Value="slimmedMuonsUSER"/>
       <Item Name="TauCollection"           Value="slimmedTaus"/>
-      <!-- AK4CHS -->
-<!--      <Item Name="JetCollection"           Value="slimmedJets"/>
-      <Item Name="JetLabel"                Value="AK4CHS"/> -->
-      <!-- AK8CHS --> 
-      <Item Name="JetCollection"           Value="patJetsAK8PFCHS"/>
+      <!-- AK8CHS -->
+      <Item Name="JetCollection"           Value="slimmedJets"/>
       <Item Name="JetLabel"                Value="AK8CHS"/> 
+      <!-- AK8CHS --> 
+      <!--         <Item Name="JetCollection"           Value="patJetsAK8PFCHS"/>
+		   <Item Name="JetLabel"                Value="AK8CHS"/> --> 
       <!-- AK4PUPPI -->
       <!--         <Item Name="JetCollection"           Value="slimmedJetsPuppi"/>
 		   <Item Name="JetLabel"                Value="AK4PUPPI"/> -->
@@ -221,6 +231,7 @@
       <Item Name="GenJetCollection"        Value="slimmedGenJets"/>
       <!--          <Item Name="METName"                 Value="slimmedMETs"/>-->
       <Item Name="METName"                 Value="slMETsCHS"/>
+      <Item Name="genMETName"              Value="slimmedMETs_GenMET"/> 
      
       <Item Name="lumi_file" Value="/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/data/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.root"/>
       <Item Name="pileup_directory"          Value="/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/data/MyMCPileupHistogram.root"/>    
