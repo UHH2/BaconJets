@@ -46,7 +46,7 @@
 <!ENTITY QCDPt1800to2400_pythia8_AK4CHS       SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3/MC_QCD_Pt_1800to2400_allGENparticles.xml">
 <!ENTITY QCDPt2400to3200_pythia8_AK4CHS       SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3/MC_QCD_Pt_2400to3200_allGENparticles.xml">
 <!ENTITY QCDPt3200toInf_pythia8_AK4CHS        SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3/MC_QCD_Pt_3200toInf_allGENparticles.xml">
-
+<!--MadGraph samples -->
 <!ENTITY QCD_HT50to100_madgraphMLM_AK4CHS    SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3/MC_QCD_HT50to100_PUpthat.xml">
 <!ENTITY QCD_HT100to200_madgraphMLM_AK4CHS   SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3/MC_QCD_HT100to200_PUpthat.xml">
 <!ENTITY QCD_HT200to300_madgraphMLM_AK4CHS   SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3/MC_QCD_HT200to300_PUpthat.xml">

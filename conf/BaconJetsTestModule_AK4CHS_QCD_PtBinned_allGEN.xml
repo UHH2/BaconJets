@@ -27,6 +27,7 @@
 <!ENTITY TRIGGER_CENTRAL     "true">  <!--Trigger Flag -->
 <!ENTITY TRIGGER_FWD         "true"> <!--Trigger Flag -->
 
+<!-- QCD Pt binned with genMET -->
 <!--
 <!ENTITY QCDPt15to7000_pythia8_AK4CHS_Flat SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3_EGReg/MC_QCD_FlatP6_pythia8_PUpthat_EGReg_chsMET.xml">
 <!ENTITY QCDPt15to7000_pythia8_AK4CHS_Fwd SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3_EGReg/MC_QCD_FwdEnriched_Flat_pythia8_PUpthat_EGReg_chsMET.xml">
