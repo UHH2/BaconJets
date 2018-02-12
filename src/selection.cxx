@@ -130,7 +130,7 @@ Selection::Selection(uhh2::Context & ctx) :
 
 
      
-    bool no_genp = true;
+    bool no_genp = false;
     if(no_genp) cout<<"\n\n!!! WARNING, no genparticle are used! !!!\n\n"<<endl;
      
      
@@ -267,6 +267,7 @@ bool Selection::DiJet()
   
 bool Selection::DiJetAdvanced(uhh2::Event& evt)
 {
+  if(no_genp) std::cout<<"in DiJetAdvanced\n";
     assert(event);
 
 

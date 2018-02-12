@@ -58,7 +58,7 @@ JECCrossCheckHists::JECCrossCheckHists(Context & ctx, const string & dirname): H
 
     book<TH1F>("asym","asymmetry jet 1 and jet 2; Asymmetry",150,-1.5,1.5);
 
-    bool no_genp = true;
+    bool no_genp = false;
     if(no_genp) cout<<"!!! WARNING, no genparticle are used! !!!"<<endl;
 }
 

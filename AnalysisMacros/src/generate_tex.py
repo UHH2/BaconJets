@@ -13,7 +13,7 @@ output_name = "controlplots_defaultName.tex"
 if len(sys.argv) > 1:
     output_name = sys.argv[1] + ".tex"
 
-img_path_base_2 = "/nfs/dust/cms/user/garbersc/forBaconJets/17Nov2017/Residuals/Run17D_Data_woHOTVR_woXCON_test_JEC_V4/RunD_17Nov17_2017"
+img_path_base_2 = "/nfs/dust/cms/user/garbersc/forBaconJets/17Nov2017/Residuals/Run17D_Data_woHOTVR_woXCON_test_JEC_V4/RunD_17Nov17_2017_newMC_woGen"
 img_path_base_2 = img_path_base_2 + "/plots/"
 
 if not os.path.isdir(img_path_base_2):
@@ -23,7 +23,7 @@ img_path_base = img_path_base_2 + "control/"
 img_path_base_D = img_path_base
 img_path_baseMain_D = img_path_base_2
 
-img_path_baseMain_E = "/nfs/dust/cms/user/garbersc/forBaconJets/17Nov2017/Residuals/Run17E_Data_woHOTVR_woXCON_test_JEC_V1/RunE_17Nov17_2017/plots/"
+img_path_baseMain_E = "/nfs/dust/cms/user/garbersc/forBaconJets/17Nov2017/Residuals/Run17E_Data_woHOTVR_woXCON_test_JEC_V1/RunE_17Nov17_2017_newMC_woGen/plots/"
 img_path_base_E = img_path_baseMain_E + "control/"
 
 
@@ -633,18 +633,18 @@ for i, eta in enumerate(etas[:-1]):
             "_" + etas_str[i + 1] + ".pdf}\n"
 
     frames_list[-1] += "\end{frame}\n\n"
-    frames_list.append(
-        "\\begin{frame}{Run D, Eta Bin " + str(eta) + " - " + str(etas[i + 1]) + "}\n")
+    # frames_list.append(
+    #     "\\begin{frame}{Run D, Eta Bin " + str(eta) + " - " + str(etas[i + 1]) + "}\n")
 
-    for j, pic_base in enumerate(pic_bases[4:10]):
-        if j and not j % 3:
-            frames_list[-1] += "\\newline\n\n"
-            frames_list[-1] += "\\vspace{-0.65cm}\n"
-        frames_list[-1] += "\t\includegraphics[width=0.3\\textwidth]{" + img_path_baseMain_D + "control/" +\
-            pic_base + "_eta_" + etas_str[i] +\
-            "_" + etas_str[i + 1] + ".pdf}\n"
+    # for j, pic_base in enumerate(pic_bases[4:10]):
+    #     if j and not j % 3:
+    #         frames_list[-1] += "\\newline\n\n"
+    #         frames_list[-1] += "\\vspace{-0.65cm}\n"
+    #     frames_list[-1] += "\t\includegraphics[width=0.3\\textwidth]{" + img_path_baseMain_D + "control/" +\
+    #         pic_base + "_eta_" + etas_str[i] +\
+    #         "_" + etas_str[i + 1] + ".pdf}\n"
 
-    frames_list[-1] += "\end{frame}\n\n"
+    # frames_list[-1] += "\end{frame}\n\n"
 
     frames_list.append(
         "\\begin{frame}{Run D, Eta Bin " + str(eta) + " - " + str(etas[i + 1]) + "}\n")
@@ -691,18 +691,18 @@ for i, eta in enumerate(etas[:-1]):
             "_" + etas_str[i + 1] + ".pdf}\n"
 
     frames_list[-1] += "\end{frame}\n\n"
-    frames_list.append(
-        "\\begin{frame}{Run E, Eta Bin " + str(eta) + " - " + str(etas[i + 1]) + "}\n")
+    # frames_list.append(
+    #     "\\begin{frame}{Run E, Eta Bin " + str(eta) + " - " + str(etas[i + 1]) + "}\n")
 
-    for j, pic_base in enumerate(pic_bases[4:10]):
-        if j and not j % 3:
-            frames_list[-1] += "\\newline\n\n"
-            frames_list[-1] += "\\vspace{-0.65cm}\n"
-        frames_list[-1] += "\t\includegraphics[width=0.3\\textwidth]{" + img_path_baseMain_E + "control/" +\
-            pic_base + "_eta_" + etas_str[i] +\
-            "_" + etas_str[i + 1] + ".pdf}\n"
+    # for j, pic_base in enumerate(pic_bases[4:10]):
+    #     if j and not j % 3:
+    #         frames_list[-1] += "\\newline\n\n"
+    #         frames_list[-1] += "\\vspace{-0.65cm}\n"
+    #     frames_list[-1] += "\t\includegraphics[width=0.3\\textwidth]{" + img_path_baseMain_E + "control/" +\
+    #         pic_base + "_eta_" + etas_str[i] +\
+    #         "_" + etas_str[i + 1] + ".pdf}\n"
 
-    frames_list[-1] += "\end{frame}\n\n"
+    # frames_list[-1] += "\end{frame}\n\n"
 
     frames_list.append(
         "\\begin{frame}{Run E, Eta Bin " + str(eta) + " - " + str(etas[i + 1]) + "}\n")

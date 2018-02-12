@@ -1,4 +1,4 @@
-file_name=controlplotsDE_09Feb
+file_name=controlplotsDE_12Feb
 if [ "$#" = "1" ]
    then file_name=controlplots${1}_trgM_31Jan
 fi

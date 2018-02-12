@@ -613,14 +613,14 @@ class AnalysisModule_SiJetTrg: public uhh2::AnalysisModule {
       }
     
 //JER Smearing for corresponding JEC-Version
-      if(isMC){
-	if(JEC_Version == "Summer16_23Sep2016_V4") jetER_smearer.reset(new GenericJetResolutionSmearer(ctx, "jets", "genjets", true, JERSmearing::SF_13TeV_2016_03Feb2017)); 
-	else if(JEC_Version == "Summer16_03Feb2017_V3") jetER_smearer.reset(new GenericJetResolutionSmearer(ctx, "jets", "genjets", true, JERSmearing::SF_13TeV_2016_03Feb2017)); 
-	else if(JEC_Version == "Summer16_03Feb2017_V4") jetER_smearer.reset(new GenericJetResolutionSmearer(ctx, "jets", "genjets", true, JERSmearing::SF_13TeV_2016_03Feb2017));
-	else if(JEC_Version == "Summer16_03Feb2017_V5") jetER_smearer.reset(new GenericJetResolutionSmearer(ctx, "jets", "genjets", true, JERSmearing::SF_13TeV_2016_03Feb2017));
-	else if(JEC_Version == "Summer16_03Feb2017_V6") jetER_smearer.reset(new GenericJetResolutionSmearer(ctx, "jets", "genjets", true, JERSmearing::SF_13TeV_2016_03Feb2017));
-	else throw runtime_error("In AnalysisModule_SiJetTrg.cxx: When setting up JER smearer, invalid 'JEC_Version' was specified.");
-      }
+      // if(isMC){
+      // 	if(JEC_Version == "Summer16_23Sep2016_V4") jetER_smearer.reset(new GenericJetResolutionSmearer(ctx, "jets", "genjets", true, JERSmearing::SF_13TeV_2016_03Feb2017)); 
+      // 	else if(JEC_Version == "Summer16_03Feb2017_V3") jetER_smearer.reset(new GenericJetResolutionSmearer(ctx, "jets", "genjets", true, JERSmearing::SF_13TeV_2016_03Feb2017)); 
+      // 	else if(JEC_Version == "Summer16_03Feb2017_V4") jetER_smearer.reset(new GenericJetResolutionSmearer(ctx, "jets", "genjets", true, JERSmearing::SF_13TeV_2016_03Feb2017));
+      // 	else if(JEC_Version == "Summer16_03Feb2017_V5") jetER_smearer.reset(new GenericJetResolutionSmearer(ctx, "jets", "genjets", true, JERSmearing::SF_13TeV_2016_03Feb2017));
+      // 	else if(JEC_Version == "Summer16_03Feb2017_V6") jetER_smearer.reset(new GenericJetResolutionSmearer(ctx, "jets", "genjets", true, JERSmearing::SF_13TeV_2016_03Feb2017));
+      // 	else throw runtime_error("In AnalysisModule_SiJetTrg.cxx: When setting up JER smearer, invalid 'JEC_Version' was specified.");
+      // }
      
     //output
     ctx.undeclare_all_event_output();   
