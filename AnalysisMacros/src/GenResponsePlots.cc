@@ -53,6 +53,17 @@ void CorrectionObject::GenResponsePlots(TString flavor="All", TString ptbinning=
   TH1I *hmc_GGevents[n_pt-1][n_eta-1];// number of events with GG(tag-probe) 
   TH1I *hmc_QGevents[n_pt-1][n_eta-1];// number of events with QG(tag-probe) 
   TH1I *hmc_GQevents[n_pt-1][n_eta-1];// number of events with GQ(tag-probe) 
+
+  TH1I *hmc_glu_events[n_pt-1][n_eta-1];// number of events with probe jets Math::Abs(pdgID)==21 --> glu
+  TH1I *hmc_gluExt_events[n_pt-1][n_eta-1];// 21||Undefined --> gluExt
+  TH1I *hmc_b_events[n_pt-1][n_eta-1];// 5--> b
+  TH1I *hmc_c_events[n_pt-1][n_eta-1];// 4-->c
+  TH1I *hmc_s_events[n_pt-1][n_eta-1];// 3--> s
+  TH1I *hmc_ud_events[n_pt-1][n_eta-1];// 1||2--> ud
+  TH1I *hmc_undefined_events[n_pt-1][n_eta-1];//   else --> Undefined
+  TH1I *hmc_uds_events[n_pt-1][n_eta-1];// 1||2||3 --> uds
+
+
   TH1D *hmc_normjetpt[n_pt-1][n_eta-1];//  binning variable used for normalisation
   TH1D *hmc_probejetpt[n_pt-1][n_eta-1];// RECO probe jet pt devided to binning variable, e.g <pT,probe,RECO> = <pT,probe,RECO/pT,ave,RECO> * <pT,ave,RECO>
   TH1D *hmc_probegenjetpt[n_pt-1][n_eta-1];// GEN probe jet pt devided to binning variable, e.g <pT,probe,GEN> = <pT,probe,GEN/pT,ave,RECO> * <pT,ave,RECO>
@@ -60,24 +71,6 @@ void CorrectionObject::GenResponsePlots(TString flavor="All", TString ptbinning=
   TH1D *hmc_taggenjetpt[n_pt-1][n_eta-1];// GEN tag jet pt devided to binning variable, e.g <pT,tag,GEN> = <pT,tag,GEN/pT,ave,RECO> * <pT,ave,RECO>
   TH1D *hmc_tagpartonjetpt[n_pt-1][n_eta-1];// PARTON tag jet pt devided to binning variable, e.g <pT,tag,PARTON> = <pT,tag,PARTON/pT,ave,RECO> * <pT,ave,RECO>
   TH1D *hmc_probepartonjetpt[n_pt-1][n_eta-1];// PARTON probe jet pt devided to binning variable, e.g <pT,probe,PARTON> = <pT,probe,PARTON/pT,ave,RECO> * <pT,ave,RECO>
-
-  // TH2D *hmc_nGoodvertices[n_eta-1];
-  // TH2D *hmc_nvertices[n_eta-1];
-  // TH2D *hmc_Xpv[n_eta-1];
-  // TH2D *hmc_Ypv[n_eta-1];
-  // TH2D *hmc_Zpv[n_eta-1];
-  // TH2D *hmc_Ngenjet[n_eta-1];
-  // TH2D *hmc_Nptcl[n_eta-1];
-  // TH2D *hmc_rho[n_eta-1];
-
-  // TProfile *pr_nGoodvertices[n_eta-1];
-  // TProfile *pr_nvertices[n_eta-1];
-  // TProfile *pr_Xpv[n_eta-1];
-  // TProfile *pr_Ypv[n_eta-1];
-  // TProfile *pr_Zpv[n_eta-1];
-  // TProfile *pr_Ngenjet[n_eta-1];
-  // TProfile *pr_Nptcl[n_eta-1];
-  // TProfile *pr_rho[n_eta-1];
 
   TH1D *hmc_probejet_chHadEF[n_pt-1][n_eta-1]; //charged hadron energy fraction 
   TH1D *hmc_probejet_neutHadEF[n_pt-1][n_eta-1]; //neutral hadron energy fraction 
@@ -89,7 +82,6 @@ void CorrectionObject::GenResponsePlots(TString flavor="All", TString ptbinning=
 
   int count = 0;
 
- 
   TString name21 = "hist_nGoodvertices_";
   TString name22 = "hist_nvertices_";
   TString name23 = "hist_Xpv_";
@@ -139,26 +131,18 @@ void CorrectionObject::GenResponsePlots(TString flavor="All", TString ptbinning=
   TString name118 = "hist_mc_probejet_dRminParton";
   TString name119 = "hist_mc_tagjet_dRminParton";
 
+  TString name120 = "hist_mc_glu_events_";
+  TString name121 = "hist_mc_gluExt_events_";
+  TString name122 = "hist_mc_b_events_";
+  TString name123 = "hist_mc_c_events_";
+  TString name124 = "hist_mc_s_events_";
+  TString name125 = "hist_mc_ud_events_";
+  TString name126 = "hist_mc_undefined_events_";
+  TString name127 = "hist_mc_uds_events_";
+
   for(int j=0; j<n_eta-1; j++){
       TString eta_name = "eta_"+eta_range2[j]+"_"+eta_range2[j+1];
-      // TString name2;
-      // name2 = name21 + eta_name;
-      // hmc_nGoodvertices[j] = new TH2D(name2, "# Good Vertices; p_{T}^{ave} [GeV]; good Vertices", n_pt-1,pt_bins,80,0,80);
-      // name2 = name22 + eta_name;
-      // hmc_nvertices[j] = new TH2D(name2, "# vertices; p_{T}^{ave} [GeV]; vertices", n_pt-1, pt_bins, 80,0,80);
-      // name2 = name23 + eta_name;
-      // hmc_Xpv[j] = new TH2D(name2, "PV X; p_{T}^{ave} [GeV]; PV X", n_pt-1, pt_bins, 10,-1,1);
-      // name2 = name24 + eta_name;
-      // hmc_Ypv[j] = new TH2D(name2, "PV Y; p_{T}^{ave} [GeV]; PV Y", n_pt-1, pt_bins, 10,-1,1);
-      // name2 = name25 + eta_name;
-      // hmc_Zpv[j] = new TH2D(name2, "PV Z; p_{T}^{ave} [GeV]; PV Z", n_pt-1, pt_bins, 60,-30,30);
-      // name2 = name26 + eta_name;
-      // hmc_Ngenjet[j] = new TH2D(name2, "# Gen Jets; p_{T}^{ave}; #Gen Jets", n_pt-1, pt_bins, 20,0,20);
-      // name2 = name27 + eta_name;
-      // hmc_Nptcl[j] = new TH2D(name2, "# Particles; p_{T}^{ave}; # Particles", n_pt-1, pt_bins, 4,0,4);
-      // name2 = name30 + eta_name;
-      // hmc_rho[j] = new TH2D(name2, "#rho; p_{T}^{ave}; #rho", n_pt-1, pt_bins, 60, 0,60);
-    
+      
     for(int k=0; k<n_pt-1; k++){
       TString pt_name = "pt_"+pt_range[k]+"_"+pt_range[k+1];
       TString name;
@@ -195,13 +179,13 @@ void CorrectionObject::GenResponsePlots(TString flavor="All", TString ptbinning=
       name = name8 + eta_name + "_" + pt_name;
       hmc_jet3_genID[k][j] = new TH1I(name,"",15,-5,10);
       name = name106 + eta_name + "_" + pt_name;    
-      hmc_QQevents[k][j] = new TH1I(name,"",10, 0,10);
+      hmc_QQevents[k][j] = new TH1I(name,"",3, 0,3);
       name = name107 + eta_name + "_" + pt_name;    
-      hmc_GGevents[k][j] = new TH1I(name,"",10, 0,10);
+      hmc_GGevents[k][j] = new TH1I(name,"",3, 0,3);
       name = name108 + eta_name + "_" + pt_name;    
-      hmc_QGevents[k][j] = new TH1I(name,"",10, 0,10);
+      hmc_QGevents[k][j] = new TH1I(name,"",3, 0,3);
       name = name109 + eta_name + "_" + pt_name;    
-      hmc_GQevents[k][j] = new TH1I(name,"",10, 0,10);
+      hmc_GQevents[k][j] = new TH1I(name,"",3, 0,3);
 
       name = name110 + eta_name + "_" + pt_name;    
       hmc_probejet_chHadEF[k][j] = new TH1D(name,"",50, 0,1.0);
@@ -223,12 +207,26 @@ void CorrectionObject::GenResponsePlots(TString flavor="All", TString ptbinning=
       hmc_parton2_jetID[k][j] = new TH1I(name,"",20,-2,18);
 
       name = name118 + eta_name + "_" + pt_name;    
-      hmc_probejet_dRminParton[k][j] = new TH1D(name,"",300,0,3.);
+      hmc_probejet_dRminParton[k][j] = new TH1D(name,"",100,0,1.);
       name = name119 + eta_name + "_" + pt_name;    
-      hmc_barreljet_dRminParton[k][j] = new TH1D(name,"",300,0,3.);
+      hmc_barreljet_dRminParton[k][j] = new TH1D(name,"",100,0,1.);
 
-
-      //      count++;
+      name = name120 + eta_name + "_" + pt_name;    
+      hmc_glu_events[k][j] = new TH1I(name,"",3, 0,3);
+      name = name121 + eta_name + "_" + pt_name;    
+      hmc_gluExt_events[k][j] = new TH1I(name,"",3, 0,3);
+      name = name122 + eta_name + "_" + pt_name;    
+      hmc_b_events[k][j] = new TH1I(name,"",3, 0,3);
+      name = name123 + eta_name + "_" + pt_name;    
+      hmc_c_events[k][j] = new TH1I(name,"",3, 0,3);
+      name = name124 + eta_name + "_" + pt_name;    
+      hmc_s_events[k][j] = new TH1I(name,"",3, 0,3);
+      name = name125 + eta_name + "_" + pt_name;    
+      hmc_ud_events[k][j] = new TH1I(name,"",3, 0,3);
+      name = name126 + eta_name + "_" + pt_name;    
+      hmc_undefined_events[k][j] = new TH1I(name,"",3, 0,3);
+      name = name127 + eta_name + "_" + pt_name;    
+      hmc_uds_events[k][j] = new TH1I(name,"",3, 0,3);
     }
 
     TString name = name9 + eta_name;
@@ -307,7 +305,7 @@ void CorrectionObject::GenResponsePlots(TString flavor="All", TString ptbinning=
 
 
   while (myReader_MC.Next()) {
-  //while (myReader_MC.Next() && icount<1e3) {
+  //  while (myReader_MC.Next() && icount<1e4) {
     double  pt_binning_var;
     if(ptbinning=="pT_ave_RECO")
       pt_binning_var = *pt_ave_mc;//bin in pt_ave, RECO
@@ -319,28 +317,6 @@ void CorrectionObject::GenResponsePlots(TString flavor="All", TString ptbinning=
       pt_binning_var = 0.5*(*barreljet_ptgen_mc+*probejet_ptgen_mc);//bin in pt_ave, GEN
 
     if(*alpha_mc>alpha_cut) continue;
-   // for(int j=0; j<n_eta-1; j++){
-   // 	if(fabs(*probejet_eta_mc)>eta_bins[j+1] || fabs(*probejet_eta_mc)<eta_bins[j]) continue;
-   // 	else{
-   // 	  //	  bool matched;
-   // 	  if(*probejet_ptgen_mc<0 || *barreljet_ptgen_mc<0){ //not matched
-   // 	    //Add Histograms for non matched events here
-   // 	    // Variables to look at: 
-   // 	    // leading PV z, leading PV x, leading PV y, N_PV, rho, N gen jets, N partons
-   // 	    // Plot average over pT (like response)
-   // 	    hmc_nGoodvertices[j]->Fill(*pt_ave_mc, *nGoodvertices_mc, *weight_mc);
-   // 	    hmc_nvertices[j]->Fill(*pt_ave_mc, *nvertices_mc, *weight_mc);
-   // 	    hmc_Xpv[j]->Fill(*pt_ave_mc, *Xpv_mc, *weight_mc);
-   // 	    hmc_Ypv[j]->Fill(*pt_ave_mc, *Ypv_mc, *weight_mc);
-   // 	    hmc_Zpv[j]->Fill(*pt_ave_mc, *Zpv_mc, *weight_mc);
-   // 	    hmc_Ngenjet[j]->Fill(*pt_ave_mc, *Ngenjet_mc, *weight_mc);
-   // 	    hmc_Nptcl[j]->Fill(*pt_ave_mc, *Nptcl_mc, *weight_mc);
-   // 	    hmc_rho[j]->Fill(*pt_ave_mc, *rho_mc, *weight_mc);
-   // 	    //	    matched = false;
-   // 	  }
-   // 	}
-   // }
-
     //fill histos in bins of pt and eta
     for(int k=0; k<n_pt-1; k++){
       if(pt_binning_var<pt_bins[k] || pt_binning_var>pt_bins[k+1]) continue;
@@ -349,10 +325,12 @@ void CorrectionObject::GenResponsePlots(TString flavor="All", TString ptbinning=
 	else{
 
 	  hmc_probejet_dRminParton[k][j]->Fill(*probejet_dRminParton_mc,*weight_mc);
-	  hmc_barreljet_dRminParton[k][j]->Fill(*barreljet_dRminParton_mc,*weight_mc);
-	  //	  bool matched;
+	  hmc_barreljet_dRminParton[k][j]->Fill(*barreljet_dRminParton_mc,*weight_mc); 
 	  if(*probejet_ptgen_mc<0 || *barreljet_ptgen_mc<0){ //not matched
-	 
+	    if(flavor=="All"){ //fill Undefined flavor hist
+	      if(*flavorProbejet_mc==21 || *flavorProbejet_mc<0) hmc_gluExt_events[k][j]->Fill(1,*weight_mc);
+	      if(*flavorProbejet_mc<0) hmc_undefined_events[k][j]->Fill(1,*weight_mc);
+	    }
 	  }
 	  else{ //matched
 
@@ -379,6 +357,14 @@ void CorrectionObject::GenResponsePlots(TString flavor="All", TString ptbinning=
 	      if(flavor=="All"){
 	      flavor_sel=true;
 	      flavorLabel = "";
+	      if(*flavorProbejet_mc==21) hmc_glu_events[k][j]->Fill(1,*weight_mc);
+	      if(*flavorProbejet_mc==21 || *flavorProbejet_mc<0) hmc_gluExt_events[k][j]->Fill(1,*weight_mc);
+	      if(*flavorProbejet_mc==5) hmc_b_events[k][j]->Fill(1,*weight_mc);
+	      if(*flavorProbejet_mc==4) hmc_c_events[k][j]->Fill(1,*weight_mc);
+	      if(*flavorProbejet_mc==3) hmc_s_events[k][j]->Fill(1,*weight_mc);
+	      if(*flavorProbejet_mc==1 || *flavorProbejet_mc==2) hmc_ud_events[k][j]->Fill(1,*weight_mc);
+	      if(*flavorProbejet_mc<0) hmc_undefined_events[k][j]->Fill(1,*weight_mc);
+	      if(*flavorProbejet_mc==1 || *flavorProbejet_mc==2 || *flavorProbejet_mc==3) hmc_uds_events[k][j]->Fill(1,*weight_mc);
 	      }
 	    }
 	    else{
@@ -472,121 +458,9 @@ void CorrectionObject::GenResponsePlots(TString flavor="All", TString ptbinning=
 
   // Dump 1-d distributions of A and B in bins of pT, eta
 
-  TFile* test_out_mc_B = new TFile(CorrectionObject::_outpath+"plots/control/GenResponse_1d_mc_matched_"+flavor+"_"+ptbinning+".root","RECREATE");
+  TFile* test_out_mc_B = new TFile(CorrectionObject::_outpath+"plots/control/GenResponsePlots_"+flavor+"_"+ptbinning+".root","RECREATE");
   for(int j=0; j<n_eta-1; j++){
-    // pr_nGoodvertices[j] = (TProfile*)hmc_nGoodvertices[j]->ProfileX();
-    // pr_nvertices[j] = (TProfile*)hmc_nvertices[j]->ProfileX();
-    // pr_Xpv[j] = (TProfile*)hmc_Xpv[j]->ProfileX();
-    // pr_Ypv[j] = (TProfile*)hmc_Ypv[j]->ProfileX();
-    // pr_Zpv[j] = (TProfile*)hmc_Zpv[j]->ProfileX();
-    // pr_Ngenjet[j] = (TProfile*)hmc_Ngenjet[j]->ProfileX();
-    // pr_Nptcl[j] = (TProfile*)hmc_Nptcl[j]->ProfileX();
-    // pr_rho[j] = (TProfile*)hmc_rho[j]->ProfileX();
-
-
-    // hmc_nGoodvertices[j]->Write();
-    // hmc_nvertices[j]->Write();
-    // hmc_Xpv[j]->Write();
-    // hmc_Ypv[j]->Write();
-    // hmc_Zpv[j]->Write();
-    // hmc_Ngenjet[j]->Write();
-    // hmc_Nptcl[j]->Write();
-    // hmc_rho[j]->Write();
-
-    // pr_nGoodvertices[j]->Write();
-    // pr_nvertices[j]->Write();
-    // pr_Xpv[j]->Write();
-    // pr_Ypv[j]->Write();
-    // pr_Zpv[j]->Write();
-    // pr_Ngenjet[j]->Write();
-    // pr_Nptcl[j]->Write();
-    // pr_rho[j]->Write();
-    
-     //   TCanvas* c_dummy1 = new TCanvas();
-  // cout<<"Hello its me!"<<endl;
-  //      pr_nGoodvertices[j]->Draw();
-  // cout<<"Hello its me!"<<endl;
-  //      c_dummy1->SetLogx();
-  //      pr_nGoodvertices[j]->GetYaxis()->SetTitle("N Good Vertices");
-  //      pr_nGoodvertices[j]->SetLineWidth(2);
-  // cout<<"Hello its me!"<<endl;
-  //      pr_nGoodvertices[j]->SetMinimum(0);
-  //      pr_nGoodvertices[j]->SetMaximum(20);
-  // cout<<"Hello its me!"<<endl;
-  //      c_dummy1->SaveAs(CorrectionObject::_outpath+"plots/control/GoodVertices_eta_"+eta_range2[j]+"_"+eta_range2[j+1]+".pdf");
-  //      delete c_dummy1;
-  //      cout<<"Hello its me!"<<endl;
-  //      TCanvas* c_dummy2 = new TCanvas();
-  //      pr_nvertices[j]->Draw();
-  //      c_dummy2->SetLogx();
-  //      pr_nvertices[j]->GetYaxis()->SetTitle("Vertices");
-  //      pr_nvertices[j]->SetLineWidth(2);
-  //      pr_nvertices[j]->SetMinimum(10);
-  //      pr_nvertices[j]->SetMaximum(30);
-  //      c_dummy2->SaveAs(CorrectionObject::_outpath+"plots/control/Vertices_eta_"+eta_range2[j]+"_"+eta_range2[j+1]+".pdf");
-  //      delete c_dummy2;
-
-  //      TCanvas* c_dummy3 = new TCanvas();
-  //      pr_Xpv[j]->Draw();
-  //      c_dummy3->SetLogx();
-  //      pr_Xpv[j]->GetYaxis()->SetTitle("X PV");
-  //      pr_Xpv[j]->SetLineWidth(2);
-  //      pr_Xpv[j]->SetMinimum(-1);
-  //      pr_Xpv[j]->SetMaximum(1);
-  //      c_dummy3->SaveAs(CorrectionObject::_outpath+"plots/control/Xpv_eta_"+eta_range2[j]+"_"+eta_range2[j+1]+".pdf");
-  //      delete c_dummy3;
-
-  //     TCanvas* c_dummy4 = new TCanvas();
-  //      pr_Ypv[j]->Draw();
-  //      c_dummy4->SetLogx();
-  //      pr_Ypv[j]->GetYaxis()->SetTitle("Y PV");
-  //      pr_Ypv[j]->SetLineWidth(2);
-  //      pr_Ypv[j]->SetMinimum(-1);
-  //      pr_Ypv[j]->SetMaximum(1);
-  //      c_dummy4->SaveAs(CorrectionObject::_outpath+"plots/control/Ypv_eta_"+eta_range2[j]+"_"+eta_range2[j+1]+".pdf");
-  //      delete c_dummy4;
   
-  //      TCanvas* c_dummy5 = new TCanvas();
-  //      pr_Zpv[j]->Draw();
-  //      c_dummy5->SetLogx();
-  //      pr_Zpv[j]->GetYaxis()->SetTitle("Z PV");
-  //      pr_Zpv[j]->SetLineWidth(2);
-  //      pr_Zpv[j]->SetMinimum(-30);
-  //      pr_Zpv[j]->SetMaximum(30);
-  //      c_dummy5->SaveAs(CorrectionObject::_outpath+"plots/control/Zpv_eta_"+eta_range2[j]+"_"+eta_range2[j+1]+".pdf");
-  //      delete c_dummy5;
-       
-  //      TCanvas* c_dummy6 = new TCanvas();
-  //      pr_Ngenjet[j]->Draw();
-  //      c_dummy6->SetLogx();
-  //      pr_Ngenjet[j]->GetYaxis()->SetTitle("N Gen Jets");
-  //      pr_Ngenjet[j]->SetLineWidth(2);
-  //      pr_Ngenjet[j]->SetMinimum(0);
-  //      pr_Ngenjet[j]->SetMaximum(4);
-  //      c_dummy6->SaveAs(CorrectionObject::_outpath+"plots/control/Ngenjet_eta_"+eta_range2[j]+"_"+eta_range2[j+1]+".pdf");
-  //      delete c_dummy6;
-
-  //     TCanvas* c_dummy7 = new TCanvas();
-  //      pr_Nptcl[j]->Draw();
-  //      c_dummy7->SetLogx();
-  //      pr_Nptcl[j]->GetYaxis()->SetTitle("N Particle");
-  //      pr_Nptcl[j]->SetLineWidth(2);
-  //      pr_Nptcl[j]->SetMinimum(0);
-  //      pr_Nptcl[j]->SetMaximum(4);
-  //      c_dummy7->SaveAs(CorrectionObject::_outpath+"plots/control/Nptcl_eta_"+eta_range2[j]+"_"+eta_range2[j+1]+".pdf");
-  //      delete c_dummy7;
-
-  //      TCanvas* c_dummy8 = new TCanvas();
-  //      pr_rho[j]->Draw();
-  //      c_dummy8->SetLogx();
-  //      pr_rho[j]->GetYaxis()->SetTitle("Rho");
-  //      pr_rho[j]->SetLineWidth(2);
-  //      pr_rho[j]->SetMinimum(0);
-  //      pr_rho[j]->SetMaximum(60);
-  //      c_dummy8->SaveAs(CorrectionObject::_outpath+"plots/control/Rho_eta_"+eta_range2[j]+"_"+eta_range2[j+1]+".pdf");
-  //      delete c_dummy8;
-
-
     for(int k=0; k<n_pt-1; k++){     ///k=0 n_pt-1 
       hmc_probejet_dRminParton[k][j]->Write();
       hmc_barreljet_dRminParton[k][j]->Write();
@@ -614,6 +488,15 @@ void CorrectionObject::GenResponsePlots(TString flavor="All", TString ptbinning=
       hmc_GGevents[k][j]->Write();
       hmc_QGevents[k][j]->Write();
       hmc_GQevents[k][j]->Write();
+      hmc_glu_events[k][j]->Write();// number of events with probe jets Math::Abs(pdgID)==21 --> glu
+      hmc_gluExt_events[k][j]->Write();// 21||Undefined --> gluExt
+      hmc_b_events[k][j]->Write();// 5--> b
+      hmc_c_events[k][j]->Write();// 4-->c
+      hmc_s_events[k][j]->Write();// 3--> s
+      hmc_ud_events[k][j]->Write();// 1||2--> ud
+      hmc_undefined_events[k][j]->Write();//   else --> Undefined
+      hmc_uds_events[k][j]->Write();// 1||2||3 --> uds
+
       for(int ifl=0;ifl<3;ifl++){
 	hmc_probejetpt_flavor[ifl][j]->Write();
 	hmc_tagjetpt_flavor[ifl][j]->Write();
@@ -680,12 +563,28 @@ void CorrectionObject::GenResponsePlots(TString flavor="All", TString ptbinning=
   double val_GQ[n_eta-1][n_pt-1];
   double err_GQ[n_eta-1][n_pt-1];
   double val_SUM[n_eta-1][n_pt-1];
-
+  
+  double val_glu[n_eta-1][n_pt-1];
+  double err_glu[n_eta-1][n_pt-1];
+  double val_gluExt[n_eta-1][n_pt-1];
+  double err_gluExt[n_eta-1][n_pt-1];
+  double val_b[n_eta-1][n_pt-1];
+  double err_b[n_eta-1][n_pt-1];
+  double val_c[n_eta-1][n_pt-1];
+  double err_c[n_eta-1][n_pt-1];
+  double val_s[n_eta-1][n_pt-1];
+  double err_s[n_eta-1][n_pt-1];
+  double val_ud[n_eta-1][n_pt-1];
+  double err_ud[n_eta-1][n_pt-1];
+  double val_undefined[n_eta-1][n_pt-1];
+  double err_undefined[n_eta-1][n_pt-1];
+  double val_uds[n_eta-1][n_pt-1];
+  double err_uds[n_eta-1][n_pt-1];
 
 
   for(int i=0; i<n_eta-1; i++){
     for(int j=0; j<n_pt-1; j++){
-      hmc_QQevents[j][i]->Print();
+      // hmc_QQevents[j][i]->Print();
       val_QQ[i][j] = hmc_QQevents[j][i]->Integral();
       err_QQ[i][j] = 1e-3;
       val_GG[i][j] = hmc_GGevents[j][i]->Integral();
@@ -695,16 +594,49 @@ void CorrectionObject::GenResponsePlots(TString flavor="All", TString ptbinning=
       val_GQ[i][j] = hmc_GQevents[j][i]->Integral();
       err_GQ[i][j] = 1e-3;
 
+    
+
       val_SUM[i][j] = val_QQ[i][j]+val_GG[i][j]+val_QG[i][j]+val_GQ[i][j];
-      if(val_SUM[i][j]>1e3){
-      val_QQ[i][j] = val_QQ[i][j]/val_SUM[i][j];
-      val_GG[i][j] = val_GG[i][j]/val_SUM[i][j];
-      val_QG[i][j] = val_QG[i][j]/val_SUM[i][j];
-      val_GQ[i][j] = val_GQ[i][j]/val_SUM[i][j];
-      if(j>8)
-	cout<<"J= "<<j<<" val_QQ[i][j] = "<<val_QQ[i][j]<<"  val_GG[i][j] = "<< val_GG[i][j]<<" val_QG[i][j] = "<<val_QG[i][j]<<" val_GQ[i][j] = "<<val_GQ[i][j]<<endl; 
+      //      if(val_SUM[i][j]>1e3){
+     
+      //}
+      val_glu[i][j] = hmc_glu_events[j][i]->Integral();
+      err_glu[i][j] = 1e-3;
+      val_gluExt[i][j] = hmc_gluExt_events[j][i]->Integral();
+      err_gluExt[i][j] = 1e-3;
+      val_b[i][j] = hmc_b_events[j][i]->Integral();
+      err_b[i][j] = 1e-3;
+      val_c[i][j] = hmc_c_events[j][i]->Integral();
+      err_c[i][j] = 1e-3;
+      val_s[i][j] = hmc_s_events[j][i]->Integral();
+      err_s[i][j] = 1e-3;
+      val_ud[i][j] = hmc_ud_events[j][i]->Integral();
+      err_ud[i][j] = 1e-3;
+      val_undefined[i][j] = hmc_undefined_events[j][i]->Integral();
+      err_undefined[i][j] = 1e-3;
+      val_uds[i][j] = hmc_uds_events[j][i]->Integral();
+      err_uds[i][j] = 1e-3;
+      hmc_uds_events[j][i]->Print();
+      if(val_SUM[i][j]>0){
+	val_QQ[i][j] = val_QQ[i][j]/val_SUM[i][j];
+	val_GG[i][j] = val_GG[i][j]/val_SUM[i][j];
+	val_QG[i][j] = val_QG[i][j]/val_SUM[i][j];
+	val_GQ[i][j] = val_GQ[i][j]/val_SUM[i][j];
+	val_glu[i][j] = val_glu[i][j]/val_SUM[i][j]; 
+	val_gluExt[i][j] = val_gluExt[i][j]/val_SUM[i][j]; 
+	val_b[i][j] = val_b[i][j]/val_SUM[i][j]; 
+	val_c[i][j] = val_c[i][j]/val_SUM[i][j]; 
+	val_s[i][j] = val_s[i][j]/val_SUM[i][j]; 
+	val_ud[i][j] = val_ud[i][j]/val_SUM[i][j]; 
+	val_uds[i][j] = val_uds[i][j]/val_SUM[i][j]; 
+	val_undefined[i][j] = val_undefined[i][j]/val_SUM[i][j]; 
       }
-         //Get <response> and error on <response>
+
+      cout<<"  val_gluExt[i][j] = "<< val_gluExt[i][j]<<endl;
+      cout<<"  val_glu[i][j] = "<< val_glu[i][j]<<endl;
+      cout<<"  val_uds[i][j] = "<< val_uds[i][j]<<endl;
+
+      //Get <response> and error on <response>
       pair <double,double> A_mc = GetValueAndError(hmc_A[j][i]);
       pair<double,double> res_mc_rel_r;
       res_mc_rel_r.first = (1+A_mc.first)/(1-A_mc.first);
@@ -1041,7 +973,7 @@ void CorrectionObject::GenResponsePlots(TString flavor="All", TString ptbinning=
     leg_rel->SetFillStyle(0);
     leg_rel->SetLineColor(1);
     leg_rel->SetTextFont(42);
-    leg_rel->SetHeader("R^{MC, fraction}_"+altitle+", "+eta_range[i]+"#leq|#eta|<"+eta_range[i+1]); 
+    leg_rel->SetHeader("Flavor fraction_"+altitle+", "+eta_range[i]+"#leq|#eta|<"+eta_range[i+1]); 
     leg_rel->AddEntry(graph_QQ, axistitle_QQ,"P");
     leg_rel->AddEntry(graph_GG, axistitle_GG,"P");
     leg_rel->AddEntry(graph_QG, axistitle_QG,"P");
@@ -1053,6 +985,140 @@ void CorrectionObject::GenResponsePlots(TString flavor="All", TString ptbinning=
     delete graph_GG;
     delete graph_QG;
     delete graph_GQ;
+  }
+
+
+  //probe jet flavor
+  if(flavor=="All"){
+    for(int i=0; i<n_eta-1; i++){
+      //Create and fill TGraphErrors
+      double xbin_tgraph[n_pt-1];
+      double zero[n_pt-1];
+      for(int i=0;i<n_pt-1;i++){
+	xbin_tgraph[i]=(pt_bins[i]+pt_bins[i+1])/2;
+	zero[i]=(pt_bins[i+1]-pt_bins[i])/2 ;
+      }
+      
+      TString alVal;
+      alVal.Form("%0.2f\n",alpha_cut);
+      TString altitle = "{#alpha<"+alVal+"}";
+
+      TGraphErrors *graph_glu   = new TGraphErrors(n_pt-1, xbin_tgraph, val_glu[i], zero, err_glu[i]);
+      graph_glu   = (TGraphErrors*)CleanEmptyPoints(graph_glu);
+      graph_glu->SetTitle("");
+      graph_glu->SetMarkerColor(kGreen+2);
+      graph_glu->SetMarkerStyle(22);
+      graph_glu->SetLineColor(kGreen+2);
+      TString axistitle_glu = "glu";
+      TGraphErrors *graph_gluExt   = new TGraphErrors(n_pt-1, xbin_tgraph, val_gluExt[i], zero, err_gluExt[i]);
+      graph_gluExt   = (TGraphErrors*)CleanEmptyPoints(graph_gluExt);
+      graph_gluExt->SetTitle("");
+      graph_gluExt->SetMarkerColor(kGreen+3);
+      graph_gluExt->SetMarkerStyle(23);
+      graph_gluExt->SetLineColor(kGreen+3);
+      TString axistitle_gluExt = "gluExt";
+      TGraphErrors *graph_b   = new TGraphErrors(n_pt-1, xbin_tgraph, val_b[i], zero, err_b[i]);
+      graph_b   = (TGraphErrors*)CleanEmptyPoints(graph_b);
+      graph_b->SetTitle("");
+      graph_b->SetMarkerColor(kMagenta);
+      graph_b->SetMarkerStyle(20);
+      //    graph_b->SetMarkerSize(1.7);
+      graph_b->SetLineColor(kMagenta);
+      TString axistitle_b = "b";
+      TGraphErrors *graph_c   = new TGraphErrors(n_pt-1, xbin_tgraph, val_c[i], zero, err_c[i]);
+      graph_c   = (TGraphErrors*)CleanEmptyPoints(graph_c);
+      graph_c->SetTitle("");
+      graph_c->SetMarkerColor(kBlue+1);
+      graph_c->SetMarkerStyle(20);
+      //    graph_c->SetMarkerSize(1.7);
+      graph_c->SetLineColor(kBlue+1);
+      TString axistitle_c = "c";
+      
+      TGraphErrors *graph_s   = new TGraphErrors(n_pt-1, xbin_tgraph, val_s[i], zero, err_s[i]);
+      graph_s   = (TGraphErrors*)CleanEmptyPoints(graph_s);
+      graph_s->SetTitle("");
+      graph_s->SetMarkerColor(kCyan+2);
+      graph_s->SetMarkerStyle(20);
+      //    graph_s->SetMarkerSize(1.7);
+      graph_s->SetLineColor(kCyan+2);
+      TString axistitle_s = "s";
+
+
+      TGraphErrors *graph_ud   = new TGraphErrors(n_pt-1, xbin_tgraph, val_ud[i], zero, err_ud[i]);
+      graph_ud   = (TGraphErrors*)CleanEmptyPoints(graph_ud);
+      graph_ud->SetTitle("");
+      graph_ud->SetMarkerColor(kOrange+7);
+      graph_ud->SetMarkerStyle(20);
+      graph_ud->SetLineColor(kOrange+7);
+      TString axistitle_ud = "ud";
+
+      TGraphErrors *graph_uds   = new TGraphErrors(n_pt-1, xbin_tgraph, val_uds[i], zero, err_uds[i]);
+      graph_uds   = (TGraphErrors*)CleanEmptyPoints(graph_uds);
+      graph_uds->SetTitle("");
+      graph_uds->SetMarkerColor(kOrange+6);
+      graph_uds->SetMarkerStyle(23);
+      graph_uds->SetLineColor(kOrange+6);
+      TString axistitle_uds = "uds";
+
+      TGraphErrors *graph_undefined   = new TGraphErrors(n_pt-1, xbin_tgraph, val_undefined[i], zero, err_undefined[i]);
+      graph_undefined   = (TGraphErrors*)CleanEmptyPoints(graph_undefined);
+      graph_undefined->SetTitle("");
+      graph_undefined->SetMarkerColor(kGray);
+      graph_undefined->SetMarkerStyle(20);
+      graph_undefined->SetLineColor(kGray);
+      TString axistitle_undefined = "undefined";
+      
+      TLatex *tex = new TLatex();
+      tex->SetNDC();
+      tex->SetTextSize(0.045); 
+      TString text = eta_range[i] + " < |#eta| < " + eta_range[i+1];
+
+      TCanvas* c_probeFlavor = new TCanvas();
+      tdrCanvas(c_probeFlavor,"c_probeFlavor",h,4,10,true,CorrectionObject::_lumitag);
+      h->GetXaxis()->SetTitle(pt_binning_var_str);
+      h->GetXaxis()->SetTitleSize(0.05);
+      h->GetXaxis()->SetLimits(30,pt_bins[n_pt-1]+100);
+      h->GetYaxis()->SetTitle("Fraction");
+      h->GetYaxis()->SetRangeUser(0.0,1.00);
+      graph_glu->Draw("P SAME");
+      graph_gluExt->Draw("P SAME");
+      graph_b->Draw("P SAME");
+      graph_c->Draw("P SAME");
+      graph_s->Draw("P SAME");
+      graph_ud->Draw("P SAME");
+      graph_uds->Draw("P SAME");
+      graph_undefined->Draw("P SAME");
+
+      gPad->SetLogx();
+      TLegend *leg_rel;
+      leg_rel = new TLegend(0.50,0.65,0.91,0.89,"","brNDC");//x+0.1
+      leg_rel->SetBorderSize(0);
+      leg_rel->SetTextSize(0.030);
+      leg_rel->SetFillColor(10);
+      leg_rel->SetFillStyle(0);
+      leg_rel->SetLineColor(1);
+      leg_rel->SetTextFont(42);
+      leg_rel->SetHeader("Probe jet fraction_"+altitle+", "+eta_range[i]+"#leq|#eta|<"+eta_range[i+1]); 
+      leg_rel->AddEntry(graph_glu, axistitle_glu,"P");
+      leg_rel->AddEntry(graph_gluExt, axistitle_gluExt,"P");
+      leg_rel->AddEntry(graph_b, axistitle_b,"P");
+      leg_rel->AddEntry(graph_c, axistitle_c,"P");
+      leg_rel->AddEntry(graph_s, axistitle_s,"P");
+      leg_rel->AddEntry(graph_ud, axistitle_ud,"P");
+      leg_rel->AddEntry(graph_uds, axistitle_uds,"P");
+      leg_rel->AddEntry(graph_undefined, axistitle_undefined,"P");
+      leg_rel->Draw();
+      c_probeFlavor->SaveAs(CorrectionObject::_outpath+"plots/control/GenResponse_Fractions_ProbeJet_"+pt_binning_var_name+ CorrectionObject::_generator_tag + "_eta_" + eta_range2[i] + "_" + eta_range2[i+1] +"_" + flavor + ".pdf");
+      
+      delete graph_glu;
+      delete graph_gluExt;
+      delete graph_b;
+      delete graph_c;
+      delete graph_s;
+      delete graph_ud;
+      delete graph_uds;
+      delete graph_undefined;
+    }
   }
 
 

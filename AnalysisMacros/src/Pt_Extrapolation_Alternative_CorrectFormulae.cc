@@ -588,7 +588,8 @@ if(mpfMethod){
     
     //   for(int f=0;f<n_alpha_cut;f++){
    
-    if(CorrectionObject::_runnr != "BCDEFGH"){
+    //    if(CorrectionObject::_runnr != "BCDEFGH"){
+    if(CorrectionObject::_runnr != "H"){ //ToDo: solve the mess with picking up Kfsr based on full dataset
       kfsr_mpf = new TFile(CorrectionObject::_input_path+"RunBCDEFGH/Histo_Res_MPF_L1_"+CorrectionObject::_generator_tag+"_AK4PFchs.root","READ");
       hist_kfsr_fit_mpf = (TH1D*)kfsr_mpf->Get("hist_kfsr_fit_mpf");
       //      kfsr_mpf = new TFile(CorrectionObject::_outpath+"Histo_KFSR_MPF_"+CorrectionObject::_generator_tag+"_L1.root","READ");
@@ -973,7 +974,9 @@ if(mpfMethod){
 
     //  for(int f=0;f<n_alpha_cut;f++){
     
-    if(CorrectionObject::_runnr != "BCDEFGH"){
+    //    if(CorrectionObject::_runnr != "BCDEFGH"){
+    if(CorrectionObject::_runnr != "H"){ //ToDo: solve the mess with picking up Kfsr based on full dataset
+    //    if(CorrectionObject::_runnr != "BCDEFGH" || CorrectionObject::_runnr != "H"){
       kfsr_dijet = new TFile(CorrectionObject::_input_path+"RunBCDEFGH/Histo_Res_DiJet_L1_"+CorrectionObject::_generator_tag+"_AK4PFchs.root","READ");
       hist_kfsr_fit_dijet = (TH1D*)kfsr_dijet->Get("hist_kfsr_fit_dijet");
       //      kfsr_dijet = new TFile(CorrectionObject::_outpath+"Histo_KFSR_DiJet_"+CorrectionObject::_generator_tag+"_L1.root","READ");

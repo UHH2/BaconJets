@@ -479,19 +479,26 @@ void CorrectionObject::kFSR_CorrectFormulae(){
 
  TCanvas* Pt_dep_rel[n_eta-1];
  TString name_rel[n_eta-1];
+ TString name_label[n_eta-1];
  TH1D* h_kFSR_pt_rel[n_eta-1];
  for(int i=0; i<n_eta-1; i++){
    name_rel[i]="dijet_kfsr_pt_dep_"+eta_range[i]+"_"+eta_range[i+1];
-   h_kFSR_pt_rel[i] = new TH1D(name_rel[i],"kFSR pt dependence", n_pt-1, pt_bins);
+   name_label[i]= "kFSR pt dependence, "+eta_range[i]+"#leq|#eta|<"+eta_range[i+1];
+   h_kFSR_pt_rel[i] = new TH1D(name_rel[i],name_label[i], n_pt-1, pt_bins);
    Pt_dep_rel[i] = new TCanvas(name_rel[i], name_rel[i], 800,700);
    for(int j=0; j<n_pt-1;j++){
      h_kFSR_pt_rel[i]->SetBinContent(j+1, pol_rel[i][j]->GetParameter(0));
      h_kFSR_pt_rel[i]->SetBinError(j+1, pol_rel[i][j]->GetParError(0));
    }
-   h_kFSR_pt_rel[i]->GetYaxis()->SetRangeUser(0.92,1.08);
+   h_kFSR_pt_rel[i]->SetMarkerStyle(21);
+   h_kFSR_pt_rel[i]->SetMarkerSize(1.2);
+   h_kFSR_pt_rel[i]->GetYaxis()->SetRangeUser(0.85,1.15);
    h_kFSR_pt_rel[i]->GetYaxis()->SetTitle("kFSR");
    h_kFSR_pt_rel[i]->GetXaxis()->SetTitle("p_{T}");
    h_kFSR_pt_rel[i]->Draw("E");
+   // TLine kFSR_ave(1e-4,kFSR_DiJet->GetBinContent(i),2e3,kFSR_DiJet->GetBinContent(i));
+   // kFSR_ave.Draw("same"); 
+   Pt_dep_rel[i]->SetLogx();
    Pt_dep_rel[i]->Print(CorrectionObject::_outpath+"plots/kFSR_Pt_eta_"+eta_range2[i]+"_"+eta_range2[i+1]+".pdf");
  }
 
@@ -502,6 +509,8 @@ void CorrectionObject::kFSR_CorrectFormulae(){
   TCanvas* c1 = new TCanvas();
   m_gStyle->SetOptStat(0);
   h_kFSR_pt_eta_rel->Draw("COLZ");
+  h_kFSR_pt_eta_rel->GetZaxis()->SetRangeUser(0.75,1.35);
+  c1->SetLogy();
   c1->Print(CorrectionObject::_outpath+"plots/kFSR_Pt_"+CorrectionObject::_generator_tag+"_2DPlot.pdf");
 
   TCanvas* c3 = new TCanvas();
@@ -606,6 +615,8 @@ void CorrectionObject::kFSR_CorrectFormulae(){
   TCanvas* c2 = new TCanvas();
     m_gStyle->SetOptTitle(0);
     h_kFSR_pt_eta_mpf->Draw("COLZ");
+    h_kFSR_pt_eta_mpf->GetZaxis()->SetRangeUser(0.75,1.35);
+    c2->SetLogy();
   c2->Print(CorrectionObject::_outpath+"plots/kFSR_MPF_"+CorrectionObject::_generator_tag+"_2DPlot.pdf");
   
   TCanvas* c4 = new TCanvas();

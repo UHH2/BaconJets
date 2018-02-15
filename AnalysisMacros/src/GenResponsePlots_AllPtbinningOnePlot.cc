@@ -38,18 +38,23 @@ void CorrectionObject::GenResponsePlots_AllPtbinningOnePlot(TString flavor="All"
   TH1D *hmc_normjetpt[6][n_pt-1][n_eta-1];//  binning variable used for normalisation
   TH1D *hmc_probejetpt[6][n_pt-1][n_eta-1];// RECO probe jet pt devided to binning variable, e.g <pT,probe,RECO> = <pT,probe,RECO/pT,ave,RECO> * <pT,ave,RECO>
   TH1D *hmc_probegenjetpt[6][n_pt-1][n_eta-1];// GEN probe jet pt devided to binning variable, e.g <pT,probe,GEN> = <pT,probe,GEN/pT,ave,RECO> * <pT,ave,RECO>
+  TH1D *hmc_probejetpt_notnorm[6][n_pt-1][n_eta-1];// RECO probe jet pt devided to binning variable, e.g <pT,probe,RECO> = <pT,probe,RECO/pT,ave,RECO> * <pT,ave,RECO>
+  TH1D *hmc_probegenjetpt_notnorm[6][n_pt-1][n_eta-1];// GEN probe jet pt devided to binning variable, e.g <pT,probe,GEN> = <pT,probe,GEN/pT,ave,RECO> * <pT,ave,RECO>
+
   TH1D *hmc_tagjetpt[6][n_pt-1][n_eta-1];// RECO tag jet pt devided to binning variable, e.g <pT,tag,RECO> = <pT,tag,RECO/pT,ave,RECO> * <pT,ave,RECO>
   TH1D *hmc_taggenjetpt[6][n_pt-1][n_eta-1];// GEN tag jet pt devided to binning variable, e.g <pT,tag,GEN> = <pT,tag,GEN/pT,ave,RECO> * <pT,ave,RECO>
   TH1D *hmc_B_RECO[6][n_pt-1][n_eta-1];// B_RECO
   TH1D *hmc_B_GEN[6][n_pt-1][n_eta-1];// B_GEN
-  TString pt_binning_var_str[6] = {"#bar{p}^{RECO}_{T} [GeV]","p^{tag,GEN}_{T} [GeV]","p^{probe,GEN}_{T} [GeV]","#bar{p}^{GEN}_{T} [GeV]","p^{tag,RECO}_{T} [GeV]","p^{probe,RECO}_{T} [GeV]"};
-  TString pt_binning_var_name[6] = {"__pT_ave_RECO__","__pT_tag_GEN__","__pT_probe_GEN__","__pT_ave_GEN__","__pT_tag_RECO__","__pT_probe_RECO__"};
+  TString pt_binning_var_str[6] = {"#bar{p}^{RECO}_{T} [GeV]","#bar{p}^{GEN}_{T} [GeV]","p^{probe,RECO}_{T} [GeV]","p^{probe,GEN}_{T} [GeV]","p^{tag,RECO}_{T} [GeV]","p^{tag,GEN}_{T} [GeV]"};
+  TString pt_binning_var_name[6] = {"__pT_ave_RECO__","__pT_ave_GEN__","__pT_probe_RECO__","__pT_probe_GEN__","__pT_tag_RECO__","__pT_tag_GEN__"};
 
   int count = 0;
 
   TString name99 = "hist_mc_normpt_";
   TString name100 = "hist_mc_probejet_norm_";
   TString name101 = "hist_mc_probegenjet_norm";
+  TString name110 = "hist_mc_probejet_notnorm_";
+  TString name111 = "hist_mc_probegenjet_notnorm";
   TString name102 = "hist_mc_tagjet_norm";
   TString name103 = "hist_mc_taggenjet_norm";
 
@@ -64,13 +69,16 @@ void CorrectionObject::GenResponsePlots_AllPtbinningOnePlot(TString flavor="All"
 	TString pt_name = "pt_"+pt_range[k]+"_"+pt_range[k+1];
 	TString name;
 	name = name99 + pt_binning_var_name[bin] + "_" + eta_name + "_" + pt_name;
-	hmc_normjetpt[bin][k][j] = new TH1D(name,"",2000, 0, 2000);
+	hmc_normjetpt[bin][k][j] = new TH1D(name,"",nResponseBins,pt_bins[k-3],pt_bins[k+3]);
 	name = name100 + pt_binning_var_name[bin] + "_" + eta_name + "_" + pt_name;
 	hmc_probejetpt[bin][k][j] = new TH1D(name,"",nResponseBins, 0.0, 2.0);
-	//	hmc_probejetpt[bin][k][j] = new TH1D(name,"",2000, 0.0, 2000.0);//TEST
 	name = name101 + pt_binning_var_name[bin] + "_" + eta_name + "_" + pt_name;
 	hmc_probegenjetpt[bin][k][j] = new TH1D(name,"",nResponseBins, 0.0, 2.0);
-	//hmc_probegenjetpt[bin][k][j] = new TH1D(name,"",2000, 0.0, 2000.0);//TEST
+	name = name110 + pt_binning_var_name[bin] + "_" + eta_name + "_" + pt_name;
+	hmc_probejetpt_notnorm[bin][k][j] = new TH1D(name,"",nResponseBins,pt_bins[k-3],pt_bins[k+3]);
+	name = name111 + pt_binning_var_name[bin] + "_" + eta_name + "_" + pt_name;
+	hmc_probegenjetpt_notnorm[bin][k][j] = new TH1D(name,"",nResponseBins,pt_bins[k-3],pt_bins[k+3]);
+
 	name = name102 + pt_binning_var_name[bin] + "_" + eta_name + "_" + pt_name;
 	hmc_tagjetpt[bin][k][j] = new TH1D(name,"",nResponseBins, 0.0, 2.0);
 	//hmc_tagjetpt[bin][k][j] = new TH1D(name,"",2000, 0.0, 2000.0);//TEST
@@ -160,31 +168,22 @@ void CorrectionObject::GenResponsePlots_AllPtbinningOnePlot(TString flavor="All"
 	    if(!flavor_sel) continue;
 	    // ///[END] Selection according to flavor of tag&probe jets---------------
 
-	    //    double pt_binning_var_norm = 1;//TEST without fancy normalisation
 	    double pt_binning_var_norm = pt_binning_var;
-	      hmc_normjetpt[bin][k][j]->Fill(pt_binning_var_norm,*weight_mc);
-	      double probejetpt_norm = (*probejet_pt_mc)/pt_binning_var_norm;
-	      hmc_probejetpt[bin][k][j]->Fill(probejetpt_norm,*weight_mc);
-	      double probegenjetpt_norm = (*probejet_ptgen_mc)/pt_binning_var_norm;
-	      hmc_probegenjetpt[bin][k][j]->Fill(probegenjetpt_norm,*weight_mc);
-	      // double probepartonjetpt_norm = (*probejet_ptparton_mc)/pt_binning_var;
-	      // hmc_probepartonjetpt[bin][k][j]->Fill(probepartonjetpt_norm,*weight_mc);
+	    hmc_normjetpt[bin][k][j]->Fill(pt_binning_var_norm,*weight_mc);
+	    double probejetpt_norm = (*probejet_pt_mc)/pt_binning_var_norm;
+	    hmc_probejetpt[bin][k][j]->Fill(probejetpt_norm,*weight_mc);
+	    double probegenjetpt_norm = (*probejet_ptgen_mc)/pt_binning_var_norm;
+	    hmc_probegenjetpt[bin][k][j]->Fill(probegenjetpt_norm,*weight_mc);
+	    
+	    hmc_probejetpt_notnorm[bin][k][j]->Fill((*probejet_pt_mc),*weight_mc);
+	    hmc_probegenjetpt_notnorm[bin][k][j]->Fill((*probejet_ptgen_mc),*weight_mc);
 
-	      double tagjetpt_norm = (*barreljet_pt_mc)/pt_binning_var_norm;
-	      hmc_tagjetpt[bin][k][j]->Fill(tagjetpt_norm,*weight_mc);
-	      double taggenjetpt_norm = (*barreljet_ptgen_mc)/pt_binning_var_norm;
-	      hmc_taggenjetpt[bin][k][j]->Fill(taggenjetpt_norm,*weight_mc);
-	      // if(fabs(*probejet_eta_mc)<0.26){
-	      // cout<<" barreljet_pt_mc = "<<*barreljet_pt_mc<<" barreljet_ptgen_mc = "<<*barreljet_ptgen_mc
-	      // 	  <<" probejet_pt_mc = "<<*probejet_pt_mc<<" probejet_ptgen_mc = "<<*probejet_ptgen_mc<<endl;
-	      // cout<<" tagjetpt_norm = "<<tagjetpt_norm <<" taggenjetpt_norm = "<<taggenjetpt_norm
-	      // 	  <<" probejetpt_norm = "<<probejetpt_norm<<" probegenjetpt_norm  = "<<probegenjetpt_norm <<endl;
-	      // cout<<""<<endl;
-	      // }
-	      // double tagpartonjetpt_norm = (*barreljet_ptparton_mc)/pt_binning_var;
-	      // hmc_tagpartonjetpt[bin][k][j]->Fill(tagpartonjetpt_norm,*weight_mc);
-	      hmc_B_RECO[bin][k][j]->Fill(*B_mc,*weight_mc);
-	      hmc_B_GEN[bin][k][j]->Fill(*B_gen_mc,*weight_mc);
+	    double tagjetpt_norm = (*barreljet_pt_mc)/pt_binning_var_norm;
+	    hmc_tagjetpt[bin][k][j]->Fill(tagjetpt_norm,*weight_mc);
+	    double taggenjetpt_norm = (*barreljet_ptgen_mc)/pt_binning_var_norm;
+	    hmc_taggenjetpt[bin][k][j]->Fill(taggenjetpt_norm,*weight_mc);
+	    hmc_B_RECO[bin][k][j]->Fill(*B_mc,*weight_mc);
+	    hmc_B_GEN[bin][k][j]->Fill(*B_gen_mc,*weight_mc);
 	    }
 	  }
 	}
@@ -199,13 +198,15 @@ void CorrectionObject::GenResponsePlots_AllPtbinningOnePlot(TString flavor="All"
 
   // Dump 1-d distributions of A and B in bins of pT, eta
 
-  TFile* test_out_mc_B = new TFile(CorrectionObject::_outpath+"plots/control/GenResponse_AllPtbinOnePlot_1d_mc_matched_"+flavor+".root","RECREATE");
+  TFile* test_out_mc_B = new TFile(CorrectionObject::_outpath+"plots/control/GenResponse_AllPtbinOnePlot_"+flavor+".root","RECREATE");
   for(int bin=0;bin<6;bin++){
     for(int j=0; j<n_eta-1; j++){
       for(int k=0; k<n_pt-1; k++){     ///k=0 n_pt-1 
 	hmc_normjetpt[bin][k][j]->Write();
 	hmc_probejetpt[bin][k][j]->Write();
 	hmc_probegenjetpt[bin][k][j]->Write();
+	hmc_probejetpt_notnorm[bin][k][j]->Write();
+	hmc_probegenjetpt_notnorm[bin][k][j]->Write();
 	hmc_tagjetpt[bin][k][j]->Write();
 	hmc_taggenjetpt[bin][k][j]->Write();
 	hmc_B_RECO[bin][k][j]->Write();
@@ -215,6 +216,326 @@ void CorrectionObject::GenResponsePlots_AllPtbinningOnePlot(TString flavor="All"
   }
   test_out_mc_B->Close();
   delete test_out_mc_B;
+
+  //dummy for tdrCanvas
+  TH1D *h = new TH1D("h",";dummy;",41,0,5.191);
+  h->SetMaximum(1.2);
+  h->SetMinimum(0.8);
+  //  TH1D *hEF = new TH1D("hEF",";dummy;",1000,0,5.191);
+  TCanvas* c_0 = new TCanvas();
+  tdrCanvas(c_0,"c_0",h,4,10,true,CorrectionObject::_lumitag);
+
+  
+  TString alVal;
+  alVal.Form("%0.2f\n",alpha_cut);
+  TString altitle = "{#alpha<"+alVal+"}";
+
+
+
+  //Store <p$_{T}^{binning}$>, $\hat{p_{T}^{X}}$ = p$_{T}^{X}$/p$_{T}^{binning}$ plots for sanity check
+  for(int i=0; i<n_eta-1; i++){
+    for(int j=0; j<n_pt-1; j++){
+    
+
+      TLegend *leg_ptnorm;
+      leg_ptnorm = new TLegend(0.36,0.65,0.91,0.90,"","brNDC");//x+0.1
+      leg_ptnorm->SetNColumns(2);
+      leg_ptnorm->SetBorderSize(0);
+      leg_ptnorm->SetTextSize(0.030);
+      leg_ptnorm->SetFillColor(10);
+      leg_ptnorm->SetFillStyle(0);
+      leg_ptnorm->SetLineColor(1);
+      leg_ptnorm->SetTextFont(42);
+      leg_ptnorm->SetHeader("p^{binning}_{T} _"+altitle+", "+eta_range[i]+"#leq|#eta|<"+eta_range[i+1]+" "+flavorLabel); 
+      TCanvas* c_ptnorm = new TCanvas();
+      tdrCanvas(c_ptnorm,"c_ptnorm",h,4,10,true,CorrectionObject::_lumitag);
+      h->GetXaxis()->SetTitle("p_{T} [GeV] (see label)");
+      h->GetXaxis()->SetTitleSize(0.05);
+      //      h->GetXaxis()->SetLimits(30,pt_bins[n_pt-1]+100);
+      h->GetXaxis()->SetLimits(pt_bins[j-3],pt_bins[j+3]);
+      h->GetYaxis()->SetRangeUser(0.0,1.4*hmc_normjetpt[2][j][i]->GetMaximum());
+
+    for(int bin=0; bin<6; bin++){
+      // int MarkerStyle = 20;
+      // if(pt_binning_var_name[bin]=="__pT_ave_RECO__") MarkerStyle = 20;
+      // if(pt_binning_var_name[bin]=="__pT_ave_GEN__") MarkerStyle = 24;
+      // if(pt_binning_var_name[bin]=="__pT_tag_GEN__") MarkerStyle = 26;
+      // if(pt_binning_var_name[bin]=="__pT_probe_GEN__") MarkerStyle = 32;
+      // if(pt_binning_var_name[bin]=="__pT_tag_RECO__") MarkerStyle = 22;
+      // if(pt_binning_var_name[bin]=="__pT_probe_RECO__") MarkerStyle = 23;
+      // hmc_normjetpt[bin][j][i]->SetMarkerStyle(MarkerStyle);
+
+      hmc_normjetpt[bin][j][i]->SetLineWidth(bin+1);
+      int LineStyle = 1;
+      if(pt_binning_var_name[bin]=="__pT_ave_GEN__" || pt_binning_var_name[bin]=="__pT_tag_GEN__" || pt_binning_var_name[bin]=="__pT_probe_GEN__"){
+	LineStyle = 2 ;
+	hmc_normjetpt[bin][j][i]->SetLineColor(kPink-1+bin);
+      }
+      else{
+      hmc_normjetpt[bin][j][i]->SetLineColor(kSpring-1+bin);
+      }
+      hmc_normjetpt[bin][j][i]->SetLineStyle(LineStyle);
+
+      leg_ptnorm->AddEntry(hmc_normjetpt[bin][j][i],pt_binning_var_str[bin],"L");
+      hmc_normjetpt[bin][j][i]->Draw("HIST SAME");
+    }
+    // gPad->SetLogx();
+    leg_ptnorm->Draw();
+    TLine *ptlow_line = new TLine(pt_bins[j],0,pt_bins[j],1.4*hmc_normjetpt[2][j][i]->GetMaximum());
+    TLine *ptup_line = new TLine(pt_bins[j+1],0,pt_bins[j+1],1.4*hmc_normjetpt[2][j][i]->GetMaximum());
+    ptlow_line->SetLineColor(kGray);
+    ptlow_line->SetLineStyle(3);
+    ptlow_line->SetLineWidth(2);
+    ptup_line->SetLineColor(kGray);
+    ptup_line->SetLineStyle(3);
+    ptup_line->SetLineWidth(2);
+    ptlow_line->Draw();
+    ptup_line->Draw();
+
+    c_ptnorm->SaveAs(CorrectionObject::_outpath+"plots/control/GenResponse_pTbinning__allPtbinsAtOnePlot_"+ CorrectionObject::_generator_tag + "_eta_" + eta_range2[i] + "_" + eta_range2[i+1] + "_pt_"+pt_range[j]+ "_"+pt_range[j+1]+ "__"+ flavor + ".pdf");
+    }
+  }
+
+  //Store <p$_{T}^{probe,RECO}$>
+  for(int i=0; i<n_eta-1; i++){
+    for(int j=0; j<n_pt-1; j++){
+
+      TLegend *leg_ptprobereco;
+      leg_ptprobereco = new TLegend(0.36,0.65,0.91,0.90,"","brNDC");//x+0.1
+      leg_ptprobereco->SetNColumns(2);
+      leg_ptprobereco->SetBorderSize(0);
+      leg_ptprobereco->SetTextSize(0.030);
+      leg_ptprobereco->SetFillColor(10);
+      leg_ptprobereco->SetFillStyle(0);
+      leg_ptprobereco->SetLineColor(1);
+      leg_ptprobereco->SetTextFont(42);
+      leg_ptprobereco->SetHeader("p^{probe,RECO}_{T} _"+altitle+", "+eta_range[i]+"#leq|#eta|<"+eta_range[i+1]+" "+flavorLabel); 
+      TCanvas* c_ptprobereco = new TCanvas();
+      tdrCanvas(c_ptprobereco,"c_ptprobereco",h,4,10,true,CorrectionObject::_lumitag);
+      h->GetXaxis()->SetTitle("p_{T} [GeV] (see label)");
+      h->GetXaxis()->SetTitleSize(0.05);
+      h->GetXaxis()->SetLimits(pt_bins[j-3],pt_bins[j+3]);
+      h->GetYaxis()->SetRangeUser(0.0,1.4*hmc_probejetpt_notnorm[2][j][i]->GetMaximum());
+
+    for(int bin=0; bin<6; bin++){
+      //    hmc_probejetpt_notnorm[bin][j][i]->SetLineColor(kBlue-1+bin);
+      hmc_probejetpt_notnorm[bin][j][i]->SetLineWidth(bin+1);
+      // int MarkerStyle = 20;
+      // if(pt_binning_var_name[bin]=="__pT_ave_RECO__") MarkerStyle = 20;
+      // if(pt_binning_var_name[bin]=="__pT_ave_GEN__") MarkerStyle = 24;
+      // if(pt_binning_var_name[bin]=="__pT_tag_GEN__") MarkerStyle = 26;
+      // if(pt_binning_var_name[bin]=="__pT_probe_GEN__") MarkerStyle = 32;
+      // if(pt_binning_var_name[bin]=="__pT_tag_RECO__") MarkerStyle = 22;
+      // if(pt_binning_var_name[bin]=="__pT_probe_RECO__") MarkerStyle = 23;
+      // hmc_probejetpt_notnorm[bin][j][i]->SetMarkerStyle(MarkerStyle);
+
+      int LineStyle = 1;
+      if(pt_binning_var_name[bin]=="__pT_ave_GEN__" || pt_binning_var_name[bin]=="__pT_tag_GEN__" || pt_binning_var_name[bin]=="__pT_probe_GEN__"){
+	LineStyle = 2 ;
+	hmc_probejetpt_notnorm[bin][j][i]->SetLineColor(kRed-1+bin);
+      }
+      else{
+	hmc_probejetpt_notnorm[bin][j][i]->SetLineColor(kGreen-1+bin);
+      }
+      hmc_probejetpt_notnorm[bin][j][i]->SetLineStyle(LineStyle);
+      leg_ptprobereco->AddEntry(hmc_probejetpt_notnorm[bin][j][i],pt_binning_var_str[bin],"L");
+      hmc_probejetpt_notnorm[bin][j][i]->Draw("HIST SAME");
+    }
+    //    gPad->SetLogx();
+    leg_ptprobereco->Draw();
+    TLine *ptlow_line = new TLine(pt_bins[j],0,pt_bins[j],1.4*hmc_probejetpt_notnorm[2][j][i]->GetMaximum());
+    TLine *ptup_line = new TLine(pt_bins[j+1],0,pt_bins[j+1],1.4*hmc_probejetpt_notnorm[2][j][i]->GetMaximum());
+    ptlow_line->SetLineColor(kGray);
+    ptlow_line->SetLineStyle(3);
+    ptlow_line->SetLineWidth(2);
+    ptup_line->SetLineColor(kGray);
+    ptup_line->SetLineStyle(3);
+    ptup_line->SetLineWidth(2);
+    ptlow_line->Draw();
+    ptup_line->Draw();
+    c_ptprobereco->SaveAs(CorrectionObject::_outpath+"plots/control/GenResponse_pTprobeRECO__allPtbinsAtOnePlot_"+ CorrectionObject::_generator_tag + "_eta_" + eta_range2[i] + "_" + eta_range2[i+1] + "_pt_"+pt_range[j]+ "_"+pt_range[j+1]+ "__"+ flavor + ".pdf");
+    }
+  }
+
+ //Store <p$_{T}^{probe,GEN}$>
+  for(int i=0; i<n_eta-1; i++){
+    for(int j=0; j<n_pt-1; j++){
+
+      TLegend *leg_ptprobegen;
+      leg_ptprobegen = new TLegend(0.36,0.65,0.91,0.90,"","brNDC");//x+0.1
+      leg_ptprobegen->SetNColumns(2);
+      leg_ptprobegen->SetBorderSize(0);
+      leg_ptprobegen->SetTextSize(0.030);
+      leg_ptprobegen->SetFillColor(10);
+      leg_ptprobegen->SetFillStyle(0);
+      leg_ptprobegen->SetLineColor(1);
+      leg_ptprobegen->SetTextFont(42);
+      leg_ptprobegen->SetHeader("p^{probe,GEN}_{T} _"+altitle+", "+eta_range[i]+"#leq|#eta|<"+eta_range[i+1]+" "+flavorLabel); 
+      TCanvas* c_ptprobegen = new TCanvas();
+      tdrCanvas(c_ptprobegen,"c_ptprobegen",h,4,10,true,CorrectionObject::_lumitag);
+      h->GetXaxis()->SetTitle("p_{T} [GeV] (see label)");
+      h->GetXaxis()->SetTitleSize(0.05);
+      h->GetXaxis()->SetLimits(pt_bins[j-3],pt_bins[j+3]);
+      h->GetYaxis()->SetRangeUser(0,1.4*hmc_probegenjetpt_notnorm[2][j][i]->GetMaximum());
+
+    for(int bin=0; bin<6; bin++){
+      hmc_probegenjetpt_notnorm[bin][j][i]->SetLineColor(kBlue-1+bin);
+      hmc_probegenjetpt_notnorm[bin][j][i]->SetLineWidth(bin+1);
+      if(pt_binning_var_name[bin]=="__pT_ave_RECO__" || pt_binning_var_name[bin]=="__pT_tag_RECO__" || pt_binning_var_name[bin]=="__pT_probe_RECO__"){
+	hmc_probegenjetpt_notnorm[bin][j][i]->SetLineColor(kBlue-1+bin);
+      }
+
+      // int MarkerStyle = 20;
+      // if(pt_binning_var_name[bin]=="__pT_ave_RECO__") MarkerStyle = 20;
+      // if(pt_binning_var_name[bin]=="__pT_ave_GEN__") MarkerStyle = 24;
+      // if(pt_binning_var_name[bin]=="__pT_tag_GEN__") MarkerStyle = 26;
+      // if(pt_binning_var_name[bin]=="__pT_probe_GEN__") MarkerStyle = 32;
+      // if(pt_binning_var_name[bin]=="__pT_tag_RECO__") MarkerStyle = 22;
+      // if(pt_binning_var_name[bin]=="__pT_probe_RECO__") MarkerStyle = 23;
+      // hmc_probegenjetpt_notnorm[bin][j][i]->SetMarkerStyle(MarkerStyle);
+      int LineStyle = 1;
+      if(pt_binning_var_name[bin]=="__pT_ave_GEN__" || pt_binning_var_name[bin]=="__pT_tag_GEN__" || pt_binning_var_name[bin]=="__pT_probe_GEN__"){
+	LineStyle = 2 ;
+	hmc_probegenjetpt_notnorm[bin][j][i]->SetLineColor(kRed-1+bin);
+      }
+      hmc_probegenjetpt_notnorm[bin][j][i]->SetLineStyle(LineStyle);
+      leg_ptprobegen->AddEntry(hmc_probegenjetpt_notnorm[bin][j][i],pt_binning_var_str[bin],"L");
+      hmc_probegenjetpt_notnorm[bin][j][i]->Draw("HIST SAME");
+    }
+    // gPad->SetLogx();
+    leg_ptprobegen->Draw();
+    TLine *ptlow_line = new TLine(pt_bins[j],0,pt_bins[j],1.4*hmc_probegenjetpt_notnorm[2][j][i]->GetMaximum());
+    TLine *ptup_line = new TLine(pt_bins[j+1],0,pt_bins[j+1],1.4*hmc_probegenjetpt_notnorm[2][j][i]->GetMaximum());
+    ptlow_line->SetLineColor(kGray);
+    ptlow_line->SetLineStyle(3);
+    ptlow_line->SetLineWidth(2);
+    ptup_line->SetLineColor(kGray);
+    ptup_line->SetLineStyle(3);
+    ptup_line->SetLineWidth(2);
+    ptlow_line->Draw();
+    ptup_line->Draw();
+    c_ptprobegen->SaveAs(CorrectionObject::_outpath+"plots/control/GenResponse_pTprobeGEN__allPtbinsAtOnePlot_"+ CorrectionObject::_generator_tag + "_eta_" + eta_range2[i] + "_" + eta_range2[i+1] + "_pt_"+pt_range[j]+ "_"+pt_range[j+1]+ "__"+ flavor + ".pdf");
+    }
+  }
+
+//Store <p$_{T}^{probe,RECO}$>/<Pt binning>
+  for(int i=0; i<n_eta-1; i++){
+    for(int j=0; j<n_pt-1; j++){
+
+      TLegend *leg_ptprobereco_norm;
+      leg_ptprobereco_norm = new TLegend(0.36,0.65,0.91,0.90,"","brNDC");//x+0.1
+      leg_ptprobereco_norm->SetNColumns(2);
+      leg_ptprobereco_norm->SetBorderSize(0);
+      leg_ptprobereco_norm->SetTextSize(0.030);
+      leg_ptprobereco_norm->SetFillColor(10);
+      leg_ptprobereco_norm->SetFillStyle(0);
+      leg_ptprobereco_norm->SetLineColor(1);
+      leg_ptprobereco_norm->SetTextFont(42);
+      leg_ptprobereco_norm->SetHeader("p^{probe,RECO}_{T}/p^{binning}_{T} _"+altitle+", "+eta_range[i]+"#leq|#eta|<"+eta_range[i+1]+" "+flavorLabel); 
+      TCanvas* c_ptprobereco_norm = new TCanvas();
+      tdrCanvas(c_ptprobereco_norm,"c_ptprobereco_norm",h,4,10,true,CorrectionObject::_lumitag);
+      h->GetXaxis()->SetTitle("p_{T} [GeV] (see label)");
+      h->GetXaxis()->SetTitleSize(0.05);
+      h->GetXaxis()->SetLimits(0,2);
+      h->GetYaxis()->SetRangeUser(0.0,1.5*hmc_probejetpt[0][j][i]->GetMaximum());
+
+    for(int bin=0; bin<6; bin++){
+      hmc_probejetpt[bin][j][i]->SetLineWidth(bin+1);    
+      int LineStyle = 1;
+      if(pt_binning_var_name[bin]=="__pT_ave_GEN__" || pt_binning_var_name[bin]=="__pT_tag_GEN__" || pt_binning_var_name[bin]=="__pT_probe_GEN__"){
+	LineStyle = 2 ;
+	hmc_probejetpt[bin][j][i]->SetLineColor(kRed-1+bin);
+      }
+      else{
+	hmc_probejetpt[bin][j][i]->SetLineColor(kGreen-1+bin);
+      }
+      hmc_probejetpt[bin][j][i]->SetLineStyle(LineStyle);
+      leg_ptprobereco_norm->AddEntry(hmc_probejetpt[bin][j][i],pt_binning_var_str[bin],"L");
+      hmc_probejetpt[bin][j][i]->Draw("HIST SAME");
+    }
+    //    gPad->SetLogx();
+    leg_ptprobereco_norm->Draw();
+    TLine *ptlow_line = new TLine(pt_bins[j],0,pt_bins[j],1.4*hmc_probejetpt[2][j][i]->GetMaximum());
+    TLine *ptup_line = new TLine(pt_bins[j+1],0,pt_bins[j+1],1.4*hmc_probejetpt[2][j][i]->GetMaximum());
+    ptlow_line->SetLineColor(kGray);
+    ptlow_line->SetLineStyle(3);
+    ptlow_line->SetLineWidth(2);
+    ptup_line->SetLineColor(kGray);
+    ptup_line->SetLineStyle(3);
+    ptup_line->SetLineWidth(2);
+    ptlow_line->Draw();
+    ptup_line->Draw();
+    c_ptprobereco_norm->SaveAs(CorrectionObject::_outpath+"plots/control/GenResponse_pTprobeRECOnorm__allPtbinsAtOnePlot_"+ CorrectionObject::_generator_tag + "_eta_" + eta_range2[i] + "_" + eta_range2[i+1] + "_pt_"+pt_range[j]+ "_"+pt_range[j+1]+ "__"+ flavor + ".pdf");
+    }
+  }
+
+  //Store <p$_{T}^{probe,GEN}$>/<Pt binning>
+  for(int i=0; i<n_eta-1; i++){
+    for(int j=0; j<n_pt-1; j++){
+
+      TLegend *leg_ptprobegen_norm;
+      leg_ptprobegen_norm = new TLegend(0.36,0.65,0.91,0.90,"","brNDC");//x+0.1
+      leg_ptprobegen_norm->SetNColumns(2);
+      leg_ptprobegen_norm->SetBorderSize(0);
+      leg_ptprobegen_norm->SetTextSize(0.030);
+      leg_ptprobegen_norm->SetFillColor(10);
+      leg_ptprobegen_norm->SetFillStyle(0);
+      leg_ptprobegen_norm->SetLineColor(1);
+      leg_ptprobegen_norm->SetTextFont(42);
+      leg_ptprobegen_norm->SetHeader("p^{probe,GEN}_{T}/p^{binning}_{T} _"+altitle+", "+eta_range[i]+"#leq|#eta|<"+eta_range[i+1]+" "+flavorLabel); 
+      TCanvas* c_ptprobegen_norm = new TCanvas();
+      tdrCanvas(c_ptprobegen_norm,"c_ptprobegen_norm",h,4,10,true,CorrectionObject::_lumitag);
+      h->GetXaxis()->SetTitle("p_{T} [GeV] (see label)");
+      h->GetXaxis()->SetTitleSize(0.05);
+      h->GetXaxis()->SetLimits(0,2);
+      h->GetYaxis()->SetRangeUser(0,1.4*hmc_probegenjetpt[2][j][i]->GetMaximum());
+
+    for(int bin=0; bin<6; bin++){
+      hmc_probegenjetpt[bin][j][i]->SetLineColor(kBlue-1+bin);
+      hmc_probegenjetpt[bin][j][i]->SetLineWidth(bin+1);
+      if(pt_binning_var_name[bin]=="__pT_ave_RECO__" || pt_binning_var_name[bin]=="__pT_tag_RECO__" || pt_binning_var_name[bin]=="__pT_probe_RECO__"){
+	hmc_probegenjetpt[bin][j][i]->SetLineColor(kBlue-1+bin);
+      }
+
+     
+      int LineStyle = 1;
+      if(pt_binning_var_name[bin]=="__pT_ave_GEN__" || pt_binning_var_name[bin]=="__pT_tag_GEN__" || pt_binning_var_name[bin]=="__pT_probe_GEN__"){
+	LineStyle = 2 ;
+	hmc_probegenjetpt[bin][j][i]->SetLineColor(kRed-1+bin);
+      }
+      hmc_probegenjetpt[bin][j][i]->SetLineStyle(LineStyle);
+      leg_ptprobegen_norm->AddEntry(hmc_probegenjetpt[bin][j][i],pt_binning_var_str[bin],"L");
+      hmc_probegenjetpt[bin][j][i]->Draw("HIST SAME");
+    }
+    leg_ptprobegen_norm->Draw();
+    TLine *ptlow_line = new TLine(pt_bins[j],0,pt_bins[j],1.4*hmc_probegenjetpt[2][j][i]->GetMaximum());
+    TLine *ptup_line = new TLine(pt_bins[j+1],0,pt_bins[j+1],1.4*hmc_probegenjetpt[2][j][i]->GetMaximum());
+    ptlow_line->SetLineColor(kGray);
+    ptlow_line->SetLineStyle(3);
+    ptlow_line->SetLineWidth(2);
+    ptup_line->SetLineColor(kGray);
+    ptup_line->SetLineStyle(3);
+    ptup_line->SetLineWidth(2);
+    ptlow_line->Draw();
+    ptup_line->Draw();
+    c_ptprobegen_norm->SaveAs(CorrectionObject::_outpath+"plots/control/GenResponse_pTprobeGENnorm__allPtbinsAtOnePlot_"+ CorrectionObject::_generator_tag + "_eta_" + eta_range2[i] + "_" + eta_range2[i+1] + "_pt_"+pt_range[j]+ "_"+pt_range[j+1]+ "__"+ flavor + ".pdf");
+
+    cout<<"eta_range2: "<<eta_range2[i]<<" "<<eta_range2[i+1]<<" pt range: "<<pt_range[j]<<" "<<+pt_range[j+1];
+    pair <double,double> p_ptProbeReco = GetValueAndError(hmc_probejetpt_notnorm[3][j][i]);
+    pair <double,double> p_ptProbeGen = GetValueAndError(hmc_probegenjetpt_notnorm[3][j][i]);
+    pair <double,double> p_norm_fact = GetValueAndError(hmc_probejetpt[3][j][i]);
+    pair <double,double> p_ptProbeReco_norm = GetValueAndError(hmc_probejetpt[3][j][i]);
+    pair <double,double> p_ptProbeGen_norm = GetValueAndError(hmc_probegenjetpt[3][j][i]);
+    double ptProbeReco_val = p_ptProbeReco.first;
+    double ptProbeGen_val = p_ptProbeGen.first;
+    double ptProbeReco_norm_val = p_ptProbeReco_norm.first;
+    double ptProbeGen_norm_val = p_ptProbeGen_norm.first;
+    double ratio1 = ptProbeReco_val/ptProbeGen_val;
+    double ratio2 =  ptProbeReco_norm_val/ptProbeGen_norm_val;
+    cout<<"ptProbeReco over ptProbeGen = "<<ratio1<<" (ptProbeReco_bin)/(ptProbeGen_bin)"<<ratio2<<endl;
+
+    }
+  }
 
   double val_probejet_pt[6][n_eta-1][n_pt-1]; //value at pt,eta
   double err_probejet_pt[6][n_eta-1][n_pt-1]; //value at pt,eta
@@ -250,38 +571,34 @@ void CorrectionObject::GenResponsePlots_AllPtbinningOnePlot(TString flavor="All"
       for(int j=0; j<n_pt-1; j++){
 	pair <double,double> normpt_mc = GetValueAndError(hmc_normjetpt[bin][j][i]); //<pt_bin> value used for normalisation
 
-	if(i==0){
-	  cout<<pt_binning_var_name[bin]<<endl;
-	  cout<<" normpt_mc = "<<normpt_mc.first<<" +/- "<<normpt_mc.second<<endl;
-	}
+	// if(i==0){
+	//   cout<<pt_binning_var_name[bin]<<endl;
+	//   cout<<" normpt_mc = "<<normpt_mc.first<<" +/- "<<normpt_mc.second<<endl;
+	// }
 	pair <double,double> probejetpt_mc = GetValueAndError(hmc_probejetpt[bin][j][i]);
 	val_probejet_pt[bin][i][j] = probejetpt_mc.first*normpt_mc.first;
 	err_probejet_pt[bin][i][j] =  ErrorPropagation_AB(probejetpt_mc,normpt_mc);
 	pair <double,double> probegenjetpt_mc = GetValueAndError(hmc_probegenjetpt[bin][j][i]);
-	if(i==0)	
-	  cout<<" probegenjetpt_mc = "<<probegenjetpt_mc.first<<" +/- "<<probegenjetpt_mc.second<<endl;
+	// if(i==0)	
+	//   cout<<" probegenjetpt_mc = "<<probegenjetpt_mc.first<<" +/- "<<probegenjetpt_mc.second<<endl;
 	val_probegenjet_pt[bin][i][j] = probegenjetpt_mc.first*normpt_mc.first;
 	err_probegenjet_pt[bin][i][j] = ErrorPropagation_AB(probegenjetpt_mc,normpt_mc);
-	// pair <double,double> probepartonjetpt_mc = GetValueAndError(hmc_probepartonjetpt[bin][j][i]);
-	// val_probepartonjet_pt[bin][i][j] = probepartonjetpt_mc.first*normpt_mc.first;
-	// err_probepartonjet_pt[bin][i][j] = ErrorPropagation_AB(probepartonjetpt_mc,normpt_mc);
+
 
 	pair <double,double> tagjetpt_mc = GetValueAndError(hmc_tagjetpt[bin][j][i]);
 	val_tagjet_pt[bin][i][j] = tagjetpt_mc.first*normpt_mc.first;
 	err_tagjet_pt[bin][i][j] = ErrorPropagation_AB(tagjetpt_mc,normpt_mc);
 	pair <double,double> taggenjetpt_mc = GetValueAndError(hmc_taggenjetpt[bin][j][i]);
-	if(i==0)	
-	  cout<<" taggenjetpt_mc = "<<taggenjetpt_mc.first<<" +/- "<<taggenjetpt_mc.second<<endl;
+	// if(i==0)	
+	//   cout<<" taggenjetpt_mc = "<<taggenjetpt_mc.first<<" +/- "<<taggenjetpt_mc.second<<endl;
 
 	val_taggenjet_pt[bin][i][j] = taggenjetpt_mc.first*normpt_mc.first;
 	err_taggenjet_pt[bin][i][j] = ErrorPropagation_AB(taggenjetpt_mc,normpt_mc);
-	if(i==0)	
-	  cout<<" val_probegenjet_pt[bin][i][j] = "<<val_probegenjet_pt[bin][i][j]<<" val_taggenjet_pt[bin][i][j] = "<<val_taggenjet_pt[bin][i][j]<<endl;
-	if(i==0)
-	  cout<<" "<<endl;
-	// pair <double,double> tagpartonjetpt_mc = GetValueAndError(hmc_tagpartonjetpt[bin][j][i]);
-	// val_tagpartonjet_pt[bin][i][j] = tagpartonjetpt_mc.first*normpt_mc.first;
-	// err_tagpartonjet_pt[bin][i][j] = ErrorPropagation_AB(tagpartonjetpt_mc,normpt_mc);
+	// if(i==0)	
+	//   cout<<" val_probegenjet_pt[bin][i][j] = "<<val_probegenjet_pt[bin][i][j]<<" val_taggenjet_pt[bin][i][j] = "<<val_taggenjet_pt[bin][i][j]<<endl;
+	// if(i==0)
+	//   cout<<" "<<endl;
+
 
 
 	pair <double,double> B_RECO_mc = GetValueAndError(hmc_B_RECO[bin][j][i]);
@@ -326,8 +643,8 @@ void CorrectionObject::GenResponsePlots_AllPtbinningOnePlot(TString flavor="All"
 	  pair<double,double> tmp1; tmp1.first = val_probegenjet_pt[bin][i][j]; tmp1.second = err_probegenjet_pt[bin][i][j];
 	  pair<double,double> tmp2; tmp2.first = val_taggenjet_pt[bin][i][j]; tmp2.second = err_taggenjet_pt[bin][i][j];
 	  err_probeGEN_tagGEN[bin][i][j] = ErrorPropagation_AoverB(tmp1,tmp2);
-	  if(i==0) 
-	    cout<<"val_probeGEN_tagGEN[bin][i][j] = "<<val_probeGEN_tagGEN[bin][i][j]<<endl;
+	  // if(i==0) 
+	  //   cout<<"val_probeGEN_tagGEN[bin][i][j] = "<<val_probeGEN_tagGEN[bin][i][j]<<endl;
 	}
 	else{
 	  val_probeGEN_tagGEN[bin][i][j] = 0;  err_probeGEN_tagGEN[bin][i][j] =0;
@@ -337,15 +654,6 @@ void CorrectionObject::GenResponsePlots_AllPtbinningOnePlot(TString flavor="All"
   }
 
 
-  //dummy for tdrCanvas
-  TH1D *h = new TH1D("h",";dummy;",41,0,5.191);
-  h->SetMaximum(1.2);
-  h->SetMinimum(0.8);
-
-  TH1D *hEF = new TH1D("hEF",";dummy;",1000,0,5.191);
-
-  TCanvas* c_0 = new TCanvas();
-  tdrCanvas(c_0,"c_0",h,4,10,true,CorrectionObject::_lumitag);
 
   for(int i=0; i<n_eta-1; i++){
     //Create and fill TGraphErrors
@@ -356,9 +664,7 @@ void CorrectionObject::GenResponsePlots_AllPtbinningOnePlot(TString flavor="All"
       zero[i]=(pt_bins[i+1]-pt_bins[i])/2 ;
     }
 
-    TString alVal;
-    alVal.Form("%0.2f\n",alpha_cut);
-    TString altitle = "{#alpha<"+alVal+"}";
+   
     TLegend *leg_rel;
     //    leg_rel = new TLegend(0.45,0.15,0.91,0.49,"","brNDC");//x+0.1
     leg_rel = new TLegend(0.36,0.65,0.91,0.90,"","brNDC");//x+0.1
@@ -383,7 +689,14 @@ void CorrectionObject::GenResponsePlots_AllPtbinningOnePlot(TString flavor="All"
       graph_probeGEN_tagGEN[bin]   = (TGraphErrors*)CleanEmptyPoints(graph_probeGEN_tagGEN[bin]);
       graph_probeGEN_tagGEN[bin]->SetTitle("");
       graph_probeGEN_tagGEN[bin]->SetMarkerColor(kGreen-1+bin);
-      graph_probeGEN_tagGEN[bin]->SetMarkerStyle(20+bin);
+      int MarkerStyle = 20;
+      if(pt_binning_var_name[bin]=="__pT_ave_RECO__") MarkerStyle = 20;
+      if(pt_binning_var_name[bin]=="__pT_ave_GEN__") MarkerStyle = 24;
+      if(pt_binning_var_name[bin]=="__pT_tag_GEN__") MarkerStyle = 26;
+      if(pt_binning_var_name[bin]=="__pT_probe_GEN__") MarkerStyle = 32;
+      if(pt_binning_var_name[bin]=="__pT_tag_RECO__") MarkerStyle = 22;
+      if(pt_binning_var_name[bin]=="__pT_probe_RECO__") MarkerStyle = 23;
+      graph_probeGEN_tagGEN[bin]->SetMarkerStyle(MarkerStyle);
       graph_probeGEN_tagGEN[bin]->SetMarkerSize(1.8);
       graph_probeGEN_tagGEN[bin]->SetLineColor(kGreen-1+bin);
       leg_rel->AddEntry(graph_probeGEN_tagGEN[bin],pt_binning_var_str[bin],"P");
@@ -417,7 +730,15 @@ void CorrectionObject::GenResponsePlots_AllPtbinningOnePlot(TString flavor="All"
       graph_probeRECO_tagRECO[bin]   = (TGraphErrors*)CleanEmptyPoints(graph_probeRECO_tagRECO[bin]);
       graph_probeRECO_tagRECO[bin]->SetTitle("");
       graph_probeRECO_tagRECO[bin]->SetMarkerColor(kRed-1+bin);
-      graph_probeRECO_tagRECO[bin]->SetMarkerStyle(20+bin);
+      int MarkerStyle = 20;
+      if(pt_binning_var_name[bin]=="__pT_ave_RECO__") MarkerStyle = 20;
+      if(pt_binning_var_name[bin]=="__pT_ave_GEN__") MarkerStyle = 24;
+      if(pt_binning_var_name[bin]=="__pT_tag_GEN__") MarkerStyle = 26;
+      if(pt_binning_var_name[bin]=="__pT_probe_GEN__") MarkerStyle = 32;
+      if(pt_binning_var_name[bin]=="__pT_tag_RECO__") MarkerStyle = 22;
+      if(pt_binning_var_name[bin]=="__pT_probe_RECO__") MarkerStyle = 23;
+
+      graph_probeRECO_tagRECO[bin]->SetMarkerStyle(MarkerStyle);
       graph_probeRECO_tagRECO[bin]->SetMarkerSize(1.8);
       graph_probeRECO_tagRECO[bin]->SetLineColor(kRed-1+bin);
       leg_reco->AddEntry(graph_probeRECO_tagRECO[bin],pt_binning_var_str[bin],"P");
@@ -425,8 +746,49 @@ void CorrectionObject::GenResponsePlots_AllPtbinningOnePlot(TString flavor="All"
     }
     gPad->SetLogx();
     leg_reco->Draw();
-
     c_reco->SaveAs(CorrectionObject::_outpath+"plots/control/GenResponse_probeRECO_tagRECO__allPtbinsAtOnePlot_"+ CorrectionObject::_generator_tag + "_eta_" + eta_range2[i] + "_" + eta_range2[i+1] +"_"+ flavor + ".pdf");
+
+    TLegend *leg_recoTogen;
+    leg_recoTogen = new TLegend(0.36,0.65,0.91,0.90,"","brNDC");//x+0.1
+    leg_recoTogen->SetNColumns(2);
+    leg_recoTogen->SetBorderSize(0);
+    leg_recoTogen->SetTextSize(0.030);
+    leg_recoTogen->SetFillColor(10);
+    leg_recoTogen->SetFillStyle(0);
+    leg_recoTogen->SetLineColor(1);
+    leg_recoTogen->SetTextFont(42);
+    leg_recoTogen->SetHeader("(<p^{probe,RECO}_{T}>/<p^{probe,GEN}_{T}>)_"+altitle+", "+eta_range[i]+"#leq|#eta|<"+eta_range[i+1]+" "+flavorLabel); 
+    TCanvas* c_recoTogen = new TCanvas();
+    tdrCanvas(c_recoTogen,"c_recoTogen",h,4,10,true,CorrectionObject::_lumitag);
+    h->GetXaxis()->SetTitle("p_{T} [GeV] (see label)");
+    h->GetXaxis()->SetTitleSize(0.05);
+    h->GetXaxis()->SetLimits(30,pt_bins[n_pt-1]+100);
+    h->GetYaxis()->SetRangeUser(0.70,1.30);
+
+    TGraphErrors *graph_probeRECO_probeGEN[6];
+    for(int bin=0; bin<6; bin++){
+      graph_probeRECO_probeGEN[bin]   = new TGraphErrors(n_pt-1, xbin_tgraph, val_probeRECO_probeGEN[bin][i], zero, err_probeRECO_probeGEN[bin][i]);
+      graph_probeRECO_probeGEN[bin]   = (TGraphErrors*)CleanEmptyPoints(graph_probeRECO_probeGEN[bin]);
+      graph_probeRECO_probeGEN[bin]->SetTitle("");
+      graph_probeRECO_probeGEN[bin]->SetMarkerColor(kRed-1+bin);
+      int MarkerStyle = 20;
+      if(pt_binning_var_name[bin]=="__pT_ave_RECO__") MarkerStyle = 20;
+      if(pt_binning_var_name[bin]=="__pT_ave_GEN__") MarkerStyle = 24;
+      if(pt_binning_var_name[bin]=="__pT_tag_GEN__") MarkerStyle = 26;
+      if(pt_binning_var_name[bin]=="__pT_probe_GEN__") MarkerStyle = 32;
+      if(pt_binning_var_name[bin]=="__pT_tag_RECO__") MarkerStyle = 22;
+      if(pt_binning_var_name[bin]=="__pT_probe_RECO__") MarkerStyle = 23;
+
+      graph_probeRECO_probeGEN[bin]->SetMarkerStyle(MarkerStyle);
+      graph_probeRECO_probeGEN[bin]->SetMarkerSize(1.8);
+      graph_probeRECO_probeGEN[bin]->SetLineColor(kRed-1+bin);
+      leg_recoTogen->AddEntry(graph_probeRECO_probeGEN[bin],pt_binning_var_str[bin],"P");
+      graph_probeRECO_probeGEN[bin]->Draw("P SAME");
+    }
+    gPad->SetLogx();
+    leg_recoTogen->Draw();
+
+    c_recoTogen->SaveAs(CorrectionObject::_outpath+"plots/control/GenResponse_probeRECO_probeGEN__allPtbinsAtOnePlot_"+ CorrectionObject::_generator_tag + "_eta_" + eta_range2[i] + "_" + eta_range2[i+1] +"_"+ flavor + ".pdf");
 
 
     TLegend *leg_mpf;
@@ -453,7 +815,14 @@ void CorrectionObject::GenResponsePlots_AllPtbinningOnePlot(TString flavor="All"
       graph_MPF_RECO[bin]   = (TGraphErrors*)CleanEmptyPoints(graph_MPF_RECO[bin]);
       graph_MPF_RECO[bin]->SetTitle("");
       graph_MPF_RECO[bin]->SetMarkerColor(kPink-1+bin);
-      graph_MPF_RECO[bin]->SetMarkerStyle(20+bin);
+      int MarkerStyle = 20;
+      if(pt_binning_var_name[bin]=="__pT_ave_RECO__") MarkerStyle = 20;
+      if(pt_binning_var_name[bin]=="__pT_ave_GEN__") MarkerStyle = 24;
+      if(pt_binning_var_name[bin]=="__pT_tag_GEN__") MarkerStyle = 26;
+      if(pt_binning_var_name[bin]=="__pT_probe_GEN__") MarkerStyle = 32;
+      if(pt_binning_var_name[bin]=="__pT_tag_RECO__") MarkerStyle = 22;
+      if(pt_binning_var_name[bin]=="__pT_probe_RECO__") MarkerStyle = 23;
+      graph_MPF_RECO[bin]->SetMarkerStyle(MarkerStyle);
       graph_MPF_RECO[bin]->SetMarkerSize(1.8);
       graph_MPF_RECO[bin]->SetLineColor(kPink-1+bin);
       leg_mpf->AddEntry(graph_MPF_RECO[bin],pt_binning_var_str[bin],"P");
@@ -489,7 +858,14 @@ void CorrectionObject::GenResponsePlots_AllPtbinningOnePlot(TString flavor="All"
       graph_MPF_GEN[bin]   = (TGraphErrors*)CleanEmptyPoints(graph_MPF_GEN[bin]);
       graph_MPF_GEN[bin]->SetTitle("");
       graph_MPF_GEN[bin]->SetMarkerColor(kBlue-1+bin);
-      graph_MPF_GEN[bin]->SetMarkerStyle(20+bin);
+      int MarkerStyle = 20;
+      if(pt_binning_var_name[bin]=="__pT_ave_RECO__") MarkerStyle = 20;
+      if(pt_binning_var_name[bin]=="__pT_ave_GEN__") MarkerStyle = 24;
+      if(pt_binning_var_name[bin]=="__pT_tag_GEN__") MarkerStyle = 26;
+      if(pt_binning_var_name[bin]=="__pT_probe_GEN__") MarkerStyle = 32;
+      if(pt_binning_var_name[bin]=="__pT_tag_RECO__") MarkerStyle = 22;
+      if(pt_binning_var_name[bin]=="__pT_probe_RECO__") MarkerStyle = 23;
+      graph_MPF_GEN[bin]->SetMarkerStyle(MarkerStyle);
       graph_MPF_GEN[bin]->SetMarkerSize(1.8);
       graph_MPF_GEN[bin]->SetLineColor(kBlue-1+bin);
       leg_mpf_gen->AddEntry(graph_MPF_GEN[bin],pt_binning_var_str[bin],"P");

@@ -10,7 +10,7 @@
 <!--<!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JEC_Summer16_V8_ReWeighted/">-->
 <!-- <!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JEC_Summer16_V8_NotWeighted_CHS_Zpv_PUreweight80000/">-->
 <!--<!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JEC_Summer16_V8_NotWeighted_CHS_Zpv_PUreweight_jet3above25GeV/">-->
-<!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JERC/FlavorStudy/JEC_Summer16_07Aug2017_V1_w_JER_SFs_woEtaPhiCleaning__dRpartonMatching_0_8/">
+<!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JERC/FlavorStudy/JEC_Summer16_07Aug2017_V1_w_JER_SFs_woEtaPhiCleaning__dRpartonMatching_0_8__NoDiJetSel/">
 
 <!ENTITY b_closuretest       "false">
 <!ENTITY jec_version         "Summer16_07Aug2017_V1">
@@ -79,7 +79,7 @@
 
 <!--
 <ConfigParse NEventsBreak="0" FileSplit="10" AutoResubmit="5"/>
-<ConfigSGE RAM ="4" DISK ="3" Mail="anastasia.karavdina@desy.de" Notification="as" Workdir="/nfs/dust/cms/user/karavdia/workdir_Summer16_07Aug2017_RunBCDEFGH_nominal_AK4CHS_Legacy"/>
+<ConfigSGE RAM ="4" DISK ="3" Mail="anastasia.karavdina@desy.de" Notification="as" Workdir="/nfs/dust/cms/user/karavdia/JERC/workdir_Summer16_07Aug2017_RunBCDEFGH_nominal_AK4CHS_Legacy"/>
 -->
 
 <!-- OutputLevel controls which messages are printed; set to VERBOSE or DEBUG for more verbosity, to WARNING or ERROR for less -->
@@ -361,7 +361,7 @@
        <!--     <Item Name="userEventFormat" Value="true" /> -->
 	  <!-- <Item Name="userEventFormat" Value="false" /> -->
             <!-- the class name of the AnalysisModule subclasses to run: -->
-            <Item Name="AnalysisModule" Value="TestModule" /> 
+            <Item Name="AnalysisModule" Value="TestNoDijetSelModule" /> 
 	<!--    <Item Name="MCreweight" Value="false" /> -->  
 
         </UserConfig>

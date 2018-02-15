@@ -42,37 +42,30 @@ int main(){
   //  TString input_path  = "/nfs/dust/cms/user/karavdia/JEC_Summer16_V8_ForWeights/"; 
    TString weight_path  = "/nfs/dust/cms/user/karavdia/JEC_Summer16_V8_ForWeights/"; 
 
-  
+   //   TString input_path  = "/nfs/dust/cms/user/karavdia/JERC/FlavorStudy/JEC_Summer16_07Aug2017_V1_w_JER_SFs_woEtaPhiCleaning__dRpartonMatching_0_8/";//AK4CHS, cone size (gen jet, parton) study
+   //   TString input_path  = "/nfs/dust/cms/user/karavdia/JERC/FlavorStudy/JEC_Summer16_07Aug2017_V1_w_JER_SFs_woEtaPhiCleaning__dRpartonMatching_0_8__NoDiJetSel/";//AK4CHS without DiJet selection 
 
-   //   TString input_path  = "/nfs/dust/cms/user/karavdia/JEC_Summer16_V8_NotWeighted_CHS_Zpv_PUreweight_3rdJetFlavor__w_JER_woEtaPhiCleaning_MEonlyGENparticle_AK8CHS_dRpartonConeSize/";//AK8CHS, all GEN particles
-      TString input_path  = "/nfs/dust/cms/user/karavdia/JERC/FlavorStudy/JEC_Summer16_07Aug2017_V1_w_JER_SFs_woEtaPhiCleaning/";//AK4CHS, cone size (gen jet, parton) study
-   //   TString input_path  = "/nfs/dust/cms/user/karavdia/JERC_flavorStudies/JEC_Summer16_03Feb2017_V4_AK4CHS_JERup/";//AK4CHS, JER up
-   //   TString input_path  = "/nfs/dust/cms/user/karavdia/JERC_flavorStudies/JEC_Summer16_03Feb2017_V4_AK4CHS_JERdown/";//AK4CHS, JER down
+   //     TString input_path  = "/nfs/dust/cms/user/karavdia/JERC/FlavorStudy/JEC_Summer16_07Aug2017_V1_w_JER_SFs_woEtaPhiCleaning__dRpartonMatching_0_8_FlatQCD/"; //x-check with Flat QCD
 
-  /*
-  TString input_path   ="/nfs/dust/cms/user/multh/JEC/2016Legacy/Residuals/Summer16_07Aug2017_V4/AK4CHS/MC_NoReWeighted_CHS_NoEtaCleaning/";
-  TString weight_path  ="/nfs/dust/cms/user/multh/JEC/2016Legacy/Residuals/Summer16_07Aug2017_V4/AK4CHS/MC_NoReWeighted_CHS_NoEtaCleaning/";
-  */
-  
-  // TString input_path   = "/nfs/dust/cms/user/multh/JEC/2016ReReco/Residuals/Summer16_03Feb2017_V3/AK4CHS/MC_NoReweighted_CHS_NewSF_Monitoring/"; 
-  // TString weight_path  = "/nfs/dust/cms/user/multh/JEC/2016ReReco/Residuals/Summer16_03Feb2017_V3/AK4CHS/MC_NoReweighted_CHS_NewSF_Monitoring/"; 
-  
+   //      TString input_path  = "/nfs/dust/cms/user/karavdia/JERC/FlavorStudy/JEC_Summer16_07Aug2017_V1_w_JER_SFs_woEtaPhiCleaning__dRpartonMatching_0_8_FlatQCD_RECLUSTER_L1RC/"; //x-check with Flat QCD
+
+      TString input_path  = "/nfs/dust/cms/user/karavdia/JERC/FlavorStudy/JEC_Summer16_07Aug2017_V1_w_JER_SFs_woEtaPhiCleaning__dRpartonMatching_0_8_FlatQCD_RECLUSTER_20GeVTypeIMET/"; //x-check with Flat QCD
+
+   //   TString input_path  = "/nfs/dust/cms/user/karavdia/JERC/FlavorStudy/JEC_Summer16_07Aug2017_V1_w_JER_SFs_woEtaPhiCleaning__dRpartonMatching_0_8_removeLowPtbins/";
+
+   //      TString input_path  = "/nfs/dust/cms/user/karavdia/JERC/FlavorStudy/JEC_Summer16_07Aug2017_V1_w_JER_SFs_wHCALlegacyCleaning07122017__dRpartonMatching_0_8/";//AK4CHS, cone size (gen jet, parton) study with DATA cleaned from HCAL hot towers 
+
   //eine Klasse: enthaelt Info ueber runnr, Generator, collection, Strings zu MC/DATA-files, memberfunctions: controlPlots, kFSR etc.
     vector<CorrectionObject> Objects;
   
 
-      // Objects.emplace_back(CorrectionObject("BCDEFGH", generator,collection, input_path, weight_path, closure_test, trigger_fwd, trigger_central));
-      // Objects.emplace_back(CorrectionObject("BCD", generator,collection, input_path, weight_path, closure_test, trigger_fwd, trigger_central));
-      // Objects.emplace_back(CorrectionObject("EFearly", generator,collection, input_path, weight_path, closure_test, trigger_fwd, trigger_central));
-      // Objects.emplace_back(CorrectionObject("FlateG", generator,collection, input_path, weight_path, closure_test, trigger_fwd, trigger_central));
-      // Objects.emplace_back(CorrectionObject("H", generator,collection, input_path, weight_path, closure_test, trigger_fwd, trigger_central));
-
-    Objects.emplace_back(CorrectionObject("BCDEFGH", generator,collection, input_path, weight_path, closure_test, trigger_fwd, trigger_central));
+    
+    //    Objects.emplace_back(CorrectionObject("BCDEFGH", generator,collection, input_path, weight_path, closure_test, trigger_fwd, trigger_central));
     //    Objects.emplace_back(CorrectionObject("BCD", generator,collection, input_path, weight_path, closure_test, trigger_fwd, trigger_central));
     //    Objects.emplace_back(CorrectionObject("EFearly", generator,collection, input_path, weight_path, closure_test, trigger_fwd, trigger_central));
     //    Objects.emplace_back(CorrectionObject("FlateG", generator,collection, input_path, weight_path, closure_test, trigger_fwd, trigger_central));
-    //    Objects.emplace_back(CorrectionObject("H", generator,collection, input_path, weight_path, closure_test, trigger_fwd, trigger_central));
- 
+    Objects.emplace_back(CorrectionObject("H", generator,collection, input_path, weight_path, closure_test, trigger_fwd, trigger_central));
+        
  
     cout << "testobject is " << Objects[0] << endl;
 
@@ -102,56 +95,56 @@ int main(){
 
       for(unsigned int i=0; i<Objects.size(); i++) Objects[i].L2ResOutput();
 // // // //       // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].L2ResOutput_eta();
-// // // //    // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].InputForGlobalFit(); //Mikkos Macro 
-// // // //    // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].InputForGlobalFit_eta_0_13(); //Mikkos Macro
+//      for(unsigned int i=0; i<Objects.size(); i++) Objects[i].InputForGlobalFit(); Mikkos Macro 
+// // //    // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].InputForGlobalFit_eta_0_13(); //Mikkos Macro
       
       for(unsigned int i=0; i<Objects.size(); i++) Objects[i].FinalControlPlots_CorrectFormulae();
       for(unsigned int i=0; i<Objects.size(); i++) Objects[i].MatchingPlots();
-     // ////// GenResponsePlots with params: flavor={"All","QQ","QG","GQ","GQ"}, ptbinning={"pT_ave_RECO","pT_tag_GEN","pT_probe_GEN","pT_ave_GEN"}
-      for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("All","pT_ave_RECO");
-      // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("All","pT_tag_GEN");
-      // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("All","pT_probe_GEN");
-      // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("All","pT_ave_GEN");
+// //      // ////// GenResponsePlots with params: flavor={"All","QQ","QG","GQ","GQ"}, ptbinning={"pT_ave_RECO","pT_tag_GEN","pT_probe_GEN","pT_ave_GEN"}
+//       for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("All","pT_ave_RECO");
+//       for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("All","pT_tag_GEN");
+//       for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("All","pT_probe_GEN");
+//       for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("All","pT_ave_GEN");
 
-      // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("QQ","pT_ave_RECO");
-      // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("QQ","pT_tag_GEN");
-      // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("QQ","pT_probe_GEN");
-      // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("QQ","pT_ave_GEN");
+//       for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("QQ","pT_ave_RECO");
+//       for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("QQ","pT_tag_GEN");
+//       for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("QQ","pT_probe_GEN");
+//       for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("QQ","pT_ave_GEN");
 
-      // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("QG","pT_ave_RECO");
-      // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("QG","pT_tag_GEN");
-      // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("QG","pT_probe_GEN");
-      // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("QG","pT_ave_GEN");
+//       for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("QG","pT_ave_RECO");
+//       for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("QG","pT_tag_GEN");
+//       for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("QG","pT_probe_GEN");
+//       for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("QG","pT_ave_GEN");
 
-      // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("GQ","pT_ave_RECO");
-      // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("GQ","pT_tag_GEN");
-      // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("GQ","pT_probe_GEN");
-      // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("GQ","pT_ave_GEN");
+//       for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("GQ","pT_ave_RECO");
+//       for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("GQ","pT_tag_GEN");
+//       for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("GQ","pT_probe_GEN");
+//       for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("GQ","pT_ave_GEN");
 
-      // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("GG","pT_ave_RECO");
-      // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("GG","pT_tag_GEN");
-      // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("GG","pT_probe_GEN");
-      // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("GG","pT_ave_GEN");
+//       for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("GG","pT_ave_RECO");
+//       for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("GG","pT_tag_GEN");
+//       for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("GG","pT_probe_GEN");
+//       for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots("GG","pT_ave_GEN");
 
-      for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots_AllPtbinningOnePlot("All"); //All, QQ, QG, GG, GQ
-      // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots_AllPtbinningOnePlot("QQ"); //All, QQ, QG, GG, GQ
-      // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots_AllPtbinningOnePlot("QG"); //All, QQ, QG, GG, GQ
-      // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots_AllPtbinningOnePlot("GQ"); //All, QQ, QG, GG, GQ
-      // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots_AllPtbinningOnePlot("GG"); //All, QQ, QG, GG, GQ
+//       for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots_AllPtbinningOnePlot("All"); // //All, QQ, QG, GG, GQ
+//       for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots_AllPtbinningOnePlot("QQ"); //All, QQ, QG, GG, GQ
+//       for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots_AllPtbinningOnePlot("QG"); //All, QQ, QG, GG, GQ
+//       for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots_AllPtbinningOnePlot("GQ"); //All, QQ, QG, GG, GQ
+//       for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots_AllPtbinningOnePlot("GG"); //All, QQ, QG, GG, GQ
 
-// //    // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].FinalControlPlots_CorrectFormulae_eta(); //extended eta range to negative Values
+// // // //    // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].FinalControlPlots_CorrectFormulae_eta(); //extended eta range to negative Values
  
-// // // // //Run all macros to calculate L2Res corrections 
-// // // //       // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].FullCycle_CorrectFormulae();
-// // // //       // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].FullCycle_CorrectFormulae_eta();  //For Closure Test
+// // // // // // //Run all macros to calculate L2Res corrections 
+// // // // // //       // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].FullCycle_CorrectFormulae();
+// // // // // //       // for(unsigned int i=0; i<Objects.size(); i++) Objects[i].FullCycle_CorrectFormulae_eta();  //For Closure Test
  
-// // // // //Macros to compare different Runs 
-// // // //    // Objects[0].L2ResAllRuns();
-// // // //    // Objects[0].L2ResOverlay(true);
-// // // //    // Objects[0].L2ResOverlay(false);
+// // // // // //Macros to compare different Runs 
+// // // // //    // Objects[0].L2ResAllRuns();
+// // // // //    // Objects[0].L2ResOverlay(true);
+// // // // //    // Objects[0].L2ResOverlay(false);
 
-// // // // //Compare up/nominal/down Variations of JER
-// // // //    // Objects[0].L2Res_JEC();
+// // // // // //Compare up/nominal/down Variations of JER
+// // // // //    // Objects[0].L2Res_JEC();
 
   cout << endl << "Closing MC and DATA files." << endl;
   for(unsigned int i=0; i<Objects.size(); i++) Objects[i].CloseFiles();

@@ -10,7 +10,7 @@
 <!--<!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JEC_Summer16_V8_ReWeighted/">-->
 <!-- <!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JEC_Summer16_V8_NotWeighted_CHS_Zpv_PUreweight80000/">-->
 <!--<!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JEC_Summer16_V8_NotWeighted_CHS_Zpv_PUreweight_jet3above25GeV/">-->
-<!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JERC/FlavorStudy/JEC_Summer16_07Aug2017_V1_w_JER_SFs_woEtaPhiCleaning__dRpartonMatching_0_8/">
+<!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JERC/FlavorStudy/JEC_Summer16_07Aug2017_V1_w_JER_SFs_woEtaPhiCleaning__dRpartonMatching_0_8_woJER/">
 
 <!ENTITY b_closuretest       "false">
 <!ENTITY jec_version         "Summer16_07Aug2017_V1">

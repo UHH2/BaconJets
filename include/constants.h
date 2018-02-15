@@ -49,6 +49,8 @@ constexpr static float s_n_Pv_z = 24.0;
 // PV is located within 2cm in xy direction from the nominal interaction point
 constexpr static float s_n_Pv_xy = 2.0;
 
+/** \brief The trigger thresholds of pt_ave **/
+constexpr static float s_eta_full = 5.2;
 
 /** \brief The trigger thresholds of pt_ave **/
 

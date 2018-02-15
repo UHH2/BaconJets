@@ -33,19 +33,19 @@
 #include "TFile.h"
 #include "TTree.h"
 
-Int_t   Runnr;
-Int_t   Eventnr;
+// Int_t   Runnr;
+// Int_t   Eventnr;
 
 using namespace std;
 using namespace uhh2;
 
 
-class TestModule: public uhh2::AnalysisModule {
+class TestNoDijetSelModule: public uhh2::AnalysisModule {
 
 public:
-  explicit TestModule(uhh2::Context&);
+  explicit TestNoDijetSelModule(uhh2::Context&);
   virtual bool process(uhh2::Event&) override;
-  ~TestModule();
+  ~TestNoDijetSelModule();
   
 protected:
 
@@ -198,7 +198,7 @@ protected:
 };
 
 
-TestModule::TestModule(uhh2::Context & ctx) :
+TestNoDijetSelModule::TestNoDijetSelModule(uhh2::Context & ctx) :
   sel(ctx)
 {
 
@@ -377,7 +377,7 @@ TestModule::TestModule(uhh2::Context & ctx) :
 	  cout << endl;
 	}
 
-	else throw runtime_error("In TestModule.cxx: Invalid JEC_Version for deriving residuals on AK4CHS, MC specified ("+JEC_Version+") ");
+	else throw runtime_error("In TestNoDijetSelModule.cxx: Invalid JEC_Version for deriving residuals on AK4CHS, MC specified ("+JEC_Version+") ");
       }
       //closure
       else{
@@ -449,7 +449,7 @@ TestModule::TestModule(uhh2::Context & ctx) :
 	  cout << endl;
 	}
 
-	else throw runtime_error("In TestModule.cxx: Invalid JEC_Version for closure test on AK4CHS, MC specified.");
+	else throw runtime_error("In TestNoDijetSelModule.cxx: Invalid JEC_Version for closure test on AK4CHS, MC specified.");
       }
     }//AK4CHS
     /*
@@ -462,7 +462,7 @@ TestModule::TestModule(uhh2::Context & ctx) :
 	  for(unsigned int i=0; i<JEC_corr.size(); i++) cout << JEC_corr[i] << ", ";
 	  cout << endl;
       }
-      else throw runtime_error("In TestModule.cxx: Invalid JEC_Version for deriving residuals on AK4CHS, MC specified ("+JEC_Version+") ");
+      else throw runtime_error("In TestNoDijetSelModule.cxx: Invalid JEC_Version for deriving residuals on AK4CHS, MC specified ("+JEC_Version+") ");
     }//AK8CHS
     else if (jetLabel == "AK4PUPPI"){
       //JEC-Version MC: V6
@@ -472,7 +472,7 @@ TestModule::TestModule(uhh2::Context & ctx) :
 	for(unsigned int i=0; i<JEC_corr.size(); i++) cout << JEC_corr[i] << ", ";
 	cout << endl;
       }
-      else throw runtime_error("In TestModule.cxx: Invalid JEC_Version for closure test on AK4PUPPI, MC specified.");	
+      else throw runtime_error("In TestNoDijetSelModule.cxx: Invalid JEC_Version for closure test on AK4PUPPI, MC specified.");	
     }
     */
   }
@@ -558,7 +558,7 @@ TestModule::TestModule(uhh2::Context & ctx) :
 	  JEC_corr_H            = JERFiles::Summer16_07Aug2017_V1_H_L123_noRes_AK4PFchs_DATA;
 	  JEC_corr_H_L1RC       = JERFiles::Summer16_07Aug2017_V1_H_L1RC_AK4PFchs_DATA;
 	}
-	else throw runtime_error("In TestModule.cxx: Invalid JEC_Version for deriving residuals on AK4CHS, DATA specified.");
+	else throw runtime_error("In TestNoDijetSelModule.cxx: Invalid JEC_Version for deriving residuals on AK4CHS, DATA specified.");
       }//Derive corrections
 
       else{ //closure test
@@ -649,7 +649,7 @@ TestModule::TestModule(uhh2::Context & ctx) :
 	  cout << "JEC for DATA: Summer16_07Aug2017_V1_BCD/EFearly/FlateG/H_L123_AK4PFchs_DATA;" << endl;
 	}
 
-	else throw runtime_error("In TestModule.cxx: Invalid JEC_Version for closure test on AK4CHS, DATA specified.");
+	else throw runtime_error("In TestNoDijetSelModule.cxx: Invalid JEC_Version for closure test on AK4CHS, DATA specified.");
       }//Closure test
     }
     /*
@@ -669,7 +669,7 @@ TestModule::TestModule(uhh2::Context & ctx) :
 	  JEC_corr_H_L1RC       = JERFiles::Summer16_03Feb2017_V4_H_L1RC_AK8PFchs_DATA;
 	  cout << "JEC for DATA: Summer16_03Feb2017_V4_BCD/EFearly/FlateG/H_L123_AK4PFChs_DATA;" << endl;
 	}
-	else throw runtime_error("In TestModule.cxx: Invalid JEC_Version to derive L2Res on AK4CHS, DATA specified.");
+	else throw runtime_error("In TestNoDijetSelModule.cxx: Invalid JEC_Version to derive L2Res on AK4CHS, DATA specified.");
       }
       else{// closure test
 	if(JEC_Version == "Summer16_03Feb2017_V4"){
@@ -686,7 +686,7 @@ TestModule::TestModule(uhh2::Context & ctx) :
 
 	cout << "JEC for closure test: Summer16_03Feb2017_V4_BCD/EFearly/FlateG/H_L123_AK4PFChs_DATA;" << endl;
 	}
-	else throw runtime_error("In TestModule.cxx: Invalid JEC_Version for closure on AK4CHS, DATA specified.");
+	else throw runtime_error("In TestNoDijetSelModule.cxx: Invalid JEC_Version for closure on AK4CHS, DATA specified.");
       }
     }
     else if(jetLabel == "AK4PUPPI"){
@@ -700,7 +700,7 @@ TestModule::TestModule(uhh2::Context & ctx) :
 	  JEC_corr_H            = JERFiles::Summer16_03Feb2017_V4_H_L123_noRes_AK4PFpuppi_DATA;
 	  cout << "JEC for DATA: Summer16_03Feb2017_V4_BCD/EFearly/FlateG/H_L123_AK4PFPuppi_DATA;" << endl;
 	}
-	else throw runtime_error("In TestModule.cxx: Invalid JEC_Version to derive L2Res on AK4PUPPI, DATA specified.");
+	else throw runtime_error("In TestNoDijetSelModule.cxx: Invalid JEC_Version to derive L2Res on AK4PUPPI, DATA specified.");
       }
       else{// closure test
 	if(JEC_Version == "Summer16_03Feb2017_V4"){
@@ -711,7 +711,7 @@ TestModule::TestModule(uhh2::Context & ctx) :
 	JEC_corr_H            = JERFiles::Summer16_03Feb2017_V4_H_L123_AK4PFpuppi_DATA;
 	cout << "JEC for closure test: Summer16_03Feb2017_V4_BCD/EFearly/FlateG/H_L123_AK4PFPuppi_DATA;" << endl;
 	}
-	else throw runtime_error("In TestModule.cxx: Invalid JEC_Version for closure on AK4PUPPI, DATA specified.");
+	else throw runtime_error("In TestNoDijetSelModule.cxx: Invalid JEC_Version for closure on AK4PUPPI, DATA specified.");
       }
     }
 
@@ -819,7 +819,7 @@ TestModule::TestModule(uhh2::Context & ctx) :
     else 
       if(JEC_Version == "Summer16_03Feb2017_V3" || JEC_Version == "Summer16_03Feb2017_V4" || JEC_Version == "Summer16_03Feb2017_V5" || JEC_Version == "Summer16_03Feb2017_V6" || JEC_Version == "Summer16_03Feb2017_V7" || JEC_Version == "Summer16_07Aug2017_V1") 
 	jetER_smearer.reset(new GenericJetResolutionSmearer(ctx, "jets", "genjets", true, JERSmearing::SF_13TeV_2016_03Feb2017)); 
-      else throw runtime_error("In TestModule.cxx: When setting up JER smearer, invalid 'JEC_Version' was specified.");
+      else throw runtime_error("In TestNoDijetSelModule.cxx: When setting up JER smearer, invalid 'JEC_Version' was specified.");
   }
   
   
@@ -1161,7 +1161,7 @@ TestModule::TestModule(uhh2::Context & ctx) :
   }
   apply_lumiweights = (ctx.get("Apply_Lumiweights") == "true" && isMC);
   apply_unflattening = (ctx.get("Apply_Unflattening") == "true" && isMC);
-  if(apply_weights && apply_lumiweights) throw runtime_error("In TestModule.cxx: 'apply_weights' and 'apply_lumiweights' are set 'true' simultaneously. This won't work, please decide on one");
+  if(apply_weights && apply_lumiweights) throw runtime_error("In TestNoDijetSelModule.cxx: 'apply_weights' and 'apply_lumiweights' are set 'true' simultaneously. This won't work, please decide on one");
   if(apply_lumiweights){
     lumiweight = string2double(ctx.get("dataset_lumi"));
   }
@@ -1217,17 +1217,17 @@ TestModule::TestModule(uhh2::Context & ctx) :
 
 
 
-  TestModule::~TestModule() {
+  TestNoDijetSelModule::~TestNoDijetSelModule() {
 
   }
 
-  bool TestModule::process(Event & event) {
- //###############################################################
+  bool TestNoDijetSelModule::process(Event & event) {
+    //###############################################################
     //
-    //Selection Module for L2 Residual Calculation  
+    //Selection Module for MCTruth JEC check based on L2 Residual Calculation  
     //
-    //Select Di-Jet Events 
-    //Define Barrel and Probe Jet
+    //Select Di-Jet Events (at least 2 jets, not nesseseraly back to back)
+    //Define Barrel and Probe Jet (random between 1st and 2nd jets)
     //Use possible third Jet to estimate alpha
     //Apply MC-Weights for Reweighting (Second Iteration)
     //
@@ -1294,7 +1294,7 @@ TestModule::TestModule(uhh2::Context & ctx) :
 
       vector<run_lumi>::iterator it;
       if(!(rl_event < upper_binborders_runnrs.back())){
-	if(upper_binborders_runnrs.back() < rl_event) throw runtime_error("TestModule: run_lumi of event greater than largest bin-border.");
+	if(upper_binborders_runnrs.back() < rl_event) throw runtime_error("TestNoDijetSelModule: run_lumi of event greater than largest bin-border.");
 	else it = prev(upper_binborders_runnrs.end()); //force the entries with the highest run_lumi to enter the last bin instead of overflow.
       }
       else it = upper_bound(upper_binborders_runnrs.begin(), upper_binborders_runnrs.end(), rl_event); //find the first entry in the vector of binborders that is greater than rl_event
@@ -1309,7 +1309,8 @@ TestModule::TestModule(uhh2::Context & ctx) :
     int n_jets_beforeCleaner = event.jets->size();
 
     //JetID
-    //    if(jetLabel == "AK4CHS" || jetLabel == "AK8CHS") jetcleaner->process(event); //switched off for test with reclustered jets
+    //    if(jetLabel == "AK4CHS" || jetLabel == "AK8CHS" || jetLabel == "AK4PUPPI" ) jetcleaner->process(event);
+    if(jetLabel == "AK4CHS" || jetLabel == "AK8CHS") jetcleaner->process(event);
     int n_jets_afterCleaner = event.jets->size();
     //discard events if not all jets fulfill JetID instead of just discarding single jets
     if (n_jets_beforeCleaner != n_jets_afterCleaner) return false;
@@ -1343,7 +1344,7 @@ TestModule::TestModule(uhh2::Context & ctx) :
 	  else if(event.run < s_runnr_EFearly) apply_EFearly = true; //< is correct, not <=
 	  else if(event.run <= s_runnr_FlateG) apply_FlateG = true; 
 	  else if(event.run > s_runnr_FlateG) apply_H = true;
-	  else throw runtime_error("TestModule.cxx: run number not covered by if-statements in process-routine.");
+	  else throw runtime_error("TestNoDijetSelModule.cxx: run number not covered by if-statements in process-routine.");
 	}
 	else{
 	  //not split JEC
@@ -1358,7 +1359,7 @@ TestModule::TestModule(uhh2::Context & ctx) :
 	  else if(dataset_version.Contains("RunEFearly")) apply_EFearly = true;
 	  else if(dataset_version.Contains("RunFlateG"))  apply_FlateG = true;
 	  else if(dataset_version.Contains("RunH"))       apply_H = true;
-	  else throw runtime_error("TestModule.cxx: run number not covered by if-statements in process-routine.");
+	  else throw runtime_error("TestNoDijetSelModule.cxx: run number not covered by if-statements in process-routine.");
 	}      
 	else{
 	  //not split JEC
@@ -1376,7 +1377,7 @@ TestModule::TestModule(uhh2::Context & ctx) :
 	  else if(event.run < s_runnr_EFearly) apply_EFearly = true; //< is correct, not <= 
 	  else if(event.run <= s_runnr_FlateG) apply_FlateG = true; 
 	  else if(event.run > s_runnr_FlateG)  apply_H = true;
-	  else throw runtime_error("TestModule.cxx: run number not covered by if-statements in process-routine.");
+	  else throw runtime_error("TestNoDijetSelModule.cxx: run number not covered by if-statements in process-routine.");
 	}
 	else{
 	  //not split JEC
@@ -1392,7 +1393,7 @@ TestModule::TestModule(uhh2::Context & ctx) :
 	  else if(dataset_version.Contains("RunEFearly")) apply_EFearly = true;
 	  else if(dataset_version.Contains("RunFlateG"))  apply_FlateG = true;
 	  else if(dataset_version.Contains("RunH"))       apply_H = true;
-	  else throw runtime_error("TestModule.cxx: run number not covered by if-statements in process-routine.");
+	  else throw runtime_error("TestNoDijetSelModule.cxx: run number not covered by if-statements in process-routine.");
 	}      
 	else{
 	  //not split JEC
@@ -1404,7 +1405,7 @@ TestModule::TestModule(uhh2::Context & ctx) :
     if(debug)
       cout<<"all flags for apply_RunX are set"<<endl;
   
-    if(apply_BCD+apply_EFearly+apply_FlateG+apply_H+apply_global != 1) throw runtime_error("In TestModule.cxx: Sum of apply_* when applying JECs is not == 1. Fix this.");
+    if(apply_BCD+apply_EFearly+apply_FlateG+apply_H+apply_global != 1) throw runtime_error("In TestNoDijetSelModule.cxx: Sum of apply_* when applying JECs is not == 1. Fix this.");
 
     h_beforeJEC->fill(event);
     if(debug){     
@@ -1412,8 +1413,7 @@ TestModule::TestModule(uhh2::Context & ctx) :
       cout << " Evt# "<<event.event<<" Run: "<<event.run<<" " << endl;
       cout<< "MET: "<< event.met->pt() <<" jets.size() = "<<event.jets->size()<<" Njets = "<<jet_n<<endl;
       if(event.genmet) cout<<" genMET: "<<event.genmet->pt()<<endl;
-      //      for(unsigned int i=0;i<event.jets->size();i++){
-      for(unsigned int i=0;i<1;i++){
+      for(unsigned int i=0;i<event.jets->size();i++){
 	Jet* jet = &event.jets->at(i);
 	std::cout<<"jet #"<<i<<" with eta = "<<jet->eta()<<" and not-corrected pt = "<<jet->pt()<<std::endl<<endl;
      }
@@ -1453,8 +1453,7 @@ if(debug){
   cout<<"After JEC, before JER"<<endl;
       cout << " Evt# "<<event.event<<" Run: "<<event.run<<" " << endl;
       cout<< "MET: "<< event.met->pt() <<" jets.size() = "<<event.jets->size()<<" Njets = "<<jet_n<<endl;
-      //      for(unsigned int i=0;i<event.jets->size();i++){
-      for(unsigned int i=0;i<1;i++){
+      for(unsigned int i=0;i<event.jets->size();i++){
 	Jet* jet = &event.jets->at(i);
 	std::cout<<"jet #"<<i<<" with eta = "<<jet->eta()<<" and corrected pt = "<<jet->pt()<<std::endl<<endl;
      }
@@ -1463,15 +1462,14 @@ if(debug){
 
     // //Apply JER to all jet collections
  sort_by_pt<Jet>(*event.jets);
- // if(jetER_smearer.get()) jetER_smearer->process(event); //TEST JER SFs effect
+ if(jetER_smearer.get()) jetER_smearer->process(event); //TEST JER SFs effect
  sort_by_pt<Jet>(*event.jets);
 
 if(debug){   
   cout<<"After JER, before MET"<<endl;
  cout << " Evt# "<<event.event<<" Run: "<<event.run<<" " << endl;
  cout<< "MET: "<< event.met->pt() <<endl;
- //      for(unsigned int i=0;i<event.jets->size();i++){
-      for(unsigned int i=0;i<1;i++){
+      for(unsigned int i=0;i<event.jets->size();i++){
 	Jet* jet = &event.jets->at(i);
 	std::cout<<"jet #"<<i<<" with eta = "<<jet->eta()<<" and corrected pt = "<<jet->pt()<<std::endl<<endl;
      }
@@ -1501,8 +1499,7 @@ if(debug){
   cout << "After MET"<<endl;
   cout<< "MET: "<< event.met->pt() <<endl;
       cout << " Evt# "<<event.event<<" Run: "<<event.run<<" " << endl;
-      //      for(unsigned int i=0;i<event.jets->size();i++){
-      for(unsigned int i=0;i<1;i++){
+      for(unsigned int i=0;i<event.jets->size();i++){
 	Jet* jet = &event.jets->at(i);
 	std::cout<<"jet #"<<i<<" with eta = "<<jet->eta()<<" and corrected pt = "<<jet->pt()<<std::endl<<endl;
      }
@@ -1522,29 +1519,29 @@ if(debug){
 
 //###############################  Declare Probe and Barrel Jet  ###########################################
 
-    Jet* jet_probe = jet1; Jet* jet_barrel = jet2;
-    if ((fabs(jet1->eta())<s_eta_barr)&&(fabs(jet2->eta())<s_eta_barr)) {
+   Jet* jet_probe = jet1; Jet* jet_barrel = jet2;
+   int idx_barreljet = -1;
+   int idx_probejet = -1;
+    if ((fabs(jet1->eta())<s_eta_full)&&(fabs(jet2->eta())<s_eta_full)) {
       int ran = rand();
-      int numb = ran % 2 + 1;
-      if(numb==1){
-	jet_probe = jet2;
-	jet_barrel = jet1;
-      }
-      if(numb==2){
-	jet_probe = jet1;
-	jet_barrel = jet2;
-      }
+      int numb = ran % (event.jets->size());
+      jet_probe = &event.jets->at(numb);
+      idx_probejet = numb;
+      int ran2 = rand();
+      numb = ran2 % (event.jets->size());
+      jet_barrel = &event.jets->at(numb);
+      idx_barreljet = numb;
     } 
-    else if ((fabs(jet1->eta())<s_eta_barr)||(fabs(jet2->eta())<s_eta_barr)){
-      if(fabs(jet1->eta())<s_eta_barr){
-	jet_probe = jet2;
-	jet_barrel = jet1;
-      }
-      else{
-	jet_probe = jet1;
-	jet_barrel = jet2;
-      }
-    }
+    // else if ((fabs(jet1->eta())<s_eta_full)||(fabs(jet2->eta())<s_eta_full)){
+    //   if(fabs(jet1->eta())<s_eta_full){
+    // 	jet_probe = jet2;
+    // 	jet_barrel = jet1;
+    //   }
+    //   else{
+    // 	jet_probe = jet1;
+    // 	jet_barrel = jet2;
+    //   }
+    // }
 
     double dR_jet3_barreljet = -1;
     double dR_jet3_probejet = -1;
@@ -1733,7 +1730,7 @@ if(debug){
       pass_trigger = (pass_trigger40 || pass_trigger60 || pass_trigger80 || pass_trigger140 || pass_trigger200 
 				 || pass_trigger260 || pass_trigger320 || pass_trigger400 || pass_trigger500);
        }
-      else throw runtime_error("TestModule.cxx: No Trigger Applied! Check xml-File.");
+      else throw runtime_error("TestNoDijetSelModule.cxx: No Trigger Applied! Check xml-File.");
 
 
       if(debug){
@@ -1753,14 +1750,8 @@ if(debug){
     h_beforeFlatFwd->fill(event);
 
     //separate flat and fwd samples at |eta| = 2.853
-    if(dataset_version.Contains("_Fwd") && fabs(probejet_eta) < 2.853 && isMC){ 
-      //      std::cout<<"FWD sample! "<<std::endl;
-      return false;
-    }
-    if((dataset_version.Contains("_Flat")) && fabs(probejet_eta) >= 2.853 && isMC){
-      //      std::cout<<"Flat sample! "<<std::endl;
-      return false;
-    }
+    if(dataset_version.Contains("_Fwd") && fabs(probejet_eta) < 2.853 && isMC) return false;
+    if((dataset_version.Contains("_Flat")) && fabs(probejet_eta) >= 2.853 && isMC) return false;
     
     h_afterFlatFwd->fill(event);
 
@@ -1833,7 +1824,7 @@ if(debug){
       }
       if(factor < 0) {
 	cout << "This event has factor < 0, pt_ave is " << pt_ave << endl;
-	throw runtime_error("In TestModule.cxx: While applying lumiweights: factor to multiply event.weight with is negative. Has never been set?");
+	throw runtime_error("In TestNoDijetSelModule.cxx: While applying lumiweights: factor to multiply event.weight with is negative. Has never been set?");
       }
 
       if(debug) cout << "event.weight before: " << event.weight << endl;
@@ -1982,8 +1973,8 @@ if(debug){
      cout << " Evt# "<<event.event<<" Run: "<<event.run<<" " << endl;
    }
 
-//Advanced Selection: DiJet Events
-    if(!sel.DiJetAdvanced(event)) return false;
+// //Advanced Selection: DiJet Events
+//     if(!sel.DiJetAdvanced(event)) return false;
     
     h_dijet->fill(event);
     h_lumi_dijet->fill(event);
@@ -2070,7 +2061,7 @@ if(debug){
       double dr_cut = 0;
       if(jetLabel == "AK4CHS" || jetLabel == "AK4PUPPI") dr_cut = 0.2;
       else if (jetLabel == "AK8CHS" || jetLabel == "AK8PUPPI")dr_cut = 0.4;
-      else throw runtime_error("TestModule.cxx: Invalid jet-label specified.");
+      else throw runtime_error("TestNoDijetSelModule.cxx: Invalid jet-label specified.");
 
 
       double dR_GenJet_GenParticle1;
@@ -2114,8 +2105,6 @@ if(debug){
 	double dR_min = 99999; int idx_matching_jet = -1;
 	for(unsigned int j=0; j<event.jets->size(); j++){
 	  double dR = deltaR(event.jets->at(j), event.genjets->at(i));
-	  //	  cout<<"event.jets->at(j).hadronFlavor() = "<<event.jets->at(j).hadronFlavor()<<" event.jets->at(j).pdgId() = "<<event.jets->at(j).pdgId()
-	  //  <<" event.jets->at(j).flavor() = "<<event.jets->at(j).flavor()<<endl;
 	  //	  if(debug) cout << "dR between GenJet " << i << " and RecoJet " << j << ": " << dR << endl;
 	  if(dR<dR_min){
 	    dR_min = dR; 
@@ -2128,13 +2117,13 @@ if(debug){
       }
       /////////////////////
 
-      //      vector<FlavorParticle> genjets_flavor = event.genjets;
+
       for(Particle & genj : *event.genjets){
 	double dr_min = 99999;
 	double dr_cut = 0;
 	if(jetLabel == "AK4CHS" || jetLabel == "AK4PUPPI") dr_cut = 2*0.4; //TEST: for matching to parton use the full cone size
 	else if (jetLabel == "AK8CHS" || jetLabel == "AK8PUPPI") dr_cut = 2*0.8; //TEST: for matching to parton use the full cone size
-	else throw runtime_error("TestModule.cxx: Invalid jet-label specified.");
+	else throw runtime_error("TestNoDijetSelModule.cxx: Invalid jet-label specified.");
 
        	int idx_g = 0;
 	for(GenParticle & genp: *event.genparticles){
@@ -2180,10 +2169,10 @@ if(debug){
       if(debug && event.genjets->size() <2) cout << "WARNING: GENjets size < 2" << endl;
 
       //only consider the barreljet, is it leading or sub-leading jet?
-      int idx_barreljet = -1;
-      if(fabs(jet1->pt() - jet_barrel->pt()) < 0.001) idx_barreljet = 0;
-      else if (fabs(jet2->pt() - jet_barrel->pt()) < 0.001) idx_barreljet = 1;
-      else throw runtime_error("first two jets are not the barrel jets, how could this happen?");
+      // int idx_barreljet = -1;
+      // if(fabs(jet1->pt() - jet_barrel->pt()) < 0.001) idx_barreljet = 0;
+      // else if (fabs(jet2->pt() - jet_barrel->pt()) < 0.001) idx_barreljet = 1;
+      // else throw runtime_error("first two jets are not the barrel jets, how could this happen?");
       if(debug) cout<<"idx_barreljet = "<<idx_barreljet<<endl;
       //obtain flavor of the barreljet
       //-1: unmatched, 0: alpha too large, >0: flavor of matching genparticle 
@@ -2219,7 +2208,7 @@ if(debug){
 
 
       //also for probe jets
-      int idx_probejet = fabs(idx_barreljet - 1);
+      //      int idx_probejet = fabs(idx_barreljet - 1);
       //obtain flavor of the probejet
       //-1: unmatched,  >0: flavor of matching genparticle 
       if(idx_matched_jets[idx_probejet] != -1){
@@ -2467,6 +2456,6 @@ if(debug){
 
   // as we want to run the ExampleCycleNew directly with AnalysisModuleRunner,
   // make sure the ExampleModule is found by class name. This is ensured by this macro:
-  UHH2_REGISTER_ANALYSIS_MODULE(TestModule)
+  UHH2_REGISTER_ANALYSIS_MODULE(TestNoDijetSelModule)
 
 

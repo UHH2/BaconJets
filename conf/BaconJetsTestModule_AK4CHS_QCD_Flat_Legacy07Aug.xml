@@ -10,7 +10,7 @@
 <!--<!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JEC_Summer16_V8_ReWeighted/">-->
 <!-- <!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JEC_Summer16_V8_NotWeighted_CHS_Zpv_PUreweight80000/">-->
 <!--<!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JEC_Summer16_V8_NotWeighted_CHS_Zpv_PUreweight_jet3above25GeV/">-->
-<!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JERC/FlavorStudy/JEC_Summer16_07Aug2017_V1_w_JER_SFs_woEtaPhiCleaning__dRpartonMatching_0_8/">
+<!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JERC/FlavorStudy/JEC_Summer16_07Aug2017_V1_w_JER_SFs_woEtaPhiCleaning__dRpartonMatching_0_8_FlatQCD/">
 
 <!ENTITY b_closuretest       "false">
 <!ENTITY jec_version         "Summer16_07Aug2017_V1">
@@ -31,6 +31,12 @@
 <!ENTITY QCDPt15to7000_pythia8_AK4CHS_Flat SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3_EGReg/MC_QCD_FlatP6_pythia8_PUpthat_EGReg_chsMET.xml">
 <!ENTITY QCDPt15to7000_pythia8_AK4CHS_Fwd SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3_EGReg/MC_QCD_FwdEnriched_Flat_pythia8_PUpthat_EGReg_chsMET.xml">
 -->
+<!ENTITY QCDPt15to7000_pythia8_Flat_AK4CHS SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3/MC_QCD_Pt_15to7000_Flat_genMET_allGEN_reclusterAK4_PU_Pythia8.xml">
+
+<!ENTITY QCDPt15to7000_pythia8_Flat_Fwd_AK4CHS SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3/MC_QCD_Pt_15to7000_Flat_Fwd_genMET_allGEN_reclusterAK4_PU_Pythia8.xml">
+
+<!ENTITY QCDPt15to7000_herwigpp_Flat_AK4CHS SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3/MC_QCD_Pt_15to7000_Flat_genMET_allGEN_PU_herwigpp.xml">
+<!ENTITY QCDPt15to7000_pythia8_Flat_newFlavordef_AK4CHS SYSTEM "/nfs/dust/cms/user/aggleton/QG/CMSSW_8_0_24_patch1/src/UHH2/QGAnalysis/datasets/PythiaOnly/QCD_Pt15to7000_Flat.xml">
 
 <!ENTITY QCDPt15to30_pythia8_AK4CHS           SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3/MC_QCD_Pt_15to30_allGENparticles.xml">
 <!ENTITY QCDPt30to50_pythia8_AK4CHS           SYSTEM "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/datasets/RunII_80X_v3/MC_QCD_Pt_30to50_allGENparticles.xml">
@@ -79,7 +85,7 @@
 
 <!--
 <ConfigParse NEventsBreak="0" FileSplit="10" AutoResubmit="5"/>
-<ConfigSGE RAM ="4" DISK ="3" Mail="anastasia.karavdina@desy.de" Notification="as" Workdir="/nfs/dust/cms/user/karavdia/workdir_Summer16_07Aug2017_RunBCDEFGH_nominal_AK4CHS_Legacy"/>
+<ConfigSGE RAM ="4" DISK ="3" Mail="anastasia.karavdina@desy.de" Notification="as" Workdir="/nfs/dust/cms/user/karavdia/workdir_Summer16_07Aug2017_RunBCDEFGH_nominal_AK4CHS_Legacy_Flat"/>
 -->
 
 <!-- OutputLevel controls which messages are printed; set to VERBOSE or DEBUG for more verbosity, to WARNING or ERROR for less -->
@@ -89,11 +95,36 @@
 
  <Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&OUTdir;/" PostFix="" TargetLumi="36800" > 
 <!-- <Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&OUTdir;/" PostFix="" TargetLumi="12900" RunMode="PROOF" ProofServer="lite://" ProofWorkDir="&PROOFdir;/" ProofNodes="15" > -->
+<!--
+<InputData Lumi="1.000" NEventsMax="&NEVT;" Type="MC" Version="QCDPt15to7000_pythia8_Flat_newFlavordef_AK4CHS" Cacheable="&CACHEABLE;">
+          &QCDPt15to7000_pythia8_Flat_newFlavordef_AK4CHS;
+          <InputTree Name="AnalysisTree"/>
+          <OutputTree Name="AnalysisTree"/>
+     </InputData>
+-->
 
+<InputData Lumi="1.000" NEventsMax="&NEVT;" Type="MC" Version="QCDPt15to7000_pythia8_Flat_AK4CHS" Cacheable="&CACHEABLE;">
+          &QCDPt15to7000_pythia8_Flat_AK4CHS;
+          <InputTree Name="AnalysisTree"/>
+          <OutputTree Name="AnalysisTree"/>
+     </InputData>
 
+<InputData Lumi="1.000" NEventsMax="&NEVT;" Type="MC" Version="QCDPt15to7000_pythia8_Fwd_AK4CHS" Cacheable="&CACHEABLE;">
+          &QCDPt15to7000_pythia8_Flat_Fwd_AK4CHS;
+          <InputTree Name="AnalysisTree"/>
+          <OutputTree Name="AnalysisTree"/>
+     </InputData>
+
+<!-- <InputData Lumi="1.000" NEventsMax="&NEVT;" Type="MC" Version="QCDPt15to7000_herwigpp_Flat_AK4CHS" Cacheable="&CACHEABLE;">
+          &QCDPt15to7000_herwigpp_Flat_AK4CHS;
+          <InputTree Name="AnalysisTree"/>
+          <OutputTree Name="AnalysisTree"/>
+     </InputData>
+-->
 
 <!-- For Weight Calculation -->
 <!-- Weight Calculation -->
+<!--
 <InputData Lumi="0.022" NEventsMax="&NEVT;" Type="MC" Version="QCDPt15to30_pythia8_AK4CHS" Cacheable="&CACHEABLE;">
           &QCDPt15to30_pythia8_AK4CHS;
           <InputTree Name="AnalysisTree"/>
@@ -173,7 +204,7 @@
           <InputTree Name="AnalysisTree"/>
           <OutputTree Name="AnalysisTree"/>
      </InputData>
-
+-->
 <!-- madgraph -->
 <!--
 <InputData Lumi="4096999.000" NEventsMax="&NEVT;" Type="MC" Version="QCD_HT50to100_madgraphMLM_AK4CHS" Cacheable="&CACHEABLE;">
@@ -232,6 +263,7 @@
 -->
 
 <!-- DATA -->
+
 <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_RunB_AK4CHS" Cacheable="&CACHEABLE;">
        &DATA_RunB_AK4CHS;
        <InputTree Name="AnalysisTree"/>
@@ -275,6 +307,7 @@
        <InputTree Name="AnalysisTree"/>
        <OutputTree Name="AnalysisTree"/>
   </InputData> 
+
     <UserConfig>
       <Item Name="PrimaryVertexCollection" Value="offlineSlimmedPrimaryVertices"/>
       <Item Name="GenParticleCollection"   Value="GenParticles"/>
@@ -296,7 +329,7 @@
       <Item Name="GenJetCollection"        Value="slimmedGenJets"/>
       <!--          <Item Name="METName"                 Value="slimmedMETs"/>-->
       <Item Name="METName"                 Value="slMETsCHS"/>
-      <Item Name="genMETName"              Value="slimmedMETs_GenMET"/> 
+   <!--   <Item Name="genMETName"              Value="slimmedMETs_GenMET"/>  -->
       <Item Name="lumi_file" Value="/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/data/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.root"/>
       <Item Name="pileup_directory"          Value="/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/data/MyMCPileupHistogram.root"/>    
       <Item Name="pileup_directory_data"     Value="/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_8_0_24_patch1/src/UHH2/common/data/MyDataPileupHistogram.root"/>

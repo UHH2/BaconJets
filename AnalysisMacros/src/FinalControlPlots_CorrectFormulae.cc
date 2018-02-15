@@ -1468,7 +1468,7 @@ ofstream output;
     TString text1 = eta_range[i] + " < |#eta| < " + eta_range[i+1];
     tex1->DrawLatex(0.52,0.85, text1);
 
-    // c2->SaveAs(CorrectionObject::_outpath+"plots/control/MET_" + CorrectionObject::_generator_tag + "_eta_" + eta_range2[i] + "_" + eta_range2[i+1] + ".pdf");    
+    c2->SaveAs(CorrectionObject::_outpath+"plots/control/MET_" + CorrectionObject::_generator_tag + "_eta_" + eta_range2[i] + "_" + eta_range2[i+1] + ".pdf");    
 
 
     delete tex1;

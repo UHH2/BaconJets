@@ -30,7 +30,7 @@ void CorrectionObject::InputForGlobalFit(){
   m_gStyle->SetOptFit(0);
   m_gStyle->SetOptStat(0);
 
-  cout << "hello, it's mikkos macro" << endl;
+  cout << "hello, it's macro to produce combination file for the Global Fit" << endl;
   //calculate ratio in MC to DATA responses
 
   double mc_al_mpf[n_alpha_common][n_eta_common-1][n_pt-1]; 
@@ -52,6 +52,48 @@ void CorrectionObject::InputForGlobalFit(){
   TH1D *hmc_rel_r[n_pt-1][n_eta_common-1][n_alpha_common];// pT-balance responce for MC
   TH1D *hmc_mpf_r[n_pt-1][n_eta_common-1][n_alpha_common];//MPF responce for MC
 
+  TH1D *hmc_probejet_glu[n_alpha_common][n_eta_common-1];//   Math::Abs(pdgID)==21 --> glu
+  TH1D *hmc_probejet_gluExt[n_alpha_common][n_eta_common-1];// 21||Undefined --> gluExt
+  TH1D *hmc_probejet_b[n_alpha_common][n_eta_common-1];// 5--> b
+  TH1D *hmc_probejet_c[n_alpha_common][n_eta_common-1];// 4-->c
+  TH1D *hmc_probejet_s[n_alpha_common][n_eta_common-1];// 3--> s
+  TH1D *hmc_probejet_ud[n_alpha_common][n_eta_common-1];// 1||2--> ud
+  TH1D *hmc_probejet_undefined[n_alpha_common][n_eta_common-1];//   else --> Undefined
+  TH1D *hmc_probejet_uds[n_alpha_common][n_eta_common-1];// 1||2||3 --> uds
+  TH1D *hmc_probejet_total[n_alpha_common][n_eta_common-1];// total hist for normalisation
+
+  TH1D *hmc_dijet_QQ[n_alpha_common][n_eta_common-1];// tag=quark(udcsb), probe=quark
+  TH1D *hmc_dijet_GQ[n_alpha_common][n_eta_common-1];// tag=gluon, probe=quark(udcsb)
+  TH1D *hmc_dijet_GG[n_alpha_common][n_eta_common-1];// tag=gluon, probe=gluon
+  TH1D *hmc_dijet_QG[n_alpha_common][n_eta_common-1];// tag=quark(udcsb), probe=gluon
+  TH1D *hmc_dijet_total[n_alpha_common][n_eta_common-1];// total hist for normalisation
+
+  double flavorFrac_probejet_glu[n_alpha_common][n_eta_common-1][n_pt-1]; 
+  double err_flavorFrac_probejet_glu[n_alpha_common][n_eta_common-1][n_pt-1]; 
+  double flavorFrac_probejet_gluExt[n_alpha_common][n_eta_common-1][n_pt-1]; 
+  double err_flavorFrac_probejet_gluExt[n_alpha_common][n_eta_common-1][n_pt-1]; 
+  double flavorFrac_probejet_b[n_alpha_common][n_eta_common-1][n_pt-1]; 
+  double err_flavorFrac_probejet_b[n_alpha_common][n_eta_common-1][n_pt-1]; 
+  double flavorFrac_probejet_c[n_alpha_common][n_eta_common-1][n_pt-1]; 
+  double err_flavorFrac_probejet_c[n_alpha_common][n_eta_common-1][n_pt-1]; 
+  double flavorFrac_probejet_s[n_alpha_common][n_eta_common-1][n_pt-1]; 
+  double err_flavorFrac_probejet_s[n_alpha_common][n_eta_common-1][n_pt-1]; 
+  double flavorFrac_probejet_ud[n_alpha_common][n_eta_common-1][n_pt-1]; 
+  double err_flavorFrac_probejet_ud[n_alpha_common][n_eta_common-1][n_pt-1]; 
+  double flavorFrac_probejet_undefined[n_alpha_common][n_eta_common-1][n_pt-1]; 
+  double err_flavorFrac_probejet_undefined[n_alpha_common][n_eta_common-1][n_pt-1]; 
+  double flavorFrac_probejet_uds[n_alpha_common][n_eta_common-1][n_pt-1]; 
+  double err_flavorFrac_probejet_uds[n_alpha_common][n_eta_common-1][n_pt-1]; 
+
+  double flavorFrac_dijet_QQ[n_alpha_common][n_eta_common-1][n_pt-1]; 
+  double err_flavorFrac_dijet_QQ[n_alpha_common][n_eta_common-1][n_pt-1]; 
+  double flavorFrac_dijet_GQ[n_alpha_common][n_eta_common-1][n_pt-1]; 
+  double err_flavorFrac_dijet_GQ[n_alpha_common][n_eta_common-1][n_pt-1]; 
+  double flavorFrac_dijet_GG[n_alpha_common][n_eta_common-1][n_pt-1]; 
+  double err_flavorFrac_dijet_GG[n_alpha_common][n_eta_common-1][n_pt-1]; 
+  double flavorFrac_dijet_QG[n_alpha_common][n_eta_common-1][n_pt-1]; 
+  double err_flavorFrac_dijet_QG[n_alpha_common][n_eta_common-1][n_pt-1]; 
+
   TH1D *hdata_num[n_alpha_common][n_eta_common-1];
   TH1D *hmc_num[n_alpha_common][n_eta_common-1];
 
@@ -64,6 +106,22 @@ void CorrectionObject::InputForGlobalFit(){
   TString name4 = "hist_mc_mpf_r_";
   TString name5 = "hist_data_num";
   TString name6 = "hist_mc_num";
+
+  TString name11 = "hist_mc_probejet_glu";
+  TString name12 = "hist_mc_probejet_gluExt";
+  TString name13 = "hist_mc_probejet_b";
+  TString name14 = "hist_mc_probejet_c";
+  TString name15 = "hist_mc_probejet_s";
+  TString name16 = "hist_mc_probejet_ud";
+  TString name17 = "hist_mc_probejet_undefined";
+  TString name18 = "hist_mc_probejet_uds";
+  TString name19 = "hist_mc_probejet_total";
+
+  TString name20 = "hist_mc_dijet_QQ";
+  TString name21 = "hist_mc_dijet_GQ";
+  TString name22 = "hist_mc_dijet_GG";
+  TString name23 = "hist_mc_dijet_QG";
+  TString name24 = "hist_mc_dijet_total";
 
   //Initialize with 0 values
   for(int i=0; i<n_alpha_common; i++){
@@ -83,6 +141,31 @@ void CorrectionObject::InputForGlobalFit(){
 	data_al_pTbal[i][j][k] = 0; 
 	err_data_al_pTbal[i][j][k] = 0; 
 
+	flavorFrac_probejet_glu[i][j][k] = 0; 
+	err_flavorFrac_probejet_glu[i][j][k] = 0; 
+	flavorFrac_probejet_gluExt[i][j][k] = 0; 
+	err_flavorFrac_probejet_gluExt[i][j][k] = 0; 
+	flavorFrac_probejet_b[i][j][k] = 0; 
+	err_flavorFrac_probejet_b[i][j][k] = 0; 
+	flavorFrac_probejet_s[i][j][k] = 0; 
+	err_flavorFrac_probejet_s[i][j][k] = 0; 
+	flavorFrac_probejet_c[i][j][k] = 0; 
+	err_flavorFrac_probejet_c[i][j][k] = 0; 
+	flavorFrac_probejet_ud[i][j][k] = 0; 
+	err_flavorFrac_probejet_ud[i][j][k] = 0; 
+	flavorFrac_probejet_uds[i][j][k] = 0; 
+	err_flavorFrac_probejet_uds[i][j][k] = 0; 
+	flavorFrac_probejet_undefined[i][j][k] = 0; 
+	err_flavorFrac_probejet_undefined[i][j][k] = 0; 
+	flavorFrac_dijet_QQ[i][j][k] = 0; 
+	err_flavorFrac_dijet_QQ[i][j][k] = 0; 
+	flavorFrac_dijet_GQ[i][j][k] = 0; 
+	err_flavorFrac_dijet_GQ[i][j][k] = 0; 
+	flavorFrac_dijet_GG[i][j][k] = 0; 
+	err_flavorFrac_dijet_GG[i][j][k] = 0; 
+	flavorFrac_dijet_QG[i][j][k] = 0; 
+	err_flavorFrac_dijet_QG[i][j][k] = 0; 
+
 	TString name = name1; name+=count;
 	hdata_rel_r[k][j][i] = new TH1D(name,"",100, 0, 2.5);
 	name = name2;name+=count;
@@ -92,12 +175,46 @@ void CorrectionObject::InputForGlobalFit(){
 	name = name4; name+=count;
 	hmc_mpf_r[k][j][i] = new TH1D(name,"",100, 0, 2.5);
 	count++;
+
       }
       	TString name10 = name5; name10+=count2;
 	hdata_num[i][j] = new TH1D(name10,"",n_pt-1,pt_bins);
 	name10 = name6; name10+=count2;
 	hmc_num[i][j] = new TH1D(name10,"",n_pt-1,pt_bins);
+	name10 = name11; name10+=count2;
+	hmc_probejet_glu[i][j] = new TH1D(name10,"",n_pt-1,pt_bins);
+	name10 = name12; name10+=count2;
+	hmc_probejet_gluExt[i][j] = new TH1D(name10,"",n_pt-1,pt_bins);
+	name10 = name13; name10+=count2;
+	hmc_probejet_b[i][j] = new TH1D(name10,"",n_pt-1,pt_bins);
+	name10 = name14; name10+=count2;
+	hmc_probejet_c[i][j] = new TH1D(name10,"",n_pt-1,pt_bins);
+	name10 = name15; name10+=count2;
+	hmc_probejet_s[i][j] = new TH1D(name10,"",n_pt-1,pt_bins);
+	name10 = name16; name10+=count2;
+	hmc_probejet_ud[i][j] = new TH1D(name10,"",n_pt-1,pt_bins);
+	name10 = name17; name10+=count2;
+	hmc_probejet_undefined[i][j] = new TH1D(name10,"",n_pt-1,pt_bins);
+	name10 = name18; name10+=count2;
+	hmc_probejet_uds[i][j] = new TH1D(name10,"",n_pt-1,pt_bins);
+	name10 = name19; name10+=count2;
+	hmc_probejet_total[i][j] = new TH1D(name10,"",n_pt-1,pt_bins);
+
+	name10 = name20; name10+=count2;
+	hmc_dijet_QQ[i][j] = new TH1D(name10,"",n_pt-1,pt_bins);
+	name10 = name21; name10+=count2;
+	hmc_dijet_GQ[i][j] = new TH1D(name10,"",n_pt-1,pt_bins);
+	name10 = name22; name10+=count2;
+	hmc_dijet_GG[i][j] = new TH1D(name10,"",n_pt-1,pt_bins);
+	name10 = name23; name10+=count2;
+	hmc_dijet_QG[i][j] = new TH1D(name10,"",n_pt-1,pt_bins);
+	name10 = name24; name10+=count2;
+	hmc_dijet_total[i][j] = new TH1D(name10,"",n_pt-1,pt_bins);
+
 	count2++;
+
+
+
     }
   }
 
@@ -134,6 +251,9 @@ void CorrectionObject::InputForGlobalFit(){
    TTreeReaderValue<Float_t> rel_r_mc(myReader_MC, "rel_r");
    TTreeReaderValue<Float_t> mpf_r_mc(myReader_MC, "mpf_r");
    TTreeReaderValue<Float_t> weight_mc(myReader_MC, "weight");
+   TTreeReaderValue<Int_t> flavorProbejet_mc(myReader_MC, "flavorProbejet"); 
+   TTreeReaderValue<Int_t> flavorTagjet_mc(myReader_MC, "flavorBarreljet");
+
    while (myReader_MC.Next()) {
      for(int k=0; k<n_pt-1; k++){
        if(*pt_ave_mc<pt_bins[k] || *pt_ave_mc>pt_bins[k+1]) continue;
@@ -144,6 +264,34 @@ void CorrectionObject::InputForGlobalFit(){
    	   else{
    	     hmc_rel_r[k][j][i]->Fill(*rel_r_mc,*weight_mc);
    	     hmc_mpf_r[k][j][i]->Fill(*mpf_r_mc,*weight_mc);
+	     if(*flavorProbejet_mc==21)
+	       hmc_probejet_glu[i][j]->Fill(*pt_ave_mc,*weight_mc);
+	     if(*flavorProbejet_mc==21 || *flavorProbejet_mc<0)
+	       hmc_probejet_gluExt[i][j]->Fill(*pt_ave_mc,*weight_mc);
+	     if(*flavorProbejet_mc==5)
+	       hmc_probejet_b[i][j]->Fill(*pt_ave_mc,*weight_mc);
+	     if(*flavorProbejet_mc==4)
+	       hmc_probejet_c[i][j]->Fill(*pt_ave_mc,*weight_mc);
+	     if(*flavorProbejet_mc==3)
+	       hmc_probejet_s[i][j]->Fill(*pt_ave_mc,*weight_mc);
+	     if(*flavorProbejet_mc==1 || *flavorProbejet_mc==2)
+	       hmc_probejet_ud[i][j]->Fill(*pt_ave_mc,*weight_mc);
+	     if(*flavorProbejet_mc==1 || *flavorProbejet_mc==2 || *flavorProbejet_mc==3)
+	       hmc_probejet_uds[i][j]->Fill(*pt_ave_mc,*weight_mc);
+	     if(*flavorProbejet_mc<0)
+	       hmc_probejet_undefined[i][j]->Fill(*pt_ave_mc,*weight_mc);
+	     hmc_probejet_total[i][j]->Fill(*pt_ave_mc,*weight_mc);
+
+	     if(*flavorProbejet_mc>0 && *flavorProbejet_mc<6 && *flavorTagjet_mc>0 && *flavorTagjet_mc<6)
+	       hmc_dijet_QQ[i][j]->Fill(*pt_ave_mc,*weight_mc); 
+	      if(*flavorTagjet_mc==21 && *flavorProbejet_mc>0 && *flavorProbejet_mc<6 )
+		hmc_dijet_GQ[i][j]->Fill(*pt_ave_mc,*weight_mc); 
+	      if(*flavorTagjet_mc==21 && *flavorProbejet_mc==21)
+		hmc_dijet_GG[i][j]->Fill(*pt_ave_mc,*weight_mc); 
+	      if(*flavorTagjet_mc>0 && *flavorTagjet_mc<6 && *flavorProbejet_mc==21)
+		hmc_dijet_QG[i][j]->Fill(*pt_ave_mc,*weight_mc); 
+	      hmc_dijet_total[i][j]->Fill(*pt_ave_mc,*weight_mc); 
+
    	   }
    	 }
        }
@@ -171,22 +319,62 @@ void CorrectionObject::InputForGlobalFit(){
 	err_data_al_mpf[i][j][k] = res_data_mpf_r.second;
 	data_al_pTbal[i][j][k] = res_data_rel_r.first;
 	err_data_al_pTbal[i][j][k] = res_data_rel_r.second;
-	pair<double,double> ratio_res_mpf = Rmc_to_Rdata(res_mc_mpf_r,res_data_mpf_r);
+	//	pair<double,double> ratio_res_mpf = Rmc_to_Rdata(res_mc_mpf_r,res_data_mpf_r);
+	pair<double,double> ratio_res_mpf = Rmc_to_Rdata(res_data_mpf_r,res_mc_mpf_r); //Data/MC in sync with global fit framework
 	ratio_al_mpf[i][j][k] = ratio_res_mpf.first;
 	err_ratio_al_mpf[i][j][k] = ratio_res_mpf.second;
-	pair<double,double> ratio_res_pTbal = Rmc_to_Rdata(res_mc_rel_r,res_data_rel_r);
+	//	pair<double,double> ratio_res_pTbal = Rmc_to_Rdata(res_mc_rel_r,res_data_rel_r);
+	pair<double,double> ratio_res_pTbal = Rmc_to_Rdata(res_data_rel_r,res_mc_rel_r); //Data/MC in sync with global fit framework
 	ratio_al_pTbal[i][j][k] = ratio_res_pTbal.first;
 	err_ratio_al_pTbal[i][j][k] = ratio_res_pTbal.second;
 
-	//	if(hmc_mpf_r[k][j][i]->GetEntries()>100){
 	hmc_num[i][j]->SetBinContent(k+1, hmc_mpf_r[k][j][i]->GetEntries());
-	//	}
-      //	if(hdata_mpf_r[k][j][i]->GetEntries()>100){
 	hdata_num[i][j]->SetBinContent(k+1, hdata_mpf_r[k][j][i]->GetEntries());
-	//	}
-      }
-  
 
+      }
+      hmc_probejet_glu[i][j]->Divide(hmc_probejet_total[i][j]);
+      hmc_probejet_gluExt[i][j]->Divide(hmc_probejet_total[i][j]);
+      hmc_probejet_b[i][j]->Divide(hmc_probejet_total[i][j]);
+      hmc_probejet_c[i][j]->Divide(hmc_probejet_total[i][j]);
+      hmc_probejet_s[i][j]->Divide(hmc_probejet_total[i][j]);
+      hmc_probejet_ud[i][j]->Divide(hmc_probejet_total[i][j]);
+      hmc_probejet_uds[i][j]->Divide(hmc_probejet_total[i][j]);
+      hmc_probejet_undefined[i][j]->Divide(hmc_probejet_total[i][j]);
+      hmc_dijet_QQ[i][j]->Divide(hmc_dijet_total[i][j]);
+      hmc_dijet_GQ[i][j]->Divide(hmc_dijet_total[i][j]);
+      hmc_dijet_GG[i][j]->Divide(hmc_dijet_total[i][j]);
+      hmc_dijet_QG[i][j]->Divide(hmc_dijet_total[i][j]);
+
+      for(int k=0; k<n_pt-1; k++){
+	flavorFrac_probejet_glu[i][j][k] = hmc_probejet_glu[i][j]->GetBinContent(k);
+	err_flavorFrac_probejet_glu[i][j][k] = hmc_probejet_glu[i][j]->GetBinError(k);
+	flavorFrac_probejet_gluExt[i][j][k] = hmc_probejet_gluExt[i][j]->GetBinContent(k);
+	err_flavorFrac_probejet_gluExt[i][j][k] = hmc_probejet_gluExt[i][j]->GetBinError(k);
+	flavorFrac_probejet_b[i][j][k] = hmc_probejet_b[i][j]->GetBinContent(k);
+	err_flavorFrac_probejet_b[i][j][k] = hmc_probejet_b[i][j]->GetBinError(k);
+	flavorFrac_probejet_c[i][j][k] = hmc_probejet_c[i][j]->GetBinContent(k);
+	err_flavorFrac_probejet_c[i][j][k] = hmc_probejet_c[i][j]->GetBinError(k);
+	flavorFrac_probejet_s[i][j][k] = hmc_probejet_s[i][j]->GetBinContent(k);
+	err_flavorFrac_probejet_s[i][j][k] = hmc_probejet_s[i][j]->GetBinError(k);
+	flavorFrac_probejet_ud[i][j][k] = hmc_probejet_ud[i][j]->GetBinContent(k);
+	err_flavorFrac_probejet_ud[i][j][k] = hmc_probejet_ud[i][j]->GetBinError(k);
+	flavorFrac_probejet_uds[i][j][k] = hmc_probejet_uds[i][j]->GetBinContent(k);
+	err_flavorFrac_probejet_uds[i][j][k] = hmc_probejet_uds[i][j]->GetBinError(k);
+	flavorFrac_probejet_undefined[i][j][k] = hmc_probejet_undefined[i][j]->GetBinContent(k);
+	err_flavorFrac_probejet_undefined[i][j][k] = hmc_probejet_undefined[i][j]->GetBinError(k);
+
+	flavorFrac_dijet_QQ[i][j][k] = hmc_dijet_QQ[i][j]->GetBinContent(k);
+	err_flavorFrac_dijet_QQ[i][j][k] = hmc_dijet_QQ[i][j]->GetBinError(k);
+	flavorFrac_dijet_GQ[i][j][k] = hmc_dijet_GQ[i][j]->GetBinContent(k);
+	err_flavorFrac_dijet_GQ[i][j][k] = hmc_dijet_GQ[i][j]->GetBinError(k);
+	flavorFrac_dijet_GG[i][j][k] = hmc_dijet_GG[i][j]->GetBinContent(k);
+	err_flavorFrac_dijet_GG[i][j][k] = hmc_dijet_GG[i][j]->GetBinError(k);
+	flavorFrac_dijet_QG[i][j][k] = hmc_dijet_QG[i][j]->GetBinContent(k);
+	err_flavorFrac_dijet_QG[i][j][k] = hmc_dijet_QG[i][j]->GetBinError(k);
+
+	//	cout<<"flavorFrac_probejet_glu[i][j][k] = "<<flavorFrac_probejet_glu[i][j][k];
+	//	cout<<"err_flavorFrac_probejet_glu[i][j][k] = "<<err_flavorFrac_probejet_glu[i][j][k] <<endl;
+      }  
     }
   }
 
@@ -206,6 +394,20 @@ void CorrectionObject::InputForGlobalFit(){
   TGraphErrors *mpf_ratio[n_alpha_common][n_eta_common-1];
   TGraphErrors *rrel_ratio[n_alpha_common][n_eta_common-1];
 
+  TGraphErrors *gr_flavorFrac_probejet_glu[n_alpha_common][n_eta_common-1];
+  TGraphErrors *gr_flavorFrac_probejet_gluExt[n_alpha_common][n_eta_common-1];
+  TGraphErrors *gr_flavorFrac_probejet_b[n_alpha_common][n_eta_common-1];
+  TGraphErrors *gr_flavorFrac_probejet_c[n_alpha_common][n_eta_common-1];
+  TGraphErrors *gr_flavorFrac_probejet_s[n_alpha_common][n_eta_common-1];
+  TGraphErrors *gr_flavorFrac_probejet_ud[n_alpha_common][n_eta_common-1];
+  TGraphErrors *gr_flavorFrac_probejet_uds[n_alpha_common][n_eta_common-1];
+  TGraphErrors *gr_flavorFrac_probejet_undefined[n_alpha_common][n_eta_common-1];
+  TGraphErrors *gr_flavorFrac_dijet_QQ[n_alpha_common][n_eta_common-1];
+  TGraphErrors *gr_flavorFrac_dijet_GQ[n_alpha_common][n_eta_common-1];
+  TGraphErrors *gr_flavorFrac_dijet_GG[n_alpha_common][n_eta_common-1];
+  TGraphErrors *gr_flavorFrac_dijet_QG[n_alpha_common][n_eta_common-1];
+
+
   for(int i=0; i<n_alpha_common; i++){
     for(int j=0; j<n_eta_common-1; j++){
       mpf_data[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,data_al_mpf[i][j],res_zero,err_data_al_mpf[i][j]);
@@ -214,6 +416,21 @@ void CorrectionObject::InputForGlobalFit(){
       rrel_mc[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,mc_al_pTbal[i][j],res_zero,err_mc_al_pTbal[i][j]);
       mpf_ratio[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,ratio_al_mpf[i][j],res_zero,err_ratio_al_mpf[i][j]);
       rrel_ratio[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,ratio_al_pTbal[i][j],res_zero,err_ratio_al_pTbal[i][j]);
+
+      gr_flavorFrac_probejet_glu[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,flavorFrac_probejet_glu[i][j],res_zero,err_flavorFrac_probejet_glu[i][j]);
+      gr_flavorFrac_probejet_gluExt[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,flavorFrac_probejet_gluExt[i][j],res_zero,err_flavorFrac_probejet_gluExt[i][j]);
+      gr_flavorFrac_probejet_b[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,flavorFrac_probejet_b[i][j],res_zero,err_flavorFrac_probejet_b[i][j]);
+      gr_flavorFrac_probejet_c[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,flavorFrac_probejet_c[i][j],res_zero,err_flavorFrac_probejet_c[i][j]);
+      gr_flavorFrac_probejet_s[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,flavorFrac_probejet_s[i][j],res_zero,err_flavorFrac_probejet_s[i][j]);
+      gr_flavorFrac_probejet_ud[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,flavorFrac_probejet_ud[i][j],res_zero,err_flavorFrac_probejet_ud[i][j]);
+      gr_flavorFrac_probejet_uds[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,flavorFrac_probejet_uds[i][j],res_zero,err_flavorFrac_probejet_uds[i][j]);
+      gr_flavorFrac_probejet_undefined[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,flavorFrac_probejet_undefined[i][j],res_zero,err_flavorFrac_probejet_undefined[i][j]);
+
+      gr_flavorFrac_dijet_QQ[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,flavorFrac_dijet_QQ[i][j],res_zero,err_flavorFrac_dijet_QQ[i][j]);
+      gr_flavorFrac_dijet_GQ[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,flavorFrac_dijet_GQ[i][j],res_zero,err_flavorFrac_dijet_GQ[i][j]);
+      gr_flavorFrac_dijet_GG[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,flavorFrac_dijet_GG[i][j],res_zero,err_flavorFrac_dijet_GG[i][j]);
+      gr_flavorFrac_dijet_QG[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,flavorFrac_dijet_QG[i][j],res_zero,err_flavorFrac_dijet_QG[i][j]);
+
     }
   }
 
@@ -236,6 +453,33 @@ void CorrectionObject::InputForGlobalFit(){
       rrel_mc[i][j]->SetName("ptchs_dijet_"+alpha_range_common[i]);
       mpf_ratio[i][j]->SetName("mpfchs_dijet_"+alpha_range_common[i]);
       rrel_ratio[i][j]->SetName("ptchs_dijet_"+alpha_range_common[i]);
+
+      gr_flavorFrac_probejet_glu[i][j] = CleanEmptyPoints(gr_flavorFrac_probejet_glu[i][j]);
+      gr_flavorFrac_probejet_glu[i][j]->SetName("dijet_flavFraction_probejet_glu_"+alpha_range_common[i]);
+      gr_flavorFrac_probejet_gluExt[i][j] = CleanEmptyPoints(gr_flavorFrac_probejet_gluExt[i][j]);
+      gr_flavorFrac_probejet_gluExt[i][j]->SetName("dijet_flavFraction_probejet_gluExt_"+alpha_range_common[i]);
+      gr_flavorFrac_probejet_b[i][j] = CleanEmptyPoints(gr_flavorFrac_probejet_b[i][j]);
+      gr_flavorFrac_probejet_b[i][j]->SetName("dijet_flavFraction_probejet_b_"+alpha_range_common[i]);
+      gr_flavorFrac_probejet_c[i][j] = CleanEmptyPoints(gr_flavorFrac_probejet_c[i][j]);
+      gr_flavorFrac_probejet_c[i][j]->SetName("dijet_flavFraction_probejet_c_"+alpha_range_common[i]);
+      gr_flavorFrac_probejet_s[i][j] = CleanEmptyPoints(gr_flavorFrac_probejet_s[i][j]);
+      gr_flavorFrac_probejet_s[i][j]->SetName("dijet_flavFraction_probejet_s_"+alpha_range_common[i]);
+      gr_flavorFrac_probejet_ud[i][j] = CleanEmptyPoints(gr_flavorFrac_probejet_ud[i][j]);
+      gr_flavorFrac_probejet_ud[i][j]->SetName("dijet_flavFraction_probejet_ud_"+alpha_range_common[i]);
+      gr_flavorFrac_probejet_uds[i][j] = CleanEmptyPoints(gr_flavorFrac_probejet_uds[i][j]);
+      gr_flavorFrac_probejet_uds[i][j]->SetName("dijet_flavFraction_probejet_uds_"+alpha_range_common[i]);
+      gr_flavorFrac_probejet_undefined[i][j] = CleanEmptyPoints(gr_flavorFrac_probejet_undefined[i][j]);
+      gr_flavorFrac_probejet_undefined[i][j]->SetName("dijet_flavFraction_probejet_undefined_"+alpha_range_common[i]);
+
+      gr_flavorFrac_dijet_QQ[i][j] = CleanEmptyPoints(gr_flavorFrac_dijet_QQ[i][j]);
+      gr_flavorFrac_dijet_QQ[i][j]->SetName("dijet_flavFraction_dijet_QQ_"+alpha_range_common[i]);
+      gr_flavorFrac_dijet_GQ[i][j] = CleanEmptyPoints(gr_flavorFrac_dijet_GQ[i][j]);
+      gr_flavorFrac_dijet_GQ[i][j]->SetName("dijet_flavFraction_dijet_GQ_"+alpha_range_common[i]);
+      gr_flavorFrac_dijet_GG[i][j] = CleanEmptyPoints(gr_flavorFrac_dijet_GG[i][j]);
+      gr_flavorFrac_dijet_GG[i][j]->SetName("dijet_flavFraction_dijet_GG_"+alpha_range_common[i]);
+      gr_flavorFrac_dijet_QG[i][j] = CleanEmptyPoints(gr_flavorFrac_dijet_QG[i][j]);
+      gr_flavorFrac_dijet_QG[i][j]->SetName("dijet_flavFraction_dijet_QG_"+alpha_range_common[i]);
+
       }
     }
 
@@ -263,6 +507,18 @@ void CorrectionObject::InputForGlobalFit(){
       mpf_mc[i][j]->Write();
       rrel_mc[i][j]->Write();
       hmc_num[i][j]->Write();
+      gr_flavorFrac_probejet_glu[i][j]->Write();
+      gr_flavorFrac_probejet_gluExt[i][j]->Write();
+      gr_flavorFrac_probejet_b[i][j]->Write();
+      gr_flavorFrac_probejet_c[i][j]->Write();
+      gr_flavorFrac_probejet_s[i][j]->Write();
+      gr_flavorFrac_probejet_ud[i][j]->Write();
+      gr_flavorFrac_probejet_uds[i][j]->Write();
+      gr_flavorFrac_probejet_undefined[i][j]->Write();
+      gr_flavorFrac_dijet_QQ[i][j]->Write();
+      gr_flavorFrac_dijet_GQ[i][j]->Write();
+      gr_flavorFrac_dijet_GG[i][j]->Write();
+      gr_flavorFrac_dijet_QG[i][j]->Write();
     }
  }
 
