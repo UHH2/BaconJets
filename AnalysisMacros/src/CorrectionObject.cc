@@ -54,6 +54,7 @@ CorrectionObject::CorrectionObject(const TString & runnr, const TString & genera
 
       //DATA 
       // _DATApath ="/nfs/dust/cms/user/karavdia/JERC/Fall17_17Nov_V4_L2Res_wMPF_CentralTriggersONLY/uhh2.AnalysisModuleRunner.MC.QCDPt15to7000.root";  //2017 MC
+      // _DATApath = input_path + "uhh2.AnalysisModuleRunner.MC.QCDPt50toInf_pythia8_" + _collection  +"_RunBCDEFGH.root";
       _DATApath = input_path + "uhh2.AnalysisModuleRunner.DATA.DATA_Run" + _runnr + "_" + _collection + ".root";
       _DATApath_ForWeights_FLAT = _weightpath_FLAT + "uhh2.AnalysisModuleRunner.DATA.DATA_Run" + _runnr + "_" + _collection + ".root";
       _DATApath_ForWeights_FWD = _weightpath_FWD + "uhh2.AnalysisModuleRunner.DATA.DATA_Run" + _runnr + "_" + _collection + ".root";

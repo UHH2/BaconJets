@@ -431,8 +431,8 @@ TestModule::TestModule(uhh2::Context & ctx) :
   //JER Smearing for corresponding JEC-Version
   
   if(isMC){
-    // if(JEC_Version == "Summer16_07Aug2017_V7") jetER_smearer.reset(new GenericJetResolutionSmearer(ctx, "jets", "genjets", true, JERSmearing::SF_13TeV_2016_03Feb2017)); //Old SF
-    if(JEC_Version == "Summer16_07Aug2017_V7") jetER_smearer.reset(new GenericJetResolutionSmearer(ctx, "jets", "genjets", true, JERSmearing::SF_13TeV_2016_07Aug2017_v1)); //03 May 2018: Updated SF
+    if(JEC_Version == "Summer16_07Aug2017_V7") jetER_smearer.reset(new GenericJetResolutionSmearer(ctx, "jets", "genjets", true, JERSmearing::SF_13TeV_2016_03Feb2017)); //Old SF
+    // if(JEC_Version == "Summer16_07Aug2017_V7") jetER_smearer.reset(new GenericJetResolutionSmearer(ctx, "jets", "genjets", true, JERSmearing::SF_13TeV_2016_07Aug2017_v1)); //03 May 2018: Updated SF
     else throw runtime_error("In TestModule.cxx: When setting up JER smearer, invalid 'JEC_Version' was specified.");
   }
   
@@ -620,8 +620,8 @@ TestModule::TestModule(uhh2::Context & ctx) :
   Jet_printer.reset(new JetPrinter("Jet-Printer", 0));
   GenParticles_printer.reset(new GenParticlesPrinter(ctx));
   
-    debug =false;
-    //debug =true;
+  //debug =false;
+  debug =true;
 
   n_evt = 0;
   TString name_weights = ctx.get("MC_Weights_Path");

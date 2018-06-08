@@ -90,7 +90,7 @@ const double pt_bins[n_pt] = {
   1000,
   2000};
 */
-const int n_pt_HF = 9;
+const int n_pt_HF = 10;
 const TString pt_range_HF[n_pt_HF]={
   "51",
   "72",
@@ -99,6 +99,7 @@ const TString pt_range_HF[n_pt_HF]={
   "188",
   "257", 
   "354",
+  "450",
   "1000",
   "2000"};
 
@@ -110,6 +111,7 @@ const double pt_bins_HF[n_pt_HF]{
   188,
   257,
   354,
+  450,
   1000,
   2000};
 

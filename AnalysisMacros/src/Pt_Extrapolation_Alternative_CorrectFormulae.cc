@@ -339,7 +339,7 @@ for(int j=0; j<n_eta-1; j++){
   
 
   // create horizontal line for plotting ("ideal value")
-  TLine *line = new TLine(0.,1,pt_bins[n_pt-1],1);
+  TLine *line = new TLine(0.,1,pt_bins[n_pt-1]+100,1);
 
   // create a function for the loglinear fit
   TF1 * f1[n_eta-1];
@@ -435,12 +435,12 @@ for(int j=0; j<n_eta-1; j++){
     if(graph_filled[j]){
       graph1_mpf[j]->SetTitle("");
       graph1_mpf[j]->GetYaxis()->SetTitle("(R_{MC}/R_{DATA})_{#alpha<0.3}");
-      graph1_mpf[j]->GetYaxis()->SetTitleSize(0.045);
-      graph1_mpf[j]->GetYaxis()->SetTitleOffset(1.22);
+      graph1_mpf[j]->GetYaxis()->SetTitleSize(0.040);
+      graph1_mpf[j]->GetYaxis()->SetTitleOffset(1.2);
       graph1_mpf[j]->GetXaxis()->SetTitle("#bar{p}_{T} [GeV]");
       graph1_mpf[j]->GetXaxis()->SetTitleSize(0.045);
-      graph1_mpf[j]->GetXaxis()->SetTitleOffset(0.82);
-      graph1_mpf[j]->GetXaxis()->SetLimits(30,(eta_cut_bool?pt_bins_HF:pt_bins)[n_pt_cutted-1]+100);
+      graph1_mpf[j]->GetXaxis()->SetTitleOffset(0.84);
+      graph1_mpf[j]->GetXaxis()->SetLimits(30,pt_bins[n_pt-1]+100);
       graph1_mpf[j]->GetYaxis()->SetRangeUser(0.85,1.25);
     }
  
@@ -480,7 +480,7 @@ for(int j=0; j<n_eta-1; j++){
 
     //Set up legend, prepare canvas layout
     TLegend *leg1;
-    leg1 = new TLegend(0.12,0.62,0.35,0.82,"","brNDC");//x+0.1
+    leg1 = new TLegend(0.12,0.65,0.35,0.88,"","brNDC");//x+0.1
     leg1->SetBorderSize(0);
     leg1->SetTextSize(0.040);
     leg1->SetFillColor(10);
@@ -507,7 +507,7 @@ for(int j=0; j<n_eta-1; j++){
     TLatex *tex = new TLatex();
     tex->SetNDC();
     tex->SetTextSize(0.047); 
-    tex->DrawLatex(0.46,0.91,CorrectionObject::_lumitag+"(13TeV)"); 
+    tex->DrawLatex(0.38,0.91,CorrectionObject::_lumitag+" (13TeV)"); 
 
     TLatex *tex2 = new TLatex();
     if(graph_filled[j]){    
@@ -597,7 +597,7 @@ for(int j=0; j<n_eta-1; j++){
 
       if(CorrectionObject::_collection == "AK4CHS"){
 	if(CorrectionObject::_runnr == "BCDEFGH"){
-	  if(!CorrectionObject::_closuretest) kfsr_fit_mpf->SetParameters(1.85,-160,180); //RES
+	  if(!CorrectionObject::_closuretest) kfsr_fit_mpf->SetParameters(-8,88000,9500); //RES
 	  else kfsr_fit_mpf->SetParameters(2,2,50); //CLOSURETEST
 	  fit_fullrange = true;
 	}

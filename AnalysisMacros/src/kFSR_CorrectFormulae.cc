@@ -348,18 +348,18 @@ void CorrectionObject::kFSR_CorrectFormulae(){
 
    //Define legend
    TLegend *leg1;
-   leg1 = new TLegend(0.17,0.68,0.65,0.89,"","brNDC");//x+0.1
+   leg1 = new TLegend(0.14,0.68,0.67,0.89,"","brNDC");//x+0.1
    leg1->SetBorderSize(0);
-   leg1->SetTextSize(0.03);
+   leg1->SetTextSize(0.035);
    leg1->SetFillColor(10);
    leg1->SetLineColor(1);
    leg1->SetTextFont(42);
    leg1->SetNColumns(2);
    
    TLegend *leg2;
-   leg2 = new TLegend(0.17,0.68,0.65,0.89,"","brNDC");//x+0.1
+   leg2 = new TLegend(0.14,0.68,0.67,0.89,"","brNDC");//x+0.1
    leg2->SetBorderSize(0);
-   leg2->SetTextSize(0.03);
+   leg2->SetTextSize(0.035);
    leg2->SetFillColor(10);
    leg2->SetLineColor(1);
    leg2->SetTextFont(42);
@@ -485,7 +485,7 @@ void CorrectionObject::kFSR_CorrectFormulae(){
        
        TLegend* leg_mpf = new TLegend(0.25,0.6,0.41,0.85,"","brNDC");//x+0.1
        leg_mpf->SetBorderSize(0);
-       leg_mpf->SetTextSize(0.038);
+       leg_mpf->SetTextSize(0.04);
        leg_mpf->SetFillColor(10);
        leg_mpf->SetFillStyle(0);
        leg_mpf->SetLineColor(1);
@@ -533,7 +533,7 @@ void CorrectionObject::kFSR_CorrectFormulae(){
 
        TString pTbin_label = "";
        pTbin_label+=(eta_cut_bool ? pt_bins_HF : pt_bins)[k];
-       pTbin_label+=" < p_T < ";
+       pTbin_label+=" < p_{T} < ";
        pTbin_label+=(eta_cut_bool ? pt_bins_HF : pt_bins)[k+1];
        if(j==0) leg1->AddEntry(graph_rel_r[k][j],pTbin_label,"epl");
        if(j==14){
@@ -636,7 +636,7 @@ void CorrectionObject::kFSR_CorrectFormulae(){
      TLatex *tex_rel = new TLatex();
      tex_rel->SetNDC();
      tex_rel->SetTextSize(0.045); 
-     tex_rel->DrawLatex(0.64,0.91,CorrectionObject::_lumitag);
+     tex_rel->DrawLatex(0.38,0.91,CorrectionObject::_lumitag+" (13TeV)");
 
      TString chi2_rel = "#chi^{2}/n.d.f = ";
      TLatex *tex2_rel = new TLatex();
@@ -764,7 +764,7 @@ void CorrectionObject::kFSR_CorrectFormulae(){
     TLatex *tex_mpf = new TLatex();
      tex_mpf->SetNDC();
      tex_mpf->SetTextSize(0.045); 
-     tex_mpf->DrawLatex(0.64,0.91,CorrectionObject::_lumitag);
+     tex_mpf->DrawLatex(0.38,0.91,CorrectionObject::_lumitag+" (13TeV)");
 
      TString chi2_mpf = "#chi^{2}/n.d.f = ";
      TLatex *tex2_mpf = new TLatex();
@@ -858,6 +858,7 @@ void CorrectionObject::kFSR_CorrectFormulae(){
        pTgraph_rel_r[j]->GetYaxis()->SetRangeUser(0.92,1.08);
        pTgraph_rel_r[j]->GetXaxis()->SetRangeUser(0,alpha_bins[n_alpha-1]+0.01);
        pTgraph_rel_r[j]->GetYaxis()->SetTitle("(R_{MC}/R_{DATA})");
+       pTgraph_rel_r[j]->GetYaxis()->SetTitleOffset(1.25);
        pTgraph_rel_r[j]->GetXaxis()->SetTitle("cut on #alpha");
 
      }
@@ -904,7 +905,7 @@ void CorrectionObject::kFSR_CorrectFormulae(){
      TLatex *tex = new TLatex();
      tex->SetNDC();
      tex->SetTextSize(0.045); 
-     tex->DrawLatex(0.64,0.91,CorrectionObject::_lumitag);
+     tex->DrawLatex(0.38,0.91,CorrectionObject::_lumitag+" (13TeV)");
 
      TString chi2_loglin = "#chi^{2}/n.d.f = ";
      TLatex *tex2 = new TLatex();
@@ -963,6 +964,7 @@ void CorrectionObject::kFSR_CorrectFormulae(){
        pTgraph_mpf_r[j]->GetYaxis()->SetRangeUser(0.92,1.08);
        pTgraph_mpf_r[j]->GetXaxis()->SetRangeUser(0,alpha_bins[n_alpha-1]+0.01);
        pTgraph_mpf_r[j]->GetYaxis()->SetTitle("(R_{MC}/R_{DATA})");
+       pTgraph_mpf_r[j]->GetYaxis()->SetTitleOffset(1.25);
        pTgraph_mpf_r[j]->GetXaxis()->SetTitle("cut on #alpha");
      }
 
@@ -1003,7 +1005,7 @@ void CorrectionObject::kFSR_CorrectFormulae(){
      TLatex *tex = new TLatex();
      tex->SetNDC();
      tex->SetTextSize(0.045); 
-     tex->DrawLatex(0.64,0.91,CorrectionObject::_lumitag);
+     tex->DrawLatex(0.38,0.91,CorrectionObject::_lumitag+" (13TeV)");
 
      TString chi2_loglin = "#chi^{2}/n.d.f = ";
      TLatex *tex2 = new TLatex();
