@@ -32,14 +32,14 @@
 #include <TMath.h>
 #include <TFile.h>
 #include <TProfile.h>
-
+#include <utility>
 
 using namespace std;
 
 void CorrectionObject::Pt_Extrapolation_Alternative_CorrectFormulae(bool mpfMethod){
   cout << "--------------- Starting Pt_Extrapolation() ---------------" << endl << endl;
   TStyle* m_gStyle = new TStyle();
-  m_gStyle->SetOptFit(000);
+  m_gStyle->SetOptFit(111);
 
   int n_pt_ = max(n_pt,n_pt_HF);
   bool eta_cut_bool;
@@ -88,10 +88,10 @@ void CorrectionObject::Pt_Extrapolation_Alternative_CorrectFormulae(bool mpfMeth
 
 
   //Set up histos for ratios of responses
-  double ratio_al_rel_r[n_pt_-1][n_eta-1]; //ratio at pt,eta,alpha bins
-  double err_ratio_al_rel_r[n_pt_-1][n_eta-1]; //error of ratio at pt,eta,alpha bins
-  double ratio_al_mpf_r[n_pt_-1][n_eta-1]; //ratio at pt,eta,alpha bins
-  double err_ratio_al_mpf_r[n_pt_-1][n_eta-1]; //error of ratio at pt,eta,alpha bins
+  double ratio_al_rel_r[n_eta-1][n_pt_-1]; //ratio at pt,eta,alpha bins
+  double err_ratio_al_rel_r[n_eta-1][n_pt_-1]; //error of ratio at pt,eta,alpha bins
+  double ratio_al_mpf_r[n_eta-1][n_pt_-1]; //ratio at pt,eta,alpha bins
+  double err_ratio_al_mpf_r[n_eta-1][n_pt_-1]; //error of ratio at pt,eta,alpha bins
 
   TProfile *pr_data_asymmetry[n_eta-1];// pT-balance response for data  
   TProfile *pr_data_B[n_eta-1];//MPF response for data
@@ -102,6 +102,11 @@ void CorrectionObject::Pt_Extrapolation_Alternative_CorrectFormulae(bool mpfMeth
   TH2D *hdata_B[n_eta-1];
   TH2D *hmc_asymmetry[n_eta-1];
   TH2D *hmc_B[n_eta-1];
+
+  TH1D *hdata_asymmetry_gaus[n_eta-1][n_pt_-1];
+  TH1D *hdata_B_gaus[n_eta-1][n_pt_-1];
+  TH1D *hmc_asymmetry_gaus[n_eta-1][n_pt_-1];
+  TH1D *hmc_B_gaus[n_eta-1][n_pt_-1];
 
   int n_entries_mc[n_eta-1][n_pt_-1];
   int n_entries_data[n_eta-1][n_pt_-1];
@@ -115,6 +120,10 @@ void CorrectionObject::Pt_Extrapolation_Alternative_CorrectFormulae(bool mpfMeth
   TString name3 = "hist_mc_asymmetry_";
   TString name4 = "hist_mc_B_";
   TString name5 = "hist_data_pt_ave";
+  TString name6 = "hist_mc_asymmetry_gaus";
+  TString name7 = "hist_mc_B_gaus";
+  TString name8 = "hist_data_asymmetry_gaus";
+  TString name9 = "hist_data_B_gaus";
 
   for(int j=0; j<n_eta-1; j++){
     eta_cut_bool = fabs(eta_bins[j])>eta_cut;
@@ -134,11 +143,21 @@ void CorrectionObject::Pt_Extrapolation_Alternative_CorrectFormulae(bool mpfMeth
       TString pt_name = "pt_"+(eta_cut_bool?pt_range_HF:pt_range)[k]+"_"+(eta_cut_bool?pt_range_HF:pt_range)[k+1];
       name = name5 + eta_name + "_" + pt_name; 
       hdata_ptave[k][j] = new TH1D(name,"",3000,0,3000); //only used for GetMean and GetStdDev in the pT extrapolations
+      name = name6 + eta_name + "_" + pt_name; 
+      hmc_asymmetry_gaus[j][k] = new TH1D(name,"",nResponseBins,-1.2,1.2);
+      name = name7 + eta_name + "_" + pt_name; 
+      hmc_B_gaus[j][k]                 = new TH1D(name,"",nResponseBins,-1.2,1.2);
+      name = name8 + eta_name + "_" + pt_name; 
+      hdata_asymmetry_gaus[j][k] = new TH1D(name,"",nResponseBins,-1.2,1.2);
+      name = name9 + eta_name + "_" + pt_name; 
+      hdata_B_gaus[j][k]                 = new TH1D(name,"",nResponseBins,-1.2,1.2);
+
       count++;
-      ratio_al_rel_r[k][j] = 0;
-      err_ratio_al_rel_r[k][j] = 0;
-      ratio_al_mpf_r[k][j] = 0;
-      err_ratio_al_mpf_r[k][j] = 0;
+      ratio_al_rel_r[j][k] = 0;
+      err_ratio_al_rel_r[j][k] = 0;
+      ratio_al_mpf_r[j][k] = 0;
+      err_ratio_al_mpf_r[j][k] = 0;
+
       n_entries_mc[j][k] = 0;
       n_entries_data[j][k] = 0;
     }
@@ -170,6 +189,8 @@ void CorrectionObject::Pt_Extrapolation_Alternative_CorrectFormulae(bool mpfMeth
 	for(int k=0; k< ( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ); k++){
 	  if(*pt_ave_data<(eta_cut_bool?pt_bins_HF:pt_bins)[k] || *pt_ave_data>(eta_cut_bool?pt_bins_HF:pt_bins)[k+1]) continue;
 	  hdata_ptave[k][j]->Fill(*pt_ave_data,*weight_data);
+	  hdata_asymmetry_gaus[j][k]->Fill(*asymmetry_data,*weight_data);
+	  hdata_B_gaus[j][k]->Fill(*B_data,*weight_data);
 	  n_entries_data[j][k]++;
 	}
       }
@@ -199,6 +220,8 @@ void CorrectionObject::Pt_Extrapolation_Alternative_CorrectFormulae(bool mpfMeth
 	eta_cut_bool = fabs(eta_bins[j])>eta_cut; 
 	for(int k=0; k< ( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ); k++){
 	  if(*pt_ave_mc<(eta_cut_bool?pt_bins_HF:pt_bins)[k] || *pt_ave_mc>(eta_cut_bool?pt_bins_HF:pt_bins)[k+1]) continue;
+	  hmc_asymmetry_gaus[j][k]->Fill(*asymmetry_mc,*weight_mc);
+	  hmc_B_gaus[j][k]->Fill(*B_mc,*weight_mc);
 	  n_entries_mc[j][k]++;
 	}
       }
@@ -225,15 +248,96 @@ void CorrectionObject::Pt_Extrapolation_Alternative_CorrectFormulae(bool mpfMeth
     pr_mc_B[j]           = (TProfile*)hmc_B[j]->ProfileX();
   }
    
-
-
+  TH1D* Chi2_mpf_mc[n_eta-1];
+  TH1D* Chi2_mpf_data[n_eta-1];
+  TH1D* Chi2_rel_mc[n_eta-1];
+  TH1D* Chi2_rel_data[n_eta-1];
 
   //calculate response from <A> and <B> in bins of pt,eta,alpha
   //gaussian error propagation from errors on <A> and <B>
   for(int j=0; j<n_eta-1; j++){
     eta_cut_bool = fabs(eta_bins[j])>eta_cut; 
-    for(int k=0; k< ( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ); k++){
+    
+    Chi2_mpf_mc[j] = new TH1D("MPF_mc_chi2_eta_"+eta_range2[j]+"_"+eta_range2[j+1],"",( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ),(eta_cut_bool?pt_bins_HF:pt_bins));
+    Chi2_mpf_data[j] = new TH1D("MPF_data_chi2_eta_"+eta_range2[j]+"_"+eta_range2[j+1],"",( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ),(eta_cut_bool?pt_bins_HF:pt_bins));
+    Chi2_rel_mc[j] = new TH1D("Rel_mc_chi2_eta_"+eta_range2[j]+"_"+eta_range2[j+1],"",( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ),(eta_cut_bool?pt_bins_HF:pt_bins));
+    Chi2_rel_data[j] = new TH1D("Rel_data_chi2_eta_"+eta_range2[j]+"_"+eta_range2[j+1],"",( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ),(eta_cut_bool?pt_bins_HF:pt_bins));
 
+    for(int k=0; k< ( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ); k++){
+      
+      double mc_B_mean = 0;
+      double mc_B_error = 0;
+      double mc_B_chi2 = 0;
+
+      ///for gaus-fit 
+      TF1 *f1_mc_B = new TF1("f1_mc_B", "gaus",-0.5,0.5);
+      hmc_B_gaus[j][k]->Fit("f1_mc_B","R");
+      mc_B_mean = f1_mc_B->GetParameter(1);
+      mc_B_error  = f1_mc_B->GetParameter(2) / sqrt(hmc_B_gaus[j][k]->GetEntries());
+      mc_B_chi2  = f1_mc_B->GetChisquare()/f1_mc_B->GetNDF();
+
+      double mpf_mc = (1+mc_B_mean)/(1-mc_B_mean);
+      if(!enough_entries[j][k] || mc_B_mean==0) mpf_mc = 0;
+      if(!enough_entries[j][k])  mc_B_chi2 = 0;
+      Chi2_mpf_mc[j] -> SetBinContent(k+1,mc_B_chi2);
+
+      double err_mpf_mc = 2/(pow(1-mc_B_mean,2)) * mc_B_error;
+      if(!enough_entries[j][k] || mc_B_mean ==0) err_mpf_mc = 0;
+ 
+
+
+      double data_B_mean = 0;
+      double data_B_error = 0;
+      double data_B_chi2 = 0;
+
+     TF1 *f1_data_B = new TF1("f1_data_B", "gaus",-0.5,0.5);
+      hdata_B_gaus[j][k]->Fit("f1_data_B","R");
+      data_B_mean = f1_data_B->GetParameter(1);
+      data_B_error  = f1_data_B->GetParameter(2) / sqrt(hdata_B_gaus[j][k]->GetEntries());
+      data_B_chi2  = f1_data_B->GetChisquare()/f1_data_B->GetNDF();
+
+      double mpf_data = (1+data_B_mean)/(1-data_B_mean);
+      if(!enough_entries[j][k] || data_B_mean==0) mpf_data = 0;
+      if(!enough_entries[j][k])  data_B_chi2 = 0;
+      double err_mpf_data = 2/(pow(1-data_B_mean,2)) * data_B_error;
+      if(!enough_entries[j][k] || data_B_mean ==0) err_mpf_data = 0;
+      Chi2_mpf_data[j] -> SetBinContent(k+1,data_B_chi2);
+
+      double mc_A_mean = 0;
+      double mc_A_error = 0;
+      double mc_A_chi2 = 0;
+
+     TF1 *f1_mc_A = new TF1("f1_mc_A", "gaus",-0.5,0.5);
+      hmc_asymmetry_gaus[j][k]->Fit("f1_mc_A","R");
+      mc_A_mean = f1_mc_A->GetParameter(1);
+      mc_A_error  = f1_mc_A->GetParameter(2) / sqrt(hmc_asymmetry_gaus[j][k]->GetEntries());
+      mc_A_chi2  = f1_mc_A->GetChisquare()/f1_mc_A->GetNDF();
+
+      double rel_mc = (1+mc_A_mean)/(1-mc_A_mean);
+      if(!enough_entries[j][k] || mc_A_mean==0) rel_mc = 0;
+      if(!enough_entries[j][k])  mc_A_chi2 = 0;
+      double err_rel_mc = 2/(pow(1-mc_A_mean,2)) * mc_A_error;
+      if(!enough_entries[j][k] || mc_A_mean ==0) err_rel_mc = 0;
+      Chi2_rel_mc[j] -> SetBinContent(k+1,mc_A_chi2);
+
+      double data_A_mean = 0;
+      double data_A_error = 0;
+      double data_A_chi2 = 0;
+
+     TF1 *f1_data_A = new TF1("f1_data_A", "gaus",-0.5,0.5);
+      hdata_asymmetry_gaus[j][k]->Fit("f1_data_A","R");
+      data_A_mean = f1_data_A->GetParameter(1);
+      data_A_error  = f1_data_A->GetParameter(2) / sqrt(hdata_asymmetry_gaus[j][k]->GetEntries());
+      data_A_chi2  = f1_data_A->GetChisquare()/f1_data_A->GetNDF();
+
+      double rel_data = (1+data_A_mean)/(1-data_A_mean);
+      if(!enough_entries[j][k] || data_A_mean==0) rel_data = 0;
+      if(!enough_entries[j][k])  data_A_chi2 = 0;
+      double err_rel_data = 2/(pow(1-data_A_mean,2)) * data_A_error;
+      if(!enough_entries[j][k] || data_A_mean ==0) err_rel_data = 0;
+      Chi2_rel_data[j] -> SetBinContent(k+1,data_A_chi2);
+      
+      /*
       //responses for data, MC separately. Only for bins with >= 100 entries
       double mpf_mc = (1+pr_mc_B[j]->GetBinContent(k+1))/(1-pr_mc_B[j]->GetBinContent(k+1));
       if(!enough_entries[j][k] || pr_mc_B[j]->GetBinContent(k+1)==0) mpf_mc = 0;
@@ -258,14 +362,21 @@ void CorrectionObject::Pt_Extrapolation_Alternative_CorrectFormulae(bool mpfMeth
       
       double err_rel_data = 2/(pow((1-pr_data_asymmetry[j]->GetBinContent(k+1)),2)) * pr_data_asymmetry[j]->GetBinError(k+1);
       if(!enough_entries[j][k] || pr_data_asymmetry[j]->GetBinContent(k+1)==0) err_rel_data = 0;
+      */
 
       //ratio of responses, again gaussian error propagation
-      if(rel_data > 0) ratio_al_rel_r[k][j] = rel_mc/rel_data;
-      else ratio_al_rel_r[k][j] = 0;
-      err_ratio_al_rel_r[k][j] = sqrt(pow(1/rel_data*err_rel_mc,2) + pow(rel_mc/(rel_data*rel_data)*err_rel_data,2));
-      if(mpf_data > 0) ratio_al_mpf_r[k][j] = mpf_mc/mpf_data;
-      else ratio_al_mpf_r[k][j] = 0;
-      err_ratio_al_mpf_r[k][j] = sqrt(pow(1/mpf_data*err_mpf_mc,2) + pow(mpf_mc/(mpf_data*mpf_data)*err_mpf_data,2));
+      if(rel_data > 0) ratio_al_rel_r[j][k] = rel_mc/rel_data;
+      else ratio_al_rel_r[j][k] = 0;
+      err_ratio_al_rel_r[j][k] = sqrt(pow(1/rel_data*err_rel_mc,2) + pow(rel_mc/(rel_data*rel_data)*err_rel_data,2));
+
+      if(mpf_data > 0) ratio_al_mpf_r[j][k] = mpf_mc/mpf_data;
+      else ratio_al_mpf_r[j][k] = 0;
+      err_ratio_al_mpf_r[j][k] = sqrt(pow(1/mpf_data*err_mpf_mc,2) + pow(mpf_mc/(mpf_data*mpf_data)*err_mpf_data,2));
+
+      delete f1_data_A;
+      delete f1_mc_A;
+      delete f1_data_B;
+      delete f1_mc_B;
     }
   }
 
@@ -278,13 +389,14 @@ void CorrectionObject::Pt_Extrapolation_Alternative_CorrectFormulae(bool mpfMeth
     eta_cut_bool = fabs(eta_bins[j])>eta_cut; 
     for(int k=0; k< ( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ); k++){
       if(mpfMethod){
-	ratio_mpf[j][k] = ratio_al_mpf_r[k][j];
-	err_ratio_mpf[j][k] = err_ratio_al_mpf_r[k][j];
-	//	std::cout<<"ratio_mpf[j][k] = @"<<eta_range[j]<<" "<<ratio_mpf[j][k]<<std::endl;
+	ratio_mpf[j][k] = ratio_al_mpf_r[j][k];
+	err_ratio_mpf[j][k] = err_ratio_al_mpf_r[j][k];
+	std::cout<<"ratio_mpf[j][k] = @"<<eta_range[j]<<" "<<ratio_mpf[j][k]<<" +- "<<err_ratio_mpf[j][k]<<std::endl;
       }
       else{
-	ratio_mpf[j][k] = ratio_al_rel_r[k][j];
-	err_ratio_mpf[j][k] = err_ratio_al_rel_r[k][j];
+	ratio_mpf[j][k] = ratio_al_rel_r[j][k];
+	err_ratio_mpf[j][k] = err_ratio_al_rel_r[j][k];
+	std::cout<<"ratio_rel[j][k] = @"<<eta_range[j]<<" "<<ratio_mpf[j][k]<<" +- "<<err_ratio_mpf[j][k]<<std::endl;
       }
     }
   }
@@ -301,10 +413,11 @@ for(int j=0; j<n_eta-1; j++){
     for(int i=0; i < ( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ); i++){
        xbin_tgraph[j][i] = hdata_ptave[i][j]->GetMean();
       zero[j][i] = hdata_ptave[i][j]->GetStdDev();
-    }
+     }
   }
  
   TGraphErrors *graph1_mpf[n_eta-1];
+
   bool graph_filled[n_eta-1];
   for(int j=0; j<n_eta-1; j++) graph_filled[j] = false;
   for(int j=0; j<n_eta-1; j++){
@@ -364,9 +477,75 @@ for(int j=0; j<n_eta-1; j++){
 
 
   /* +++++++++++++++++++++++ Plots +++++++++++++++++++ */
+ 
   if(mpfMethod){
+ TCanvas* B_MC_sym_fit[n_eta-1][n_pt_-1];
+ TCanvas* B_DATA_sym_fit[n_eta-1][n_pt_-1];
+
+  TString plotname_mpf_fit[n_eta-1][n_pt_-1];
+
+     for (int j=0; j<n_eta-1; j++){
+      eta_cut_bool = fabs(eta_bins[j])>eta_cut; 
+      for(int k=0; k<( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ); k++){
+	
+	plotname_mpf_fit[j][k]="mpf_sym_"+CorrectionObject::_generator_tag+"_eta_"+eta_range2[j]+"_"+eta_range2[j+1]+"_pT_"+(eta_cut_bool ? pt_range_HF : pt_range)[k]+"_"+(eta_cut_bool ? pt_range_HF : pt_range)[k+1];
+	
+	B_MC_sym_fit[j][k] = new TCanvas("MC_"+plotname_mpf_fit[j][k], "MC"+plotname_mpf_fit[j][k], 800,700);
+	hmc_B_gaus[j][k]->Draw();
+	B_MC_sym_fit[j][k]->Print(CorrectionObject::_outpath+"plots/control/B_NormDistribution_MC_"+CorrectionObject::_generator_tag+"_eta_"+eta_range2[j]+"_"+eta_range2[j+1]+"_pT_"+(eta_cut_bool ? pt_range_HF : pt_range)[k]+"_"+(eta_cut_bool ? pt_range_HF : pt_range)[k+1]+".pdf");
+	
+	B_DATA_sym_fit[j][k] = new TCanvas("Data_"+plotname_mpf_fit[j][k], "Data"+plotname_mpf_fit[j][k], 800,700);
+	hdata_B_gaus[j][k]->Draw();
+	B_DATA_sym_fit[j][k]->Print(CorrectionObject::_outpath+"plots/control/B_NormDistribution_DATA_"+CorrectionObject::_generator_tag+"_eta_"+eta_range2[j]+"_"+eta_range2[j+1]+"_pT_"+(eta_cut_bool ? pt_range_HF : pt_range)[k]+"_"+(eta_cut_bool ? pt_range_HF : pt_range)[k+1]+".pdf");
+
+      }
+    }
+     for (int j=0; j<n_eta-1; j++){
+       eta_cut_bool = fabs(eta_bins[j])>eta_cut; 
+       for(int k=0; k<( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ); k++){
+	 delete B_MC_sym_fit[j][k];
+	 delete B_DATA_sym_fit[j][k];
+       }
+     }
+  }
+
+  if(!mpfMethod){
+ TCanvas* A_MC_sym_fit[n_eta-1][n_pt_-1];
+ TCanvas* A_DATA_sym_fit[n_eta-1][n_pt_-1];
+
+  TString plotname_rel_fit[n_eta-1][n_pt_-1];
+
+    for (int j=0; j<n_eta-1; j++){
+      eta_cut_bool = fabs(eta_bins[j])>eta_cut; 
+      for(int k=0; k<( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ); k++){
+
+	plotname_rel_fit[j][k]="dijet_sym_"+CorrectionObject::_generator_tag+"_eta_"+eta_range2[j]+"_"+eta_range2[j+1]+"_pT_"+(eta_cut_bool ? pt_range_HF : pt_range)[k]+"_"+(eta_cut_bool ? pt_range_HF : pt_range)[k+1];
+		
+	A_MC_sym_fit[j][k] = new TCanvas("MC_"+plotname_rel_fit[j][k], "MC"+plotname_rel_fit[j][k], 800,700);
+	gStyle ->SetOptFit(111);
+	hmc_asymmetry_gaus[j][k]->Draw();
+	A_MC_sym_fit[j][k]->Print(CorrectionObject::_outpath+"plots/control/A_NormDistribution_MC_"+CorrectionObject::_generator_tag+"_eta_"+eta_range2[j]+"_"+eta_range2[j+1]+"_pT_"+(eta_cut_bool ? pt_range_HF : pt_range)[k]+"_"+(eta_cut_bool ? pt_range_HF : pt_range)[k+1]+".pdf");
+	
+	A_DATA_sym_fit[j][k] = new TCanvas("Data_"+plotname_rel_fit[j][k], "Data"+plotname_rel_fit[j][k], 800,700);
+	gStyle ->SetOptFit(111);
+	hdata_asymmetry_gaus[j][k]->Draw();
+	A_DATA_sym_fit[j][k]->Print(CorrectionObject::_outpath+"plots/control/A_NormDistribution_DATA_"+CorrectionObject::_generator_tag+"_eta_"+eta_range2[j]+"_"+eta_range2[j+1]+"_pT_"+(eta_cut_bool ? pt_range_HF : pt_range)[k]+"_"+(eta_cut_bool ? pt_range_HF : pt_range)[k+1]+".pdf");
+	
+      }
+    }
+  for (int j=0; j<n_eta-1; j++){
+    eta_cut_bool = fabs(eta_bins[j])>eta_cut; 
+    for(int k=0; k<( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ); k++){
+      delete A_MC_sym_fit[j][k];
+      delete A_DATA_sym_fit[j][k];
+    }
+  }
+  }
+
+  gStyle ->SetOptFit(0);
+
     //  CorrectionObject::make_path(CorrectionObject::_outpath+"plots/");
-  TFile* pT_extrapolation_mpf_out = new TFile(CorrectionObject::_outpath+"plots/pT_extrapolation_mpf.root","RECREATE");}
+ if(mpfMethod){  TFile* pT_extrapolation_mpf_out = new TFile(CorrectionObject::_outpath+"plots/pT_extrapolation_mpf.root","RECREATE");}
   else{   TFile* pT_extrapolation_pt_out = new TFile(CorrectionObject::_outpath+"plots/pT_extrapolation_pt.root","RECREATE");}
 
   TCanvas* asd[n_eta-1];
@@ -538,10 +717,24 @@ for(int j=0; j<n_eta-1; j++){
    //Store plots
    if(mpfMethod){
       graph1_mpf[j]->Write("pTextrapolation_MPF_"+CorrectionObject::_generator_tag+"_pT_"+eta_range2[j]+"_"+eta_range2[j+1]);
+      Chi2_mpf_mc[j]->Write("MPF_mc_chi2_"+CorrectionObject::_generator_tag+"_pT_"+eta_range2[j]+"_"+eta_range2[j+1]);
+      Chi2_mpf_data[j]->Write("MPF_data_chi2_"+CorrectionObject::_generator_tag+"_pT_"+eta_range2[j]+"_"+eta_range2[j+1]);
+      bool eta_cut_bool = false;
+      eta_cut_bool = fabs(eta_bins[j])>eta_cut;
+      for(int k = 0; k<( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ); k++){
+	hdata_B_gaus[j][k]->Write("MPF_Gauss_DATA_"+CorrectionObject::_generator_tag+"_eta_"+eta_range2[j]+"_"+eta_range2[j+1]+"_pT_"+(eta_cut_bool ? pt_range_HF : pt_range)[k]+"_"+(eta_cut_bool ? pt_range_HF : pt_range)[k+1]);
+	hmc_B_gaus[j][k]->Write("MPF_Gauss_MC_"+CorrectionObject::_generator_tag+"_eta_"+eta_range2[j]+"_"+eta_range2[j+1]+"_pT_"+(eta_cut_bool ? pt_range_HF : pt_range)[k]+"_"+(eta_cut_bool ? pt_range_HF : pt_range)[k+1]);
+	}
       asd[j]->Print(CorrectionObject::_outpath+"plots/pTextrapolation_MPF_"+CorrectionObject::_generator_tag+"_pT_"+eta_range2[j]+"_"+eta_range2[j+1]+".pdf");
     }
     else{
       graph1_mpf[j]->Write("pTextrapolation_Pt_"+CorrectionObject::_generator_tag+"_pT_"+eta_range2[j]+"_"+eta_range2[j+1]);
+      Chi2_rel_mc[j]->Write("Rel_mc_chi2_"+CorrectionObject::_generator_tag+"_pT_"+eta_range2[j]+"_"+eta_range2[j+1]);
+      Chi2_rel_data[j]->Write("Rel_data_chi2_"+CorrectionObject::_generator_tag+"_pT_"+eta_range2[j]+"_"+eta_range2[j+1]);
+      for(int k = 0; k<( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ); k++){
+	hdata_asymmetry_gaus[j][k]->Write("pTbal_Gauss_DATA_"+CorrectionObject::_generator_tag+"_eta_"+eta_range2[j]+"_"+eta_range2[j+1]+"_pT_"+(eta_cut_bool ? pt_range_HF : pt_range)[k]+"_"+(eta_cut_bool ? pt_range_HF : pt_range)[k+1]);
+	hmc_asymmetry_gaus[j][k]->Write("pTbal_Gauss_MC_"+CorrectionObject::_generator_tag+"_eta_"+eta_range2[j]+"_"+eta_range2[j+1]+"_pT_"+(eta_cut_bool ? pt_range_HF : pt_range)[k]+"_"+(eta_cut_bool ? pt_range_HF : pt_range)[k+1]);
+      }
       asd[j]->Print(CorrectionObject::_outpath+"plots/pTextrapolation_Pt_"+CorrectionObject::_generator_tag+"_pT_"+eta_range2[j]+"_"+eta_range2[j+1]+".pdf");
     }
     delete tex2;
@@ -1375,6 +1568,16 @@ for(int j=0; j<n_eta-1; j++){
     delete hdata_B[j];
     delete hmc_asymmetry[j];
     delete hmc_B[j];
+    /*
+    eta_cut_bool = fabs(eta_bins[j])>eta_cut;
+    for(int k=0;k<(eta_cut_bool?n_pt_HF-1 : n_pt-1); k++){
+    delete B_MC_sym_fit[j][k];
+    delete B_DATA_sym_fit[j][k];
+    delete A_MC_sym_fit[j][k];
+    delete A_DATA_sym_fit[j][k];
+    delete plotname_fit[j][k];
+    }
+    */
   }
      
   for(int i=0; i<n_eta-1; i++) delete ptave_data[i];

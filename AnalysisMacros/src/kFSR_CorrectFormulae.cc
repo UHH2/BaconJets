@@ -65,6 +65,11 @@ void CorrectionObject::kFSR_CorrectFormulae(){
   TH2D *hmc_asymmetry[n_eta-1][n_alpha];
   TH2D *hmc_B[n_eta-1][n_alpha];
 
+  TH1D *hdata_asymmetry_gaus[n_eta-1][n_pt_-1][n_alpha];
+  TH1D *hdata_B_gaus[n_eta-1][n_pt_-1][n_alpha];
+  TH1D *hmc_asymmetry_gaus[n_eta-1][n_pt_-1][n_alpha];
+  TH1D *hmc_B_gaus[n_eta-1][n_pt_-1][n_alpha];
+
   int n_entries_mc[n_eta-1][n_alpha][n_pt_-1];
   int n_entries_data[n_eta-1][n_alpha][n_pt_-1];
   int count = 0;
@@ -73,11 +78,28 @@ void CorrectionObject::kFSR_CorrectFormulae(){
   TString name2 = "hist_data_B_";
   TString name3 = "hist_mc_asymmetry_";
   TString name4 = "hist_mc_B_";
+ TString name5 = "hist_mc_asymmetry_gaus";
+  TString name6 = "hist_mc_B_gaus";
+  TString name7 = "hist_data_asymmetry_gaus";
+  TString name8 = "hist_data_B_gaus";
+
 
   for(int i=0; i<n_alpha; i++){
-    for(int j=0; j<n_eta-1; j++){
+     for(int j=0; j<n_eta-1; j++){
       eta_cut_bool = fabs(eta_bins[j])>eta_cut;
-      for(int k= 0 ; k < n_pt_-1  ; k++ ){
+      n_pt_cutted = ( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 );
+      TString eta_name = "eta_"+eta_range2[j]+"_"+eta_range2[j+1];
+    
+      TString name = name1; name+=count;
+      hdata_asymmetry[j][i] = new TH2D(name,"A in DATA; p_{T}^{ave} [GeV]; A",n_pt_cutted , (eta_cut_bool?pt_bins_HF:pt_bins),nResponseBins, -1.2, 1.2);
+      name = name2;name+=count;
+      hdata_B[j][i]         = new TH2D(name,"B in DATA;p_{T}^{ave} [GeV];B",n_pt_cutted , (eta_cut_bool?pt_bins_HF:pt_bins),nResponseBins, -1.2, 1.2);
+      name = name3; name+=count;
+      hmc_asymmetry[j][i]   = new TH2D(name,"A in MC;p_{T}^{ave} [GeV];A",n_pt_cutted , (eta_cut_bool?pt_bins_HF:pt_bins),nResponseBins, -1.2, 1.2);
+      name = name4; name+=count;
+      hmc_B[j][i]           = new TH2D(name,"B in MC;p_{T}^{ave} [GeV];B",n_pt_cutted , (eta_cut_bool?pt_bins_HF:pt_bins),nResponseBins, -1.2, 1.2);
+          
+     for(int k= 0 ; k < n_pt_-1  ; k++ ){
 	rel_r_mc[k][j][i] = 0;
 	err_rel_r_mc[k][j][i] = 0;
 	mpf_r_mc[k][j][i] = 0;
@@ -92,19 +114,19 @@ void CorrectionObject::kFSR_CorrectFormulae(){
 	err_ratio_al_rel_r[k][j][i] = 0;
 	ratio_al_mpf_r[k][j][i] = 0;
 	err_ratio_al_mpf_r[k][j][i] = 0;
+
+	TString pt_name = "pt_"+(eta_cut_bool?pt_range_HF:pt_range)[k]+"_"+(eta_cut_bool?pt_range_HF:pt_range)[k+1];
+	name = name5 + eta_name + "_" + pt_name+"_"+alpha_range[i]; 
+	hmc_asymmetry_gaus[j][k][i] = new TH1D(name,"",nResponseBins,-1.2,1.2);
+	name = name6 + eta_name + "_" + pt_name+"_"+alpha_range[i]; 
+	hmc_B_gaus[j][k][i]                 = new TH1D(name,"",nResponseBins,-1.2,1.2);
+	name = name7 + eta_name + "_" + pt_name+"_"+alpha_range[i]; 
+	hdata_asymmetry_gaus[j][k][i] = new TH1D(name,"",nResponseBins,-1.2,1.2);
+	name = name8 + eta_name + "_" + pt_name+"_"+alpha_range[i]; 
+	hdata_B_gaus[j][k][i]                 = new TH1D(name,"",nResponseBins,-1.2,1.2);
+	
+	count++;
       }
-      
-      n_pt_cutted = ( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 );
-      TString name = name1; name+=count;
-      hdata_asymmetry[j][i] = new TH2D(name,"A in DATA; p_{T}^{ave} [GeV]; A",n_pt_cutted , (eta_cut_bool?pt_bins_HF:pt_bins),nResponseBins, -1.2, 1.2);
-      name = name2;name+=count;
-      hdata_B[j][i]         = new TH2D(name,"B in DATA;p_{T}^{ave} [GeV];B",n_pt_cutted , (eta_cut_bool?pt_bins_HF:pt_bins),nResponseBins, -1.2, 1.2);
-      name = name3; name+=count;
-      hmc_asymmetry[j][i]   = new TH2D(name,"A in MC;p_{T}^{ave} [GeV];A",n_pt_cutted , (eta_cut_bool?pt_bins_HF:pt_bins),nResponseBins, -1.2, 1.2);
-      name = name4; name+=count;
-      hmc_B[j][i]           = new TH2D(name,"B in MC;p_{T}^{ave} [GeV];B",n_pt_cutted , (eta_cut_bool?pt_bins_HF:pt_bins),nResponseBins, -1.2, 1.2);
-          
-      count++;
     }
   }
   
@@ -141,6 +163,8 @@ void CorrectionObject::kFSR_CorrectFormulae(){
 	eta_cut_bool = fabs(eta_bins[j])>eta_cut;
 	for(int k= 0 ; k <  ( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ) ; k++ ){
 	      if((*pt_ave_data < (eta_cut_bool?pt_bins_HF:pt_bins)[k]) || (*pt_ave_data >= (eta_cut_bool?pt_bins_HF:pt_bins)[k+1])) continue;
+	      hdata_asymmetry_gaus[j][k][i]->Fill(*asymmetry_data,*weight_data);
+	      hdata_B_gaus[j][k][i]->Fill(*B_data,*weight_data);
 	      n_entries_data[j][i][k]++;
 	}
 	idx++;
@@ -169,7 +193,9 @@ void CorrectionObject::kFSR_CorrectFormulae(){
 	 hmc_B[j][i]->Fill(*pt_ave_mc,*B_mc,*weight_mc);
 	 eta_cut_bool = fabs(eta_bins[j])>eta_cut;
 	 for(int k= 0 ; k <  ( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ) ; k++ ){  
-	   if((*pt_ave_mc < (eta_cut_bool?pt_bins_HF:pt_bins)[k]) || (*pt_ave_mc >= (eta_cut_bool?pt_bins_HF:pt_bins)[k+1])) continue;            
+	   if((*pt_ave_mc < (eta_cut_bool?pt_bins_HF:pt_bins)[k]) || (*pt_ave_mc >= (eta_cut_bool?pt_bins_HF:pt_bins)[k+1])) continue;       
+	   hmc_asymmetry_gaus[j][k][i]->Fill(*asymmetry_mc,*weight_mc);
+	   hmc_B_gaus[j][k][i] ->Fill(*B_mc,*weight_mc);
 	   n_entries_mc[j][i][k]++;
 	 }
 	 idx++;
@@ -257,6 +283,56 @@ void CorrectionObject::kFSR_CorrectFormulae(){
      for(int j=0; j<n_eta-1; j++){
        eta_cut_bool = fabs(eta_bins[j])>eta_cut;
        for(int k= 0 ; k <  ( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ) ; k++ ){ 
+
+	 //get <A> and error on <A>
+	 pair <double,double> A_mc = GetValueAndError(hmc_asymmetry_gaus[j][k][i]);
+	 pair <double,double> A_data = GetValueAndError(hdata_asymmetry_gaus[j][k][i]);
+	 pair <double,double> B_mc = GetValueAndError(hmc_B_gaus[j][k][i]);
+	 pair <double,double> B_data = GetValueAndError(hdata_B_gaus[j][k][i]);
+
+	 //build MPF and pt_bal and their errors
+	 pair<double,double> res_mc_rel_r,res_data_rel_r;
+	 pair<double,double> res_mc_mpf_r,res_data_mpf_r;
+	 res_mc_mpf_r.first = (1+B_mc.first)/(1-B_mc.first);
+	 if(!enough_entries[i][j][k]) res_mc_mpf_r.first = 0;
+	 res_mc_mpf_r.second = 2/(pow((1-B_mc.first),2)) * B_mc.second;
+
+	 res_data_mpf_r.first = (1+B_data.first)/(1-B_data.first);
+	 if(!enough_entries[i][j][k]) res_data_mpf_r.first = 0;
+	 res_data_mpf_r.second = 2/(pow((1-B_data.first),2)) * B_data.second;
+
+	 res_mc_rel_r.first = (1+A_mc.first)/(1-A_mc.first);
+	 if(!enough_entries[i][j][k]) res_mc_rel_r.first = 0;
+	 res_mc_rel_r.second = 2/(pow((1-A_mc.first),2)) * A_mc.second;
+
+	 res_data_rel_r.first = (1+A_data.first)/(1-A_data.first);
+	 if(!enough_entries[i][j][k]) res_data_rel_r.first = 0;
+	 res_data_rel_r.second = 2/(pow((1-A_data.first),2)) * A_data.second;
+	 
+	 //MC responses
+	 rel_r_mc[k][j][i] = res_mc_rel_r.first;
+	 err_rel_r_mc[k][j][i] = res_mc_rel_r.second;
+	 mpf_r_mc[k][j][i] = res_mc_mpf_r.first;
+	 err_mpf_r_mc[k][j][i] = res_mc_mpf_r.second;
+	 
+	 //DATA responses
+	 rel_r_data[k][j][i] = res_data_rel_r.first;
+	 err_rel_r_data[k][j][i] = res_data_rel_r.second;
+	 mpf_r_data[k][j][i] = res_data_mpf_r.first;
+	 err_mpf_r_data[k][j][i] = res_data_mpf_r.second;
+
+	 //ratio of responses, again gaussian error propagation
+	 if(res_data_rel_r.first > 0){
+	   ratio_al_rel_r[k][j][i] = res_mc_rel_r.first/res_data_rel_r.first;
+	     }
+	 else ratio_al_rel_r[k][j][i] = 0;
+	 err_ratio_al_rel_r[k][j][i] = sqrt(pow(1/res_data_rel_r.first*res_mc_rel_r.second,2) + pow(res_mc_rel_r.first/(res_data_rel_r.first*res_data_rel_r.first)*res_data_rel_r.second,2));
+
+	 if(res_data_mpf_r.first > 0) ratio_al_mpf_r[k][j][i] = res_mc_mpf_r.first/res_data_mpf_r.first;
+	 else ratio_al_mpf_r[k][j][i] = 0;
+	 err_ratio_al_mpf_r[k][j][i] = sqrt(pow(1/res_data_mpf_r.first*res_mc_mpf_r.second,2) + pow(res_mc_mpf_r.first/( res_data_mpf_r.first* res_data_mpf_r.first)* res_data_mpf_r.second,2));
+
+	 /*
 	 //responses for data, MC separately. Only for bins with >= 100 entries
 	 double mpf_mc = (1+pr_mc_B[j][i]->GetBinContent(k+1))/(1-pr_mc_B[j][i]->GetBinContent(k+1));
 	 if(!enough_entries[i][j][k]) mpf_mc = 0;
@@ -273,7 +349,7 @@ void CorrectionObject::kFSR_CorrectFormulae(){
 	 double err_mpf_data = 2/(pow((1-pr_data_B[j][i]->GetBinContent(k+1)),2)) * pr_data_B[j][i]->GetBinError(k+1);
 	 double err_rel_mc = 2/(pow((1-pr_mc_asymmetry[j][i]->GetBinContent(k+1)),2)) * pr_mc_asymmetry[j][i]->GetBinError(k+1);
 	 double err_rel_data = 2/(pow((1-pr_data_asymmetry[j][i]->GetBinContent(k+1)),2)) * pr_data_asymmetry[j][i]->GetBinError(k+1);
-
+	 
 
 	 //MC responses
 	 rel_r_mc[k][j][i] = rel_mc;
@@ -296,6 +372,7 @@ void CorrectionObject::kFSR_CorrectFormulae(){
 	 if(mpf_data > 0) ratio_al_mpf_r[k][j][i] = mpf_mc/mpf_data;
 	 else ratio_al_mpf_r[k][j][i] = 0;
 	 err_ratio_al_mpf_r[k][j][i] = sqrt(pow(1/mpf_data*err_mpf_mc,2) + pow(mpf_mc/(mpf_data*mpf_data)*err_mpf_data,2));
+	 */
        }
      }
    }

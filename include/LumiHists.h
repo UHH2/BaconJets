@@ -31,7 +31,7 @@ private:
 
     std::map<run_lumi, double> rl2lumi;
 
-    const int n_pt_HF   = 8;
+    const int n_pt_HF   = 9;
     const int n_pt      = 11;
     const int n_eta     = 37;
 

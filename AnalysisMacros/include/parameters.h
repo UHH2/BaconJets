@@ -90,6 +90,7 @@ const double pt_bins[n_pt] = {
   1000,
   2000};
 */
+
 const int n_pt_HF = 10;
 const TString pt_range_HF[n_pt_HF]={
   "51",
@@ -114,8 +115,30 @@ const double pt_bins_HF[n_pt_HF]{
   450,
   1000,
   2000};
+/*
+const int n_pt_HF = 9;
+const TString pt_range_HF[n_pt_HF]={
+  "51",
+  "72",
+  "95", 
+  "118",
+  "188",
+  "257", 
+  "354",
+  "1000",
+  "2000"};
 
-
+const double pt_bins_HF[n_pt_HF]{
+  51,
+  72,
+  95,
+  118,
+  188,
+  257,
+  354,
+  1000,
+  2000};
+*/
 //Eta bins:
 //Abs eta range:
 const int n_eta = 19;

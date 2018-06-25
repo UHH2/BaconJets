@@ -73,13 +73,12 @@ void CorrectionObject::Monitoring(){
   TProfile *pr_A[n_input][n_eta_control-1][n_pt_-2];
 
 
-  TGraphErrors *Npv_res[n_input][n_eta_control-1][n_pt-1];
-  TH2D *hist_Npv[n_input][n_eta_control-1][n_pt-1];
-  TProfile *pr_Npv[n_input][n_eta_control-1][n_pt-1];
+  // TGraphErrors *Npv_res[n_input][n_eta_control-1][n_pt-1];
+  //  TH2D *hist_Npv[n_input][n_eta_control-1][n_pt-1];
+  // TProfile *pr_Npv[n_input][n_eta_control-1][n_pt-1];
 
-
-  TGraphErrors *rel_ratio[n_input][n_eta_control-1][n_pt-1];
-  TGraphErrors *mpf_ratio[n_input][n_eta_control-1][n_pt-1];
+  TGraphErrors *rel_res[n_input][n_eta_control-1][n_pt_-2];
+  TGraphErrors *mpf_res[n_input][n_eta_control-1][n_pt_-2];
 
   TGraphErrors *rel_ratio[n_input][n_eta_control-1][n_pt_-2];
   TGraphErrors *mpf_ratio[n_input][n_eta_control-1][n_pt_-2];
@@ -99,38 +98,49 @@ void CorrectionObject::Monitoring(){
 
 
   for(int i=0; i<n_input; i++){
-    cout<<"Read in File: "<<endl;
-    cout<<CorrectionObject::_input_path+"uhh2.AnalysisModuleRunner.DATA.DATA_Run"+Name_range[i]+"_AK4CHS.root"<<endl;
+    //    cout<<"Read in File: "<<endl;
+    //  cout<<CorrectionObject::_input_path+"uhh2.AnalysisModuleRunner.DATA.DATA_Run"+Name_range[i]+"_AK4CHS.root"<<endl;
 
     f_monitoring[i] = new TFile(CorrectionObject::_input_path+"/uhh2.AnalysisModuleRunner.DATA.DATA_Run"+Name_range[i]+"_AK4CHS.root");
-    cout<<"Create Hist"<<endl;
+    //   cout<<"Create Hist"<<endl;
     for(int j=0; j<n_eta_control-1; j++){
+     if(fabs(eta_bins_control[j])<fabs(eta_bins_control[j+1])){
+	if(eta_bins_control[j]==2.853) {
+	  eta_cut_bool = false;
+	} 
+	else eta_cut_bool = fabs(eta_bins_control[j])>eta_cut;
+      }
+      else {
+	eta_cut_bool = fabs(eta_bins_control[j+1])>eta_cut;
+      }
 
-      for(int k=0; k<n_pt-1; k++){
-	cout<<"j= "<<j<<" k="<<k<<" eta_range_control2[j]="<<eta_range_control2[j]<<" "<<eta_range_control2[j+1]<<" pt="<<pt_range[k]<<" "<<pt_range[k+1]<<endl;
-        hist_A[i][j][k]    = (TH2D*)f_monitoring[i]    ->Get("Monitoring_Final/hist_data_A_eta_"+eta_range_control2[j]+"_"+eta_range_control2[j+1]+"_pT_"+pt_range[k]+"_"+pt_range[k+1]);
+      for(int k=1; k < (eta_cut_bool ?  n_pt_HF-2 : n_pt-2 ) ; k++ ){
+	//	cout<<"j= "<<j<<" k="<<k<<" eta_range_control2[j]="<<eta_range_control2[j]<<" "<<eta_range_control2[j+1]<<" pt="<<(eta_cut_bool?pt_range_HF:pt_range)[k]<<" "<<(eta_cut_bool?pt_range_HF:pt_range)[k+1]<<endl;
+        hist_A[i][j][k]    = (TH2D*)f_monitoring[i]    ->Get("Monitoring_Final/hist_data_A_eta_"+eta_range_control2[j]+"_"+eta_range_control2[j+1]+"_pT_"+(eta_cut_bool?pt_range_HF:pt_range)[k]+"_"+(eta_cut_bool?pt_range_HF:pt_range)[k+1]);
 	hist_A[i][j][k]->Print();
 	pr_A[i][j][k]      = (TProfile*)hist_A[i][j][k] ->ProfileX(Form("prof_A_%i_%d_%d",i,j,k));
         
-	hist_B[i][j][k]    = (TH2D*)f_monitoring[i]    ->Get("Monitoring_Final/hist_data_B_eta_"+eta_range_control2[j]+"_"+eta_range_control2[j+1]+"_pT_"+pt_range[k]+"_"+pt_range[k+1]);
+	hist_B[i][j][k]    = (TH2D*)f_monitoring[i]    ->Get("Monitoring_Final/hist_data_B_eta_"+eta_range_control2[j]+"_"+eta_range_control2[j+1]+"_pT_"+(eta_cut_bool?pt_range_HF:pt_range)[k]+"_"+(eta_cut_bool?pt_range_HF:pt_range)[k+1]);
 	hist_B[i][j][k]->Print();
 
 	pr_B[i][j][k]      = (TProfile*)hist_B[i][j][k] ->ProfileX(Form("prof_B_%i_%d_%d",i,j,k));
 	pr_B[i][j][k]->Print();
-        hist_Npv[i][j][k]    = (TH2D*)f_monitoring[i]    ->Get("Monitoring_Final/hist_data_Npv_eta_"+eta_range_control2[j]+"_"+eta_range_control2[j+1]+"_pT_"+pt_range[k]+"_"+pt_range[k+1]);
+	/*
+        hist_Npv[i][j][k]    = (TH2D*)f_monitoring[i]    ->Get("Monitoring_Final/hist_data_Npv_eta_"+eta_range_control2[j]+"_"+eta_range_control2[j+1]+"_pT_"+(eta_cut_bool?pt_range_HF:pt_range)[k]+"_"+(eta_cut_bool?pt_range_HF:pt_range)[k+1]);
 	hist_Npv[i][j][k]->Print();
 	pr_Npv[i][j][k]      = (TProfile*)hist_A[i][j][k] ->ProfileX(Form("prof_Npv_%i_%d_%d",i,j,k));
 	pr_Npv[i][j][k]->Print();
+	*/
       }
     }
     
-    chi2_mpf_fit[i]  = new TH2D("chi2_mpf_fit",""+Name_range[i],n_eta_control-1, eta_bins_control, n_pt-2, pt_bins);
-    param_mpf_fit[i] = new TH2D("param_mpf_fit",""+Name_range[i],n_eta_control-1, eta_bins_control, n_pt-2, pt_bins);
+    chi2_mpf_fit[i]  = new TH2D("chi2_mpf_fit",""+Name_range[i],n_eta_control-1, eta_bins_control, n_pt_-2, pt_bins);
+    param_mpf_fit[i] = new TH2D("param_mpf_fit",""+Name_range[i],n_eta_control-1, eta_bins_control, n_pt_-2, pt_bins);
 
-    chi2_rel_fit[i]  = new TH2D("chi2_rel_fit",""+Name_range[i],n_eta_control-1, eta_bins_control, n_pt-2, pt_bins);
-    param_rel_fit[i] = new TH2D("param_rel_fit",""+Name_range[i],n_eta_control-1, eta_bins_control, n_pt-2, pt_bins);
+    chi2_rel_fit[i]  = new TH2D("chi2_rel_fit",""+Name_range[i],n_eta_control-1, eta_bins_control, n_pt_-2, pt_bins);
+    param_rel_fit[i] = new TH2D("param_rel_fit",""+Name_range[i],n_eta_control-1, eta_bins_control, n_pt_-2, pt_bins);
 
-    cout<<"Finish Load Hists"<<endl;
+    //   cout<<"Finish Load Hists"<<endl;
 
     int n_lumi = 0;
     n_lumi = pr_B[i][1][1]->GetNbinsX();
@@ -142,12 +152,13 @@ void CorrectionObject::Monitoring(){
     double res_mpf[n_eta_control-1][n_pt_-2][n_lumi-1];
     
 
-    double err_res_rel[n_eta_control-1][n_pt-1][n_lumi-1];
-    double err_res_mpf[n_eta_control-1][n_pt-1][n_lumi-1];
+    double err_res_rel[n_eta_control-1][n_pt_-2][n_lumi-1];
+    double err_res_mpf[n_eta_control-1][n_pt_-2][n_lumi-1];
 
-    double Npv_mean[n_eta_control-1][n_pt-1][n_lumi-1];
-    double err_Npv_mean[n_eta_control-1][n_pt-1][n_lumi-1];
-
+    /*
+    double Npv_mean[n_eta_control-1][n_pt_-2][n_lumi-1];
+    double err_Npv_mean[n_eta_control-1][n_pt_-2][n_lumi-1];
+    */
     
     double xbin_tgraph[n_lumi],zero[n_lumi];
     double xbin = 0;
@@ -157,12 +168,15 @@ void CorrectionObject::Monitoring(){
       zero[i] = 0;
     }
 
-    cout<<"After Lumi!"<<endl;
+    //  cout<<"After Lumi!"<<endl;
 
     for(int j=0; j<n_eta_control-1; j++){
      if(fabs(eta_bins_control[j])<fabs(eta_bins_control[j+1])){
-	eta_cut_bool = fabs(eta_bins_control[j])>eta_cut;
-      }
+       if(eta_bins_control[j]==2.853) {
+	 eta_cut_bool = false;
+       } 
+       else eta_cut_bool = fabs(eta_bins_control[j])>eta_cut;
+     }
       else {
 	eta_cut_bool = fabs(eta_bins_control[j+1])>eta_cut;
       }
@@ -170,7 +184,7 @@ void CorrectionObject::Monitoring(){
       for(int k=1; k < (eta_cut_bool ?  n_pt_HF-2 : n_pt-2 ) ; k++ ){
 	for(int l =0; l<n_lumi; l++){
 	  
-	  cout<<"Fit_Rel_"+Name_range[i]+"_"+eta_range_control2[j]+"_"+eta_range_control2[j+1]+"_pT_"+(eta_cut_bool?pt_range_HF:pt_range)[k]+"_"+(eta_cut_bool?pt_range_HF:pt_range)[k+1]<<endl;
+	  //	  cout<<"Fit_Rel_"+Name_range[i]+"_"+eta_range_control2[j]+"_"+eta_range_control2[j+1]+"_pT_"+(eta_cut_bool?pt_range_HF:pt_range)[k]+"_"+(eta_cut_bool?pt_range_HF:pt_range)[k+1]<<endl;
 
 	  res_rel[j][k][l]=0;
 	  err_res_rel[j][k][l]=0;
@@ -181,15 +195,16 @@ void CorrectionObject::Monitoring(){
 	    res_rel[j][k][l] = (1+pr_A[i][j][k]->GetBinContent(l+1))/(1-pr_A[i][j][k]->GetBinContent(l+1));
 	    err_res_rel[j][k][l] = 2/(pow((1-pr_A[i][j][k]->GetBinContent(l+1)),2)) * pr_A[i][j][k]->GetBinError(l+1);
 	  }	
- 	  if(hist_B[i][j][k]->GetEntries()>100){
+	  if(hist_B[i][j][k]->GetEntries()>100){
 	    res_mpf[j][k][l] = (1+pr_B[i][j][k]->GetBinContent(l+1))/(1-pr_B[i][j][k]->GetBinContent(l+1));
 	    err_res_mpf[j][k][l] = 2/(pow((1-pr_B[i][j][k]->GetBinContent(l+1)),2)) * pr_B[i][j][k]->GetBinError(l+1);
 	  }
- 	  if(hist_Npv[i][j][k]->GetEntries()>100){
+	  /*
+	  if(hist_Npv[i][j][k]->GetEntries()>100){
 	    Npv_mean[j][k][l] = pr_Npv[i][j][k]->GetBinContent(l+1);
-	    err_res_mpf[j][k][l] = pr_Npv[i][j][k]->GetBinContent(l+1);
+	    err_res_mpf[j][k][l] = pr_Npv[i][j][k]->GetBinError(l+1);
 	  }
-
+	  */
 	}
 
 	rel_res[i][j][k]= new TGraphErrors(n_lumi, xbin_tgraph, res_rel[j][k], zero, err_res_rel[j][k]);
@@ -198,12 +213,13 @@ void CorrectionObject::Monitoring(){
 	mpf_res[i][j][k]= new TGraphErrors(n_lumi, xbin_tgraph, res_mpf[j][k], zero, err_res_mpf[j][k]);
 	mpf_res[i][j][k]= (TGraphErrors*)CleanEmptyPoints(mpf_res[i][j][k]);
 
-
+	/*
 	Npv_res[i][j][k]= new TGraphErrors(n_lumi, xbin_tgraph, Npv_mean[j][k], zero, err_Npv_mean[j][k]);
 	Npv_res[i][j][k]= (TGraphErrors*)CleanEmptyPoints(Npv_res[i][j][k]);
+	*/
 
-	Fit_rel[i][j][k] = new TF1("Fit_Rel_"+Name_range[i]+"_"+eta_range_control2[j]+"_"+eta_range_control2[j+1]+"_pT_"+pt_range[k]+"_"+pt_range[k+1],"pol0", Fit_range[i] ,Fit_range[i+1]);
-	Fit_mpf[i][j][k] = new TF1("Fit_MPF_"+Name_range[i]+"_"+eta_range_control2[j]+"_"+eta_range_control2[j+1]+"_pT_"+pt_range[k]+"_"+pt_range[k+1],"pol0", Fit_range[i] ,Fit_range[i+1]);
+	Fit_rel[i][j][k] = new TF1("Fit_Rel_"+Name_range[i]+"_"+eta_range_control2[j]+"_"+eta_range_control2[j+1]+"_pT_"+(eta_cut_bool?pt_range_HF:pt_range)[k]+"_"+(eta_cut_bool?pt_range_HF:pt_range)[k+1],"pol0", Fit_range[i] ,Fit_range[i+1]);
+	Fit_mpf[i][j][k] = new TF1("Fit_MPF_"+Name_range[i]+"_"+eta_range_control2[j]+"_"+eta_range_control2[j+1]+"_pT_"+(eta_cut_bool?pt_range_HF:pt_range)[k]+"_"+(eta_cut_bool?pt_range_HF:pt_range)[k+1],"pol0", Fit_range[i] ,Fit_range[i+1]);
 
 	
 	rel_res[i][j][k] ->Fit("Fit_Rel_"+Name_range[i]+"_"+eta_range_control2[j]+"_"+eta_range_control2[j+1]+"_pT_"+(eta_cut_bool?pt_range_HF:pt_range)[k]+"_"+(eta_cut_bool?pt_range_HF:pt_range)[k+1],"","",Fit_range[i], Fit_range[i+1]);
@@ -232,7 +248,7 @@ void CorrectionObject::Monitoring(){
     Save_2D_Plot(param_rel_fit[i], "Rel_Param", Name_range[i], CorrectionObject::_input_path);
   }
 
-  cout<<"Setup canvas and draw several TGraphs"<<endl;
+  //  cout<<"Setup canvas and draw several TGraphs"<<endl;
 
 
   TLine* ave = new TLine(0,1,35000,1);
@@ -293,11 +309,12 @@ void CorrectionObject::Monitoring(){
       h->GetXaxis()->SetTitleOffset(0.80);
       h->GetXaxis()->SetLimits(0,35000);
       h->GetXaxis()->SetLabelSize(0);
+      h->GetYaxis()->SetLabelSize(0.05);
       h->GetYaxis()->SetRangeUser(0.82,1.42);
       h->GetYaxis()->SetTitle("R_{Rel}");
 
       TLegend *leg_rel_res;
-      leg_rel_res = new TLegend(0.35,0.7,0.51,0.85,"","brNDC");//x+0.1
+      leg_rel_res = new TLegend(0.45,0.7,0.51,0.9,"","brNDC");//x+0.1
       leg_rel_res->SetBorderSize(0);
       leg_rel_res->SetTextSize(0.036);
       leg_rel_res->SetFillColor(10);
@@ -333,10 +350,12 @@ void CorrectionObject::Monitoring(){
 
       d->GetXaxis()->SetTitle("Luminosity");
       d->GetXaxis()->SetTitleSize(0.1);
+      d->GetXaxis()->SetLabelSize(0.08);
       d->GetXaxis()->SetTitleOffset(1.2);
       d->GetXaxis()->SetLimits(0,35000);
       d->GetYaxis()->SetRangeUser(0.86,1.14);
       d->GetXaxis()->SetTitleOffset(1.2);
+      d->GetYaxis()->SetLabelSize(0.08);
       d->GetYaxis()->SetTitle("Data/Fit");
 
       lineB_ratio->Draw("SAME");
@@ -367,15 +386,16 @@ void CorrectionObject::Monitoring(){
       gStyle->SetOptFit(00000);
       
       h->GetXaxis()->SetTitle("Luminosity");
-      h->GetXaxis()->SetTitleSize(0.05);
+      h->GetXaxis()->SetTitleSize(0.1);
       h->GetXaxis()->SetTitleOffset(0.80);
       h->GetXaxis()->SetLimits(0,35000);
       h->GetXaxis()->SetLabelSize(0);
+      h->GetYaxis()->SetLabelSize(0.05);
       h->GetYaxis()->SetRangeUser(0.82,1.42);
       h->GetYaxis()->SetTitle("R_{MPF}");
 
       TLegend *leg_mpf_res;
-      leg_mpf_res = new TLegend(0.35,0.7,0.51,0.85,"","brNDC");//x+0.1
+      leg_mpf_res = new TLegend(0.45,0.7,0.51,0.9,"","brNDC");//x+0.1
       leg_mpf_res->SetBorderSize(0);
       leg_mpf_res->SetTextSize(0.036);
       leg_mpf_res->SetFillColor(10);
@@ -415,6 +435,8 @@ void CorrectionObject::Monitoring(){
       d2->GetXaxis()->SetLimits(0,35000);
       d2->GetYaxis()->SetRangeUser(0.86,1.14);
       d2->GetXaxis()->SetTitleOffset(1.2);
+      d2->GetXaxis()->SetLabelSize(0.1);
+      d2->GetYaxis()->SetLabelSize(0.1);
       d2->GetYaxis()->SetTitle("Data/Fit");
 
       lineB_ratio->Draw("SAME");
@@ -438,28 +460,30 @@ void CorrectionObject::Monitoring(){
       c4->SaveAs(CorrectionObject::_input_path+"/Monitoring/MPF_res_" + CorrectionObject::_generator_tag + "_eta_"+eta_range_control2[j]+"_"+eta_range_control2[j+1]+"_pT_"+(eta_cut_bool?pt_range_HF:pt_range)[k]+"_"+(eta_cut_bool?pt_range_HF:pt_range)[k+1]+".pdf");
       delete c4;
 
+      /*
       //Npv
-      TCanvas* c5 = tdrDiCanvas("c5",h,d2,4,10,CorrectionObject::_lumitag);
-      c5->cd(1);
+      TCanvas* c5 = new TCanvas();
+      tdrCanvas(c5,"c5",h,4,10,true,CorrectionObject::_lumitag);
+      //   c5->cd(1);
       gStyle->SetOptFit(00000);
       
       h->GetXaxis()->SetTitle("Luminosity");
-      h->GetXaxis()->SetTitleSize(0.05);
-      h->GetXaxis()->SetTitleOffset(0.80);
+      h->GetXaxis()->SetTitleSize(0.036);
+      h->GetXaxis()->SetTitleOffset(0.85);
       h->GetXaxis()->SetLimits(0,35000);
-      h->GetXaxis()->SetLabelSize(0);
-      h->GetYaxis()->SetRangeUser(0.82,1.42);
+      h->GetXaxis()->SetLabelSize(0.036);
+      h->GetYaxis()->SetRangeUser(0,20);
       h->GetYaxis()->SetTitle("Npv");
 
       TLegend *leg_Npv_res;
-      leg_Npv_res = new TLegend(0.35,0.7,0.51,0.85,"","brNDC");//x+0.1
+      leg_Npv_res = new TLegend(0.45,0.7,0.51,0.9,"","brNDC");//x+0.1
       leg_Npv_res->SetBorderSize(0);
       leg_Npv_res->SetTextSize(0.036);
       leg_Npv_res->SetFillColor(10);
       leg_Npv_res->SetFillStyle(1001);
       leg_Npv_res->SetLineColor(1);
       leg_Npv_res->SetTextFont(42);
-      leg_Npv_res->SetHeader("MPF Response, "+eta_range_control[j]+"#leq#eta<"+eta_range_control[j+1]); //+", #alpha<"+s_blpha_cut
+      leg_Npv_res->SetHeader("NPV, "+eta_range_control[j]+"#leq#eta<"+eta_range_control[j+1]); //+", #alpha<"+s_blpha_cut
  
       for(int i = 0; i<n_input; i++){
 	Npv_res[i][j][k]->SetMarkerStyle(2);
@@ -484,7 +508,8 @@ void CorrectionObject::Monitoring(){
       tex1->DrawLatex(0.7,0.75, pt_range[k]+"<p_{T}<"+pt_range[k+1]);
       c5->Modified();
       c5->Update();
-      // c5->cd(2);
+      */
+      //   c5->cd(2);
 
       // d2->GetXaxis()->SetTitle("Luminosity");
       // d2->GetXaxis()->SetTitleSize(0.1);
@@ -511,10 +536,10 @@ void CorrectionObject::Monitoring(){
       // 	c5->Modified();
       // }
       // c5->Update();
-      
+      /*
       c5->SaveAs(CorrectionObject::_input_path+"/Monitoring/Npv_res_" + CorrectionObject::_generator_tag + "_eta_"+eta_range_control2[j]+"_"+eta_range_control2[j+1]+"_pT_"+pt_range[k]+"_"+pt_range[k+1]+".pdf");
       delete c5;
-
+      */
     }//pt
   }//eta
 }

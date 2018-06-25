@@ -50,9 +50,10 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
   TH1D *hdata_probejet_photonEF[n_pt_-1][n_eta-1]; //photon energy fraction
   TH1D *hdata_probejet_muonEF[n_pt_-1][n_eta-1]; //muon hadron energy fraction
   TH1D *hdata_probejet_phi[n_pt_-1][n_eta-1]; //phi
+  TH1D *hdata_jet3_pt[n_pt_-1][n_eta-1];//jet3_pt
   TH1D *hdata_MET[n_eta-1];//MET
   TH1D *hdata_alpha[n_eta-1];//alpha
-  TH1D *hdata_jet3_pt[n_eta-1];//jet3_pt
+
 
   TH1D *hmc_asymmetry[n_pt_-1][n_eta-1];   // A for MC
   TH1D *hmc_B[n_pt_-1][n_eta-1];           // B for MC
@@ -68,9 +69,10 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
   TH1D *hmc_probejet_photonEF[n_pt_-1][n_eta-1]; //photon energy fraction
   TH1D *hmc_probejet_muonEF[n_pt_-1][n_eta-1]; //muon hadron energy fraction
   TH1D *hmc_probejet_phi[n_pt_-1][n_eta-1]; //phi
+  TH1D *hmc_jet3_pt[n_pt_-1][n_eta-1];//jet3_pt
   TH1D *hmc_MET[n_eta-1];//MET
   TH1D *hmc_alpha[n_eta-1];//alpha
-  TH1D *hmc_jet3_pt[n_eta-1];//jet3_pt
+
 
 
   int count = 0;
@@ -99,6 +101,8 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
   TString name22 = "hist_mc_probejet_phi_";
   TString name23 = "hist_mc_MET_";
   TString name24 = "hist_data_MET_";
+  TString name25 = "hist_data_jet3_pt_";
+  TString name26 = "hist_mc_jet3_pt_";
  
   for(int j=0; j<n_eta-1; j++){
      eta_cut_bool = fabs(eta_bins[j])>eta_cut;
@@ -161,12 +165,13 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
       name = name22  + eta_name + "_" + pt_name;
       hmc_probejet_phi [k][j] = new TH1D(name,"",60,-3.14,3.14);
 
+      name = name25+ eta_name + "_" + pt_name;
+      hdata_jet3_pt[k][j] = new TH1D(name,"",100,0,300);
+      name = name26+ eta_name + "_" + pt_name;
+      hmc_jet3_pt[k][j] = new TH1D(name,"",100,0,300);
+
       count++;
     }
-
-    TString name_jet3_pt = "hist_jet3_pt_";
-    hdata_jet3_pt [j] = new TH1D(name_jet3_pt+"data"+eta_name,"",100,0,300);
-    hmc_jet3_pt [j] = new TH1D(name_jet3_pt+"MC"+eta_name,"",100,0,300);
 
     TString name_alpha = "hist_alpha_";
     hdata_alpha [j] = new TH1D(name_alpha+"data"+eta_name,"",10,0,1);
@@ -231,7 +236,6 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
 	hdata_pt_ave[i]->Fill(*pt_ave_data,*weight_data);
 	hdata_MET[i]->Fill(*MET_data, *weight_data);
 	hdata_alpha[i]->Fill(*alpha_data, *weight_data);
-	hdata_jet3_pt[i]->Fill(*jet3_pt_data, *weight_data);
       }
     }
 
@@ -253,6 +257,7 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
 	  hdata_probejet_photonEF[k][j]->Fill(*probejet_photonEF_data,*weight_data);
 	  hdata_probejet_muonEF[k][j]->Fill(*probejet_muonEF_data,*weight_data);
 	  hdata_probejet_phi[k][j]->Fill(*probejet_phi_data,*weight_data);
+	  hdata_jet3_pt[k][j]->Fill(*jet3_pt_data, *weight_data);
     }
     }
     idx++;
@@ -304,7 +309,6 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
 	hmc_alpha[i]->Fill(*alpha_mc,*weight_mc);
 	hmc_pt_ave[i]->Fill(*pt_ave_mc,*weight_mc);
 	hmc_MET[i]->Fill(*MET_mc, *weight_mc);
-	hmc_jet3_pt[i]->Fill(*jet3_pt_mc, *weight_mc);
       }
     }
 
@@ -327,7 +331,7 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
 	  hmc_probejet_photonEF[k][j]->Fill(*probejet_photonEF_mc,*weight_mc);
 	  hmc_probejet_muonEF[k][j]->Fill(*probejet_muonEF_mc,*weight_mc);
 	  hmc_probejet_phi[k][j]->Fill(*probejet_phi_mc,*weight_mc);
-	  
+	  hmc_jet3_pt[k][j]->Fill(*jet3_pt_mc, *weight_mc);
 	}
       }
     }
@@ -473,6 +477,7 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
       hmc_probejet_photonEF[k][j]->Write();
       hmc_probejet_muonEF[k][j]->Write();
       hmc_probejet_phi[k][j]->Write();
+      hmc_jet3_pt[k][j]->Write();
     }
   }
   test_out_mc_B->Close();
@@ -493,6 +498,7 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
       hdata_probejet_photonEF[k][j]->Write();
       hdata_probejet_muonEF[k][j]->Write();
       hdata_probejet_phi[k][j]->Write();
+      hdata_jet3_pt[k][j]->Write();
     }
   }
   test_out_data_B->Close();
@@ -1430,6 +1436,74 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
    
     //END Different energy fractions
 
+
+    TCanvas* c21 = new TCanvas();
+    tdrCanvas(c21,"c21",hEF,4,10,kSquare,"DATA");
+    TLegend leg21 = tdrLeg(0.45,0.46,0.70,0.81);
+    TH1D* htemp_jet3_pt_data;
+    for(int j=0; j<( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ); j++){ 
+      TString pt_name = "pt_"+(eta_cut_bool?pt_range_HF:pt_range)[j]+"_"+(eta_cut_bool?pt_range_HF:pt_range)[j+1];
+      TString legname = "p_{T} #in [" + (eta_cut_bool?pt_range_HF:pt_range)[j] + "," + (eta_cut_bool?pt_range_HF:pt_range)[j+1] + "]";
+      TString name_jet3_pt = "hist_data_jet3_pt_"+eta_name+"_"+pt_name;
+      htemp_jet3_pt_data = (TH1D*)f_mpf_data->Get(name_jet3_pt);
+      //      htemp_jet3_pt->Print();
+      int n_ev =  htemp_jet3_pt_data->GetEntries();
+      if(htemp_jet3_pt_data->Integral() > 0)htemp_jet3_pt_data->Scale(1/htemp_jet3_pt_data->Integral());
+      hEF->GetXaxis()->SetTitle("jet3 p_{T}");
+      hEF->GetYaxis()->SetTitle("Norm. Entries");
+      hEF->GetYaxis()->SetTitleOffset(1.5);
+      // h->SetMaximum(0.3);
+      // hEF->GetXaxis()->SetLimits(0,1.5);
+      hEF->GetXaxis()->SetLimits(0,200);
+      //      hEF->GetYaxis()->SetLimits(0,0.1);
+      hEF->SetMaximum(0.4);
+      //hEF->SetMaximum(0.8);
+      if(j<9) htemp_jet3_pt_data->SetLineColor(j+1);
+      else    htemp_jet3_pt_data->SetLineColor(j+31);
+      htemp_jet3_pt_data->SetLineWidth(3);
+      if(n_ev>100) htemp_jet3_pt_data->Draw("HIST SAME");
+      leg21.AddEntry(htemp_jet3_pt_data, legname);
+    }
+
+    leg21.Draw();
+    tex->DrawLatex(0.47,0.85,"Data, " + text);
+    c21->SaveAs(CorrectionObject::_outpath+"plots/control/jet3_pt_DATA_" + CorrectionObject::_generator_tag + "_eta_" + eta_range2[i] + "_" + eta_range2[i+1] +(abs_asymmetry_cut ? "_wAsymCut":"")+ (lumi_bin>=0 ? "_lumiBin" + to_string(lumi_bin)  : "") + ".pdf");
+
+
+    TCanvas* c22 = new TCanvas();
+    tdrCanvas(c22,"c22",hEF,4,10,kSquare,"MC");
+    TLegend leg22 = tdrLeg(0.45,0.46,0.70,0.81);
+    TH1D* htemp_jet3_pt_mc;
+    for(int j=0; j<( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ); j++){ 
+      TString pt_name = "pt_"+(eta_cut_bool?pt_range_HF:pt_range)[j]+"_"+(eta_cut_bool?pt_range_HF:pt_range)[j+1];
+      TString legname = "p_{T} #in [" + (eta_cut_bool?pt_range_HF:pt_range)[j] + "," + (eta_cut_bool?pt_range_HF:pt_range)[j+1] + "]";
+      TString name_jet3_pt = "hist_mc_jet3_pt_"+eta_name+"_"+pt_name;
+      htemp_jet3_pt_mc = (TH1D*)f_mpf_mc->Get(name_jet3_pt);
+      //      htemp_jet3_pt_mc->Print();
+      int n_ev =  htemp_jet3_pt_mc->GetEntries();
+      if(htemp_jet3_pt_mc->Integral() > 0)htemp_jet3_pt_mc->Scale(1/htemp_jet3_pt_mc->Integral());
+      hEF->GetXaxis()->SetTitle("jet3 p_{T}");
+      hEF->GetYaxis()->SetTitle("Norm. Entries");
+      hEF->GetYaxis()->SetTitleOffset(1.5);
+      // h->SetMaximum(0.3);
+      // hEF->GetXaxis()->SetLimits(0,1.5);
+      hEF->GetXaxis()->SetLimits(0,200);
+      //      hEF->GetYaxis()->SetLimits(0,0.1);
+      hEF->SetMaximum(0.4);
+      //hEF->SetMaximum(0.8);
+      if(j<9) htemp_jet3_pt_mc->SetLineColor(j+1);
+      else    htemp_jet3_pt_mc->SetLineColor(j+31);
+      htemp_jet3_pt_mc->SetLineWidth(3);
+      if(n_ev>100) htemp_jet3_pt_mc->Draw("HIST SAME");
+      leg22.AddEntry(htemp_jet3_pt_mc, legname);
+    }
+
+    leg22.Draw();
+    tex->DrawLatex(0.47,0.85,"MC, " + text);
+    c22->SaveAs(CorrectionObject::_outpath+"plots/control/jet3_pt_MC_" + CorrectionObject::_generator_tag + "_eta_" + eta_range2[i] + "_" + eta_range2[i+1] +(abs_asymmetry_cut ? "_wAsymCut":"")+ (lumi_bin>=0 ? "_lumiBin" + to_string(lumi_bin)  : "") + ".pdf");
+
+
+
     delete tex;
     delete htemp_rel_data;
     delete htemp_met_data;
@@ -1541,36 +1615,7 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
 
     delete tex2;
     delete c3;
-
-   
-TCanvas* c4 = new TCanvas();
-    tdrCanvas(c4,"c4",h,4,10,kSquare,CorrectionObject::_lumitag);
-    TLegend leg4 = tdrLeg(0.62,0.66,0.85,0.81);
-    h->GetXaxis()->SetTitle("jet3 pt");
-    h->GetXaxis()->SetLimits(0,300);
-    h->GetYaxis()->SetTitle("entries");
-    h->GetYaxis()->SetTitleOffset(1.5);
-    double maximum4 = std::max(hdata_jet3_pt[i]->GetMaximum(), hmc_jet3_pt[i]->GetMaximum());
-    h->GetYaxis()->SetRangeUser(0,1.2*maximum4);
-    hdata_jet3_pt[i]->SetMarkerColor(kBlack);
-    hdata_jet3_pt[i]->SetMarkerStyle(20);
-    hdata_jet3_pt[i]->Draw("SAME P");
-    hmc_jet3_pt[i]->SetLineColor(kBlue);
-    hmc_jet3_pt[i]->Draw("HIST SAME");
-    leg4.AddEntry(hdata_jet3_pt[i], "DATA");
-    leg4.AddEntry(hmc_jet3_pt[i], "MC");
-    leg4.Draw();
-
-    TLatex *tex4 = new TLatex();
-    tex4->SetNDC();
-    tex4->SetTextSize(0.045); 
-    TString text4 = eta_range[i] + " < |#eta| < " + eta_range[i+1];
-    tex4->DrawLatex(0.52,0.85, text1);
-
-    c4->SaveAs(CorrectionObject::_outpath+"plots/control/jet3_pt_" + CorrectionObject::_generator_tag + "_eta_" + eta_range2[i] + "_" + eta_range2[i+1] +(abs_asymmetry_cut ? "_wAsymCut":"") + (lumi_bin>=0 ? "_lumiBin" + to_string(lumi_bin)  : "")+ ".pdf");    
-
-    delete tex4;
-    delete c4;
+  
   }
 
   delete c_0;

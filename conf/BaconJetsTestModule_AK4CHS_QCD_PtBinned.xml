@@ -7,14 +7,14 @@
 
 <!ENTITY CACHEABLE           "False">
 
-<!-- <!ENTITY OUTdir              "/nfs/dust/cms/user/multh/JEC/2016Legacy/ClosureTest/Summer16_07Aug2017_V7/AK4CHS/MC_NoReweighted_CHS_ECALCleaning_noSF/"> -->
-<!ENTITY OUTdir              "/nfs/dust/cms/user/multh/JEC/2016Legacy/Residuals/Summer16_07Aug2017_V7/AK4CHS/MC_NoReweighted_CorrMETTypeI_OldSF/"> 
+<!ENTITY OUTdir              "/nfs/dust/cms/user/multh/JEC/2016Legacy/Residuals/Summer16_07Aug2017_V11/AK4CHS/MC_NoReweighted_CHS_ECALCleaning/"> 
+<!-- <!ENTITY OUTdir              "/nfs/dust/cms/user/multh/JEC/2016Legacy/Residuals/Summer16_07Aug2017_V7/AK4CHS/MC_NoReweighted_CorrMETTypeI_OldSF/">  -->
 
 
 <!ENTITY b_closuretest       "false">
-<!ENTITY jec_version         "Summer16_07Aug2017_V7">
+<!ENTITY jec_version           "Summer16_07Aug2017_V11">
 <!ENTITY APPLY_WEIGHTS       "false">
-<!ENTITY WEIGHT_PATH         "/nfs/dust/cms/user/multh/JEC/2016Legacy/Residuals/Summer16_07Aug2017_V7/AK4CHS/MC_NoReweighted_CorrMETTypeI_OldSF/">  <!-- Change Weight-Path: CENTRAL/FWD -->
+<!ENTITY WEIGHT_PATH         "/nfs/dust/cms/user/multh/JEC/2016Legacy/Residuals/Summer16_07Aug2017_V11/AK4CHS/MC_NoReweighted_CHS_ECALCleaning/">  <!-- Change Weight-Path: CENTRAL/FWD -->
 <!-- <!ENTITY WEIGHT_PATH         "/nfs/dust/cms/user/multh/JEC/2016Legacy/ClosureTest/Summer16_07Aug2017_V7/AK4CHS/MC_NoReweighted_CHS_ECALCleaning/"> --> <!-- Change Weight-Path: CENTRAL/FWD -->
 <!ENTITY Cut_PATH            "/nfs/dust/cms/user/multh/JEC/2016Legacy/Residuals/Summer16_07Aug2017_V7/AK4CHS/EtaPhiCut_ECAL/">
 
@@ -77,7 +77,7 @@
 
 <!--
 <ConfigParse NEventsBreak="0" FileSplit="40" AutoResubmit="5"/>
-<ConfigSGE RAM ="4" DISK ="3" Mail="jens.multhaup@desy.de" Notification="as" Workdir="workdir_Summer16_07Aug2017_Residuals_V7_TypeIMETCorr_OldSF"/>
+<ConfigSGE RAM ="4" DISK ="3" Mail="jens.multhaup@desy.de" Notification="as" Workdir="workdir_Summer16_07Aug2017_Residuals_V11_ECALCleaning"/>
 -->
 
 <!-- OutputLevel controls which messages are printed; set to VERBOSE or DEBUG for more verbosity, to WARNING or ERROR for less -->
@@ -172,7 +172,7 @@
 
 
 <!-- DATA -->
-<!--
+
 <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_RunB_AK4CHS" Cacheable="&CACHEABLE;">
        &DATA_RunB_AK4CHS_Legacy;
        <InputTree Name="AnalysisTree"/>
@@ -220,7 +220,7 @@
        <InputTree Name="AnalysisTree"/>
        <OutputTree Name="AnalysisTree"/>
   </InputData> 
--->
+
 
     <UserConfig>
       <Item Name="PrimaryVertexCollection" Value="offlineSlimmedPrimaryVertices"/>

@@ -23,10 +23,12 @@ pair<double,double> GetValueAndError(TH1D *hin){
   //  res.first = -1; res.second = -1;
   //  if(hin->GetEntries()>30){
   //  if(hin->GetEntries()>50){
-  if(hin->GetEntries()>100){  
-    res.first = hin->GetMean();
+   if(hin->GetEntries()>100){  
+    
+  // res.first = hin->GetMean();
     // GetMeanError calculates the uncertainty on the mean value, arising due to limited statistics in the sample. We dont care for the width itself, only the uncertainty on the predicted mean is relevant.
-    res.second = hin->GetMeanError();
+     //  res.second = hin->GetMeanError();
+   
     /*
     //Using median
     hin->ComputeIntegral();
@@ -41,16 +43,25 @@ pair<double,double> GetValueAndError(TH1D *hin){
     hin->GetQuantiles(1, &res_low, &q_res_low);
     hin->GetQuantiles(1, &res_high, &q_res_high);
     res_symm = ((res_high - median) + (median - res_low))/2 / sqrt(hin->GetEntries());
+    */
     //Using gauss fit to core
-    TF1 *f1 = new TF1("f1", "gaus", 0.75, 1.25);
-    hin->Fit("f1", "R");
+    
+     TF1 *f1 = new TF1("f1", "gaus",-0.5,0.5);
+    hin->Fit("f1","R");
     double gaus_mean = f1->GetParameter(1);
     double gaus_sigma = f1->GetParameter(2) / sqrt(hin->GetEntries());
-    cout << "Mean: " << res.first << ", error: " << res.second << ". " << endl;
-    cout << "If using median -- value: " << median  << " + "<< res_high-median  << " - " << median - res_low << ", symm error: " << res_symm << endl;
-    cout << "If using gauss  -- value: " << gaus_mean  << " +- "<< gaus_sigma << endl;
+    // double chi2_ndf = f1->GetChisquare()/f1->GetNDF();
+
+    res.first = gaus_mean;
+    res.second = gaus_sigma;
     delete f1;
-    */
+	
+    //   cout << "Mean: " << res.first << ", error: " << res.second << ". " << endl;
+    //cout << "If using median -- value: " << median  << " + "<< res_high-median  << " - " << median - res_low << ", symm error: " << res_symm << endl;
+    //   cout << "If using gauss  -- value: " << gaus_mean  << " +- "<< gaus_sigma <<"Chi2/ndf: "<<f1->GetChisquare()/f1->GetNDF()<< endl;
+   
+
+    
   }
   return res;
 }
@@ -99,6 +110,7 @@ TGraphErrors* CleanEmptyPoints(TGraphErrors* input){
   vector<double> Xnew,Ynew,Xerrornew,Yerrornew;
   for(int i=0;i<input->GetN();i++){
     //cout << "Yval[" << i << "] = " << Yval[i] <<" +/- "<<YvalError[i]<< endl;
+    if(Yval[i]==0 ) continue;
     if(YvalError[i]<1e-4 || Yval[i]==0) continue;
     //    if(Yval[i]==0 ) continue;
        count++;
