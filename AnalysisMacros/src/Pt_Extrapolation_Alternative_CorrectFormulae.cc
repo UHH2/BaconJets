@@ -9,6 +9,7 @@
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
+
 #include "../include/parameters.h"
 #include "../include/useful_functions.h"
 #include "../include/CorrectionObject.h"
@@ -131,13 +132,13 @@ void CorrectionObject::Pt_Extrapolation_Alternative_CorrectFormulae(bool mpfMeth
     TString eta_name = "eta_"+eta_range2[j]+"_"+eta_range2[j+1];
     
     TString name = name1 + eta_name;
-    hdata_asymmetry[j] = new TH2D(name,"",n_pt_cutted,pt_bins,nResponseBins, -1.2, 1.2);
+    hdata_asymmetry[j] = new TH2D(name,"",n_pt_cutted,(eta_cut_bool?pt_bins_HF:pt_bins),nResponseBins, -1.2, 1.2);
     name = name2 + eta_name;
-    hdata_B[j] = new TH2D(name,"",n_pt_cutted,pt_bins,nResponseBins, -1.2, 1.2);
+    hdata_B[j] = new TH2D(name,"",n_pt_cutted,(eta_cut_bool?pt_bins_HF:pt_bins),nResponseBins, -1.2, 1.2);
     name = name3 + eta_name;
-    hmc_asymmetry[j] = new TH2D(name,"",n_pt_cutted,pt_bins,nResponseBins, -1.2, 1.2);
+    hmc_asymmetry[j] = new TH2D(name,"",n_pt_cutted,(eta_cut_bool?pt_bins_HF:pt_bins),nResponseBins, -1.2, 1.2);
     name = name4 + eta_name;
-    hmc_B[j] = new TH2D(name,"",n_pt_cutted,pt_bins,nResponseBins, -1.2, 1.2);
+    hmc_B[j] = new TH2D(name,"",n_pt_cutted,(eta_cut_bool?pt_bins_HF:pt_bins),nResponseBins, -1.2, 1.2);
      
     for(int k=0; k<n_pt_cutted; k++){
       TString pt_name = "pt_"+(eta_cut_bool?pt_range_HF:pt_range)[k]+"_"+(eta_cut_bool?pt_range_HF:pt_range)[k+1];
@@ -264,7 +265,7 @@ void CorrectionObject::Pt_Extrapolation_Alternative_CorrectFormulae(bool mpfMeth
     Chi2_rel_data[j] = new TH1D("Rel_data_chi2_eta_"+eta_range2[j]+"_"+eta_range2[j+1],"",( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ),(eta_cut_bool?pt_bins_HF:pt_bins));
 
     for(int k=0; k< ( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ); k++){
-      
+      /*
       double mc_B_mean = 0;
       double mc_B_error = 0;
       double mc_B_chi2 = 0;
@@ -336,8 +337,14 @@ void CorrectionObject::Pt_Extrapolation_Alternative_CorrectFormulae(bool mpfMeth
       double err_rel_data = 2/(pow(1-data_A_mean,2)) * data_A_error;
       if(!enough_entries[j][k] || data_A_mean ==0) err_rel_data = 0;
       Chi2_rel_data[j] -> SetBinContent(k+1,data_A_chi2);
-      
-      /*
+
+      delete f1_data_A;
+      delete f1_mc_A;
+      delete f1_data_B;
+      delete f1_mc_B;
+
+      */
+  
       //responses for data, MC separately. Only for bins with >= 100 entries
       double mpf_mc = (1+pr_mc_B[j]->GetBinContent(k+1))/(1-pr_mc_B[j]->GetBinContent(k+1));
       if(!enough_entries[j][k] || pr_mc_B[j]->GetBinContent(k+1)==0) mpf_mc = 0;
@@ -362,7 +369,7 @@ void CorrectionObject::Pt_Extrapolation_Alternative_CorrectFormulae(bool mpfMeth
       
       double err_rel_data = 2/(pow((1-pr_data_asymmetry[j]->GetBinContent(k+1)),2)) * pr_data_asymmetry[j]->GetBinError(k+1);
       if(!enough_entries[j][k] || pr_data_asymmetry[j]->GetBinContent(k+1)==0) err_rel_data = 0;
-      */
+      
 
       //ratio of responses, again gaussian error propagation
       if(rel_data > 0) ratio_al_rel_r[j][k] = rel_mc/rel_data;
@@ -373,10 +380,7 @@ void CorrectionObject::Pt_Extrapolation_Alternative_CorrectFormulae(bool mpfMeth
       else ratio_al_mpf_r[j][k] = 0;
       err_ratio_al_mpf_r[j][k] = sqrt(pow(1/mpf_data*err_mpf_mc,2) + pow(mpf_mc/(mpf_data*mpf_data)*err_mpf_data,2));
 
-      delete f1_data_A;
-      delete f1_mc_A;
-      delete f1_data_B;
-      delete f1_mc_B;
+
     }
   }
 
@@ -790,7 +794,7 @@ for(int j=0; j<n_eta-1; j++){
 
       if(CorrectionObject::_collection == "AK4CHS"){
 	if(CorrectionObject::_runnr == "BCDEFGH"){
-	  if(!CorrectionObject::_closuretest) kfsr_fit_mpf->SetParameters(-8,88000,9500); //RES
+	  if(!CorrectionObject::_closuretest) kfsr_fit_mpf->SetParameters( -3, 33000,8300); //RES // Down: -6,87000,11000 //Up: -10, 80000,7000
 	  else kfsr_fit_mpf->SetParameters(2,2,50); //CLOSURETEST
 	  fit_fullrange = true;
 	}

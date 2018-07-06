@@ -35,8 +35,8 @@ void CorrectionObject::L2ResOverlay(bool is_MPF){
   TLegend leg1 = tdrLeg(0.17,0.14,0.35,0.45);
   TLine *line = new TLine(0.,1,5.191,1);              
 
-  const int n_runs = 4;
-  TString runnr_v[n_runs]={"BCD","EFearly","FlateG","H"};
+  const int n_runs = 3;
+  TString runnr_v[n_runs]={"BCD","EFearly","FlateGH"};
   vector<TLegend> leg_var, leg_var_diff;
   for(int i=0; i<n_runs; i++){
     TLegend tmp = tdrLeg(0.17,0.14,0.35,0.45);

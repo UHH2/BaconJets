@@ -998,7 +998,7 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
     c7->SaveAs(CorrectionObject::_outpath+"plots/control/probejet_neutEmEF_MC_" + CorrectionObject::_generator_tag + "_eta_" + eta_range2[i] + "_" + eta_range2[i+1] +(abs_asymmetry_cut ? "_wAsymCut":"") + (lumi_bin>=0 ? "_lumiBin" + to_string(lumi_bin)  : "") + ".pdf");
 
     TCanvas* c8 = new TCanvas();
-    tdrCanvas(c8,"c8",hEF,4,10,kSquare,"DATA");
+    tdrCanvas(c8,"c8",hEF,4,10,kSquare,CorrectionObject::_lumitag);
     //    TLegend leg8 = tdrLeg(0.62,0.46,0.85,0.81);
     TLegend leg8 = tdrLeg(0.17,0.6,0.85,0.81);
     leg8.SetNColumns(2);
@@ -1069,7 +1069,7 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
 
 
     TCanvas* c10 = new TCanvas();
-    tdrCanvas(c10,"c10",hEF,4,10,kSquare,"DATA");
+    tdrCanvas(c10,"c10",hEF,4,10,kSquare,CorrectionObject::_lumitag);
     TLegend leg10 = tdrLeg(0.17,0.6,0.85,0.81);
     leg10.SetNColumns(2);
     TH1D* htemp_probejet_neutHadEF_data;
@@ -1141,7 +1141,7 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
     c11->SaveAs(CorrectionObject::_outpath+"plots/control/probejet_chEmEF_MC_" + CorrectionObject::_generator_tag + "_eta_" + eta_range2[i] + "_" + eta_range2[i+1] +(abs_asymmetry_cut ? "_wAsymCut":"")+ (lumi_bin>=0 ? "_lumiBin" + to_string(lumi_bin)  : "") + ".pdf");
 
     TCanvas* c12 = new TCanvas();
-    tdrCanvas(c12,"c12",hEF,4,10,kSquare,"DATA");
+    tdrCanvas(c12,"c12",hEF,4,10,kSquare,CorrectionObject::_lumitag);
     TLegend leg12 = tdrLeg(0.17,0.6,0.85,0.81);
     leg12.SetNColumns(2);
 
@@ -1211,7 +1211,7 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
     c13->SaveAs(CorrectionObject::_outpath+"plots/control/probejet_chHadEF_MC_" + CorrectionObject::_generator_tag + "_eta_" + eta_range2[i] + "_" + eta_range2[i+1] + (abs_asymmetry_cut ? "_wAsymCut":"")+ (lumi_bin>=0 ? "_lumiBin" + to_string(lumi_bin)  : "") +".pdf");
 
     TCanvas* c14 = new TCanvas();
-    tdrCanvas(c14,"c14",hEF,4,10,kSquare,"DATA");
+    tdrCanvas(c14,"c14",hEF,4,10,kSquare,CorrectionObject::_lumitag);
     TLegend leg14 = tdrLeg(0.17,0.6,0.85,0.81);
     leg14.SetNColumns(2);
     TH1D* htemp_probejet_chHadEF_data;
@@ -1277,7 +1277,7 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
     c15->SaveAs(CorrectionObject::_outpath+"plots/control/probejet_photonEF_MC_" + CorrectionObject::_generator_tag + "_eta_" + eta_range2[i] + "_" + eta_range2[i+1] + (abs_asymmetry_cut ? "_wAsymCut":"")+ (lumi_bin>=0 ? "_lumiBin" + to_string(lumi_bin)  : "") +".pdf");
 
     TCanvas* c16 = new TCanvas();
-    tdrCanvas(c16,"c16",hEF,4,10,kSquare,"DATA");
+    tdrCanvas(c16,"c16",hEF,4,10,kSquare,CorrectionObject::_lumitag);
     TLegend leg16 = tdrLeg(0.45,0.46,0.70,0.81);
     TH1D* htemp_probejet_photonEF_data;
     for(int j=0; j<( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ); j++){ 
@@ -1340,7 +1340,7 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
     c17->SaveAs(CorrectionObject::_outpath+"plots/control/probejet_muonEF_MC_" + CorrectionObject::_generator_tag + "_eta_" + eta_range2[i] + "_" + eta_range2[i+1] + (abs_asymmetry_cut ? "_wAsymCut":"")+ (lumi_bin>=0 ? "_lumiBin" + to_string(lumi_bin)  : "") +".pdf");
 
     TCanvas* c18 = new TCanvas();
-    tdrCanvas(c18,"c18",hEF,4,10,kSquare,"DATA");
+    tdrCanvas(c18,"c18",hEF,4,10,kSquare,CorrectionObject::_lumitag);
     TLegend leg18 = tdrLeg(0.45,0.46,0.70,0.81);
     TH1D* htemp_probejet_muonEF_data;
     for(int j=0; j<( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ); j++){ 
@@ -1403,7 +1403,7 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
     c19->SaveAs(CorrectionObject::_outpath+"plots/control/probejet_phi_MC_" + CorrectionObject::_generator_tag + "_eta_" + eta_range2[i] + "_" + eta_range2[i+1] +(abs_asymmetry_cut ? "_wAsymCut":"")+ (lumi_bin>=0 ? "_lumiBin" + to_string(lumi_bin)  : "") + ".pdf");
 
     TCanvas* c20 = new TCanvas();
-    tdrCanvas(c20,"c20",hEF,4,10,kSquare,"DATA");
+    tdrCanvas(c20,"c20",hEF,4,10,kSquare,CorrectionObject::_lumitag);
     TLegend leg20 = tdrLeg(0.45,0.46,0.70,0.81);
     TH1D* htemp_probejet_phi_data;
     for(int j=0; j<( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ); j++){ 
@@ -1438,7 +1438,7 @@ void CorrectionObject::FinalControlPlots_CorrectFormulae(){
 
 
     TCanvas* c21 = new TCanvas();
-    tdrCanvas(c21,"c21",hEF,4,10,kSquare,"DATA");
+    tdrCanvas(c21,"c21",hEF,4,10,kSquare,CorrectionObject::_lumitag);
     TLegend leg21 = tdrLeg(0.45,0.46,0.70,0.81);
     TH1D* htemp_jet3_pt_data;
     for(int j=0; j<( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ); j++){ 

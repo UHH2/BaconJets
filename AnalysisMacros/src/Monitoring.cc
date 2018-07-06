@@ -105,10 +105,7 @@ void CorrectionObject::Monitoring(){
     //   cout<<"Create Hist"<<endl;
     for(int j=0; j<n_eta_control-1; j++){
      if(fabs(eta_bins_control[j])<fabs(eta_bins_control[j+1])){
-	if(eta_bins_control[j]==2.853) {
-	  eta_cut_bool = false;
-	} 
-	else eta_cut_bool = fabs(eta_bins_control[j])>eta_cut;
+       eta_cut_bool = fabs(eta_bins_control[j])>eta_cut;
       }
       else {
 	eta_cut_bool = fabs(eta_bins_control[j+1])>eta_cut;
@@ -172,10 +169,7 @@ void CorrectionObject::Monitoring(){
 
     for(int j=0; j<n_eta_control-1; j++){
      if(fabs(eta_bins_control[j])<fabs(eta_bins_control[j+1])){
-       if(eta_bins_control[j]==2.853) {
-	 eta_cut_bool = false;
-       } 
-       else eta_cut_bool = fabs(eta_bins_control[j])>eta_cut;
+       eta_cut_bool = fabs(eta_bins_control[j])>eta_cut;
      }
       else {
 	eta_cut_bool = fabs(eta_bins_control[j+1])>eta_cut;
@@ -281,7 +275,13 @@ void CorrectionObject::Monitoring(){
   tex1->SetTextSize(0.036); 
 
   for(int j=0; j<n_eta_control-1; j++){
-    eta_cut_bool = fabs(eta_bins_control[j])>eta_cut;
+     if(fabs(eta_bins_control[j])<fabs(eta_bins_control[j+1])){
+       eta_cut_bool = fabs(eta_bins_control[j])>eta_cut;
+     }
+      else {
+	eta_cut_bool = fabs(eta_bins_control[j+1])>eta_cut;
+      }
+
     for(int k=1; k<( eta_cut_bool ?  n_pt_HF-2 : n_pt-2 ); k++){
  
       //dummy for tdrCanvas 

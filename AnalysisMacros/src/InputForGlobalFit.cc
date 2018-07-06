@@ -30,27 +30,31 @@ void CorrectionObject::InputForGlobalFit(){
   m_gStyle->SetOptFit(0);
   m_gStyle->SetOptStat(0);
 
+  int n_pt_ = max(n_pt,n_pt_HF);
+  bool eta_cut_bool;
+  int n_pt_cutted;
+
   cout << "hello, it's macro to produce combination file for the Global Fit" << endl;
   //calculate ratio in MC to DATA responses
 
-  double mc_al_mpf[n_alpha_common][n_eta_common-1][n_pt-1]; 
-  double err_mc_al_mpf[n_alpha_common][n_eta_common-1][n_pt-1]; 
-  double mc_al_pTbal[n_alpha_common][n_eta_common-1][n_pt-1]; 
-  double err_mc_al_pTbal[n_alpha_common][n_eta_common-1][n_pt-1]; 
-  double data_al_mpf[n_alpha_common][n_eta_common-1][n_pt-1]; 
-  double err_data_al_mpf[n_alpha_common][n_eta_common-1][n_pt-1]; 
-  double data_al_pTbal[n_alpha_common][n_eta_common-1][n_pt-1]; 
-  double err_data_al_pTbal[n_alpha_common][n_eta_common-1][n_pt-1]; 
+  double mc_al_mpf[n_alpha_common][n_eta_common-1][n_pt_-1]; 
+  double err_mc_al_mpf[n_alpha_common][n_eta_common-1][n_pt_-1]; 
+  double mc_al_pTbal[n_alpha_common][n_eta_common-1][n_pt_-1]; 
+  double err_mc_al_pTbal[n_alpha_common][n_eta_common-1][n_pt_-1]; 
+  double data_al_mpf[n_alpha_common][n_eta_common-1][n_pt_-1]; 
+  double err_data_al_mpf[n_alpha_common][n_eta_common-1][n_pt_-1]; 
+  double data_al_pTbal[n_alpha_common][n_eta_common-1][n_pt_-1]; 
+  double err_data_al_pTbal[n_alpha_common][n_eta_common-1][n_pt_-1]; 
 
-  double ratio_al_mpf[n_alpha_common][n_eta_common-1][n_pt-1]; //ratio at pt,eta,alpha bins
-  double err_ratio_al_mpf[n_alpha_common][n_eta_common-1][n_pt-1]; //error of ratio at pt,eta,alpha bins
-  double ratio_al_pTbal[n_alpha_common][n_eta_common-1][n_pt-1]; //ratio at pt,eta,alpha bins
-  double err_ratio_al_pTbal[n_alpha_common][n_eta_common-1][n_pt-1]; //error of ratio at pt,eta,alpha bins
+  double ratio_al_mpf[n_alpha_common][n_eta_common-1][n_pt_-1]; //ratio at pt,eta,alpha bins
+  double err_ratio_al_mpf[n_alpha_common][n_eta_common-1][n_pt_-1]; //error of ratio at pt,eta,alpha bins
+  double ratio_al_pTbal[n_alpha_common][n_eta_common-1][n_pt_-1]; //ratio at pt,eta,alpha bins
+  double err_ratio_al_pTbal[n_alpha_common][n_eta_common-1][n_pt_-1]; //error of ratio at pt,eta,alpha bins
 
-  TH1D *hdata_rel_r[n_pt-1][n_eta_common-1][n_alpha_common];// pT-balance responce for data
-  TH1D *hdata_mpf_r[n_pt-1][n_eta_common-1][n_alpha_common];//MPF responce for data
-  TH1D *hmc_rel_r[n_pt-1][n_eta_common-1][n_alpha_common];// pT-balance responce for MC
-  TH1D *hmc_mpf_r[n_pt-1][n_eta_common-1][n_alpha_common];//MPF responce for MC
+  TH1D *hdata_rel_r[n_pt_-1][n_eta_common-1][n_alpha_common];// pT-balance responce for data
+  TH1D *hdata_mpf_r[n_pt_-1][n_eta_common-1][n_alpha_common];//MPF responce for data
+  TH1D *hmc_rel_r[n_pt_-1][n_eta_common-1][n_alpha_common];// pT-balance responce for MC
+  TH1D *hmc_mpf_r[n_pt_-1][n_eta_common-1][n_alpha_common];//MPF responce for MC
 
   TH1D *hmc_probejet_glu[n_alpha_common][n_eta_common-1];//   Math::Abs(pdgID)==21 --> glu
   TH1D *hmc_probejet_gluExt[n_alpha_common][n_eta_common-1];// 21||Undefined --> gluExt
@@ -68,31 +72,31 @@ void CorrectionObject::InputForGlobalFit(){
   TH1D *hmc_dijet_QG[n_alpha_common][n_eta_common-1];// tag=quark(udcsb), probe=gluon
   TH1D *hmc_dijet_total[n_alpha_common][n_eta_common-1];// total hist for normalisation
 
-  double flavorFrac_probejet_glu[n_alpha_common][n_eta_common-1][n_pt-1]; 
-  double err_flavorFrac_probejet_glu[n_alpha_common][n_eta_common-1][n_pt-1]; 
-  double flavorFrac_probejet_gluExt[n_alpha_common][n_eta_common-1][n_pt-1]; 
-  double err_flavorFrac_probejet_gluExt[n_alpha_common][n_eta_common-1][n_pt-1]; 
-  double flavorFrac_probejet_b[n_alpha_common][n_eta_common-1][n_pt-1]; 
-  double err_flavorFrac_probejet_b[n_alpha_common][n_eta_common-1][n_pt-1]; 
-  double flavorFrac_probejet_c[n_alpha_common][n_eta_common-1][n_pt-1]; 
-  double err_flavorFrac_probejet_c[n_alpha_common][n_eta_common-1][n_pt-1]; 
-  double flavorFrac_probejet_s[n_alpha_common][n_eta_common-1][n_pt-1]; 
-  double err_flavorFrac_probejet_s[n_alpha_common][n_eta_common-1][n_pt-1]; 
-  double flavorFrac_probejet_ud[n_alpha_common][n_eta_common-1][n_pt-1]; 
-  double err_flavorFrac_probejet_ud[n_alpha_common][n_eta_common-1][n_pt-1]; 
-  double flavorFrac_probejet_undefined[n_alpha_common][n_eta_common-1][n_pt-1]; 
-  double err_flavorFrac_probejet_undefined[n_alpha_common][n_eta_common-1][n_pt-1]; 
-  double flavorFrac_probejet_uds[n_alpha_common][n_eta_common-1][n_pt-1]; 
-  double err_flavorFrac_probejet_uds[n_alpha_common][n_eta_common-1][n_pt-1]; 
+  double flavorFrac_probejet_glu[n_alpha_common][n_eta_common-1][n_pt_-1]; 
+  double err_flavorFrac_probejet_glu[n_alpha_common][n_eta_common-1][n_pt_-1]; 
+  double flavorFrac_probejet_gluExt[n_alpha_common][n_eta_common-1][n_pt_-1]; 
+  double err_flavorFrac_probejet_gluExt[n_alpha_common][n_eta_common-1][n_pt_-1]; 
+  double flavorFrac_probejet_b[n_alpha_common][n_eta_common-1][n_pt_-1]; 
+  double err_flavorFrac_probejet_b[n_alpha_common][n_eta_common-1][n_pt_-1]; 
+  double flavorFrac_probejet_c[n_alpha_common][n_eta_common-1][n_pt_-1]; 
+  double err_flavorFrac_probejet_c[n_alpha_common][n_eta_common-1][n_pt_-1]; 
+  double flavorFrac_probejet_s[n_alpha_common][n_eta_common-1][n_pt_-1]; 
+  double err_flavorFrac_probejet_s[n_alpha_common][n_eta_common-1][n_pt_-1]; 
+  double flavorFrac_probejet_ud[n_alpha_common][n_eta_common-1][n_pt_-1]; 
+  double err_flavorFrac_probejet_ud[n_alpha_common][n_eta_common-1][n_pt_-1]; 
+  double flavorFrac_probejet_undefined[n_alpha_common][n_eta_common-1][n_pt_-1]; 
+  double err_flavorFrac_probejet_undefined[n_alpha_common][n_eta_common-1][n_pt_-1]; 
+  double flavorFrac_probejet_uds[n_alpha_common][n_eta_common-1][n_pt_-1]; 
+  double err_flavorFrac_probejet_uds[n_alpha_common][n_eta_common-1][n_pt_-1]; 
 
-  double flavorFrac_dijet_QQ[n_alpha_common][n_eta_common-1][n_pt-1]; 
-  double err_flavorFrac_dijet_QQ[n_alpha_common][n_eta_common-1][n_pt-1]; 
-  double flavorFrac_dijet_GQ[n_alpha_common][n_eta_common-1][n_pt-1]; 
-  double err_flavorFrac_dijet_GQ[n_alpha_common][n_eta_common-1][n_pt-1]; 
-  double flavorFrac_dijet_GG[n_alpha_common][n_eta_common-1][n_pt-1]; 
-  double err_flavorFrac_dijet_GG[n_alpha_common][n_eta_common-1][n_pt-1]; 
-  double flavorFrac_dijet_QG[n_alpha_common][n_eta_common-1][n_pt-1]; 
-  double err_flavorFrac_dijet_QG[n_alpha_common][n_eta_common-1][n_pt-1]; 
+  double flavorFrac_dijet_QQ[n_alpha_common][n_eta_common-1][n_pt_-1]; 
+  double err_flavorFrac_dijet_QQ[n_alpha_common][n_eta_common-1][n_pt_-1]; 
+  double flavorFrac_dijet_GQ[n_alpha_common][n_eta_common-1][n_pt_-1]; 
+  double err_flavorFrac_dijet_GQ[n_alpha_common][n_eta_common-1][n_pt_-1]; 
+  double flavorFrac_dijet_GG[n_alpha_common][n_eta_common-1][n_pt_-1]; 
+  double err_flavorFrac_dijet_GG[n_alpha_common][n_eta_common-1][n_pt_-1]; 
+  double flavorFrac_dijet_QG[n_alpha_common][n_eta_common-1][n_pt_-1]; 
+  double err_flavorFrac_dijet_QG[n_alpha_common][n_eta_common-1][n_pt_-1]; 
 
   TH1D *hdata_num[n_alpha_common][n_eta_common-1];
   TH1D *hmc_num[n_alpha_common][n_eta_common-1];
@@ -126,7 +130,10 @@ void CorrectionObject::InputForGlobalFit(){
   //Initialize with 0 values
   for(int i=0; i<n_alpha_common; i++){
     for(int j=0; j<n_eta_common-1; j++){
-      for(int k=0; k<n_pt-1; k++){
+      eta_cut_bool = fabs(eta_common_bins[j])>eta_cut;
+      n_pt_cutted = ( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 );
+
+      for(int k=0; k<n_pt_cutted; k++){
 
 	ratio_al_mpf[i][j][k] = 0;
 	err_ratio_al_mpf[i][j][k] = 0;
@@ -178,43 +185,40 @@ void CorrectionObject::InputForGlobalFit(){
 
       }
       	TString name10 = name5; name10+=count2;
-	hdata_num[i][j] = new TH1D(name10,"",n_pt-1,pt_bins);
+	hdata_num[i][j] = new TH1D(name10,"",n_pt_cutted,(eta_cut_bool?pt_bins_HF:pt_bins));
 	name10 = name6; name10+=count2;
-	hmc_num[i][j] = new TH1D(name10,"",n_pt-1,pt_bins);
+	hmc_num[i][j] = new TH1D(name10,"",n_pt_cutted,(eta_cut_bool?pt_bins_HF:pt_bins));
 	name10 = name11; name10+=count2;
-	hmc_probejet_glu[i][j] = new TH1D(name10,"",n_pt-1,pt_bins);
+	hmc_probejet_glu[i][j] = new TH1D(name10,"",n_pt_cutted,(eta_cut_bool?pt_bins_HF:pt_bins));
 	name10 = name12; name10+=count2;
-	hmc_probejet_gluExt[i][j] = new TH1D(name10,"",n_pt-1,pt_bins);
+	hmc_probejet_gluExt[i][j] = new TH1D(name10,"",n_pt_cutted,(eta_cut_bool?pt_bins_HF:pt_bins));
 	name10 = name13; name10+=count2;
-	hmc_probejet_b[i][j] = new TH1D(name10,"",n_pt-1,pt_bins);
+	hmc_probejet_b[i][j] = new TH1D(name10,"",n_pt_cutted,(eta_cut_bool?pt_bins_HF:pt_bins));
 	name10 = name14; name10+=count2;
-	hmc_probejet_c[i][j] = new TH1D(name10,"",n_pt-1,pt_bins);
+	hmc_probejet_c[i][j] = new TH1D(name10,"",n_pt_cutted,(eta_cut_bool?pt_bins_HF:pt_bins));
 	name10 = name15; name10+=count2;
-	hmc_probejet_s[i][j] = new TH1D(name10,"",n_pt-1,pt_bins);
+	hmc_probejet_s[i][j] = new TH1D(name10,"",n_pt_cutted,(eta_cut_bool?pt_bins_HF:pt_bins));
 	name10 = name16; name10+=count2;
-	hmc_probejet_ud[i][j] = new TH1D(name10,"",n_pt-1,pt_bins);
+	hmc_probejet_ud[i][j] = new TH1D(name10,"",n_pt_cutted,(eta_cut_bool?pt_bins_HF:pt_bins));
 	name10 = name17; name10+=count2;
-	hmc_probejet_undefined[i][j] = new TH1D(name10,"",n_pt-1,pt_bins);
+	hmc_probejet_undefined[i][j] = new TH1D(name10,"",n_pt_cutted,(eta_cut_bool?pt_bins_HF:pt_bins));
 	name10 = name18; name10+=count2;
-	hmc_probejet_uds[i][j] = new TH1D(name10,"",n_pt-1,pt_bins);
+	hmc_probejet_uds[i][j] = new TH1D(name10,"",n_pt_cutted,(eta_cut_bool?pt_bins_HF:pt_bins));
 	name10 = name19; name10+=count2;
-	hmc_probejet_total[i][j] = new TH1D(name10,"",n_pt-1,pt_bins);
+	hmc_probejet_total[i][j] = new TH1D(name10,"",n_pt_cutted,(eta_cut_bool?pt_bins_HF:pt_bins));
 
 	name10 = name20; name10+=count2;
-	hmc_dijet_QQ[i][j] = new TH1D(name10,"",n_pt-1,pt_bins);
+	hmc_dijet_QQ[i][j] = new TH1D(name10,"",n_pt_cutted,(eta_cut_bool?pt_bins_HF:pt_bins));
 	name10 = name21; name10+=count2;
-	hmc_dijet_GQ[i][j] = new TH1D(name10,"",n_pt-1,pt_bins);
+	hmc_dijet_GQ[i][j] = new TH1D(name10,"",n_pt_cutted,(eta_cut_bool?pt_bins_HF:pt_bins));
 	name10 = name22; name10+=count2;
-	hmc_dijet_GG[i][j] = new TH1D(name10,"",n_pt-1,pt_bins);
+	hmc_dijet_GG[i][j] = new TH1D(name10,"",n_pt_cutted,(eta_cut_bool?pt_bins_HF:pt_bins));
 	name10 = name23; name10+=count2;
-	hmc_dijet_QG[i][j] = new TH1D(name10,"",n_pt-1,pt_bins);
+	hmc_dijet_QG[i][j] = new TH1D(name10,"",n_pt_cutted,(eta_cut_bool?pt_bins_HF:pt_bins));
 	name10 = name24; name10+=count2;
-	hmc_dijet_total[i][j] = new TH1D(name10,"",n_pt-1,pt_bins);
+	hmc_dijet_total[i][j] = new TH1D(name10,"",n_pt_cutted,(eta_cut_bool?pt_bins_HF:pt_bins));
 
 	count2++;
-
-
-
     }
   }
 
@@ -229,10 +233,13 @@ void CorrectionObject::InputForGlobalFit(){
    TTreeReaderValue<Float_t> weight_data(myReader_DATA, "weight");
    
    while (myReader_DATA.Next()) {
-     for(int k=0; k<n_pt-1; k++){
-   	   if(*pt_ave_data<pt_bins[k] || *pt_ave_data>pt_bins[k+1]) continue;
-	   for(int j=0; j<n_eta_common-1; j++){
-	     if(fabs(*probejet_eta_data)>eta_common_bins[j+1] || fabs(*probejet_eta_data)<eta_common_bins[j]) continue;
+     for(int j=0; j<n_eta_common-1; j++){
+       if(fabs(*probejet_eta_data)>eta_common_bins[j+1] || fabs(*probejet_eta_data)<eta_common_bins[j]) continue;
+       eta_cut_bool = fabs(eta_common_bins[j])>eta_cut; 
+
+       for(int k=0; k<( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ); k++){
+   	   if(*pt_ave_data<(eta_cut_bool?pt_bins_HF:pt_bins)[k] || *pt_ave_data>(eta_cut_bool?pt_bins_HF:pt_bins)[k+1]) continue;
+
 	     for(int i=0; i<n_alpha_common; i++){
 	       if(*alpha_data>alpha_bins_common[i]) continue;
 	       else{
@@ -255,10 +262,13 @@ void CorrectionObject::InputForGlobalFit(){
    TTreeReaderValue<Int_t> flavorTagjet_mc(myReader_MC, "flavorBarreljet");
 
    while (myReader_MC.Next()) {
-     for(int k=0; k<n_pt-1; k++){
-       if(*pt_ave_mc<pt_bins[k] || *pt_ave_mc>pt_bins[k+1]) continue;
-       for(int j=0; j<n_eta_common-1; j++){
-   	 if(fabs(*probejet_eta_mc)>eta_common_bins[j+1] || fabs(*probejet_eta_mc)<eta_common_bins[j]) continue;
+     for(int j=0; j<n_eta_common-1; j++){
+       if(fabs(*probejet_eta_mc)>eta_common_bins[j+1] || fabs(*probejet_eta_mc)<eta_common_bins[j]) continue;
+       eta_cut_bool = fabs(eta_common_bins[j])>eta_cut; 
+
+       for(int k=0; k<( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ); k++){
+	 if(*pt_ave_mc<(eta_cut_bool?pt_bins_HF:pt_bins)[k] || *pt_ave_mc>(eta_cut_bool?pt_bins_HF:pt_bins)[k+1]) continue;
+ 
    	 for(int i=0; i<n_alpha_common; i++){
    	   if(*alpha_mc>alpha_bins_common[i]) continue;
    	   else{
@@ -301,7 +311,8 @@ void CorrectionObject::InputForGlobalFit(){
 
   for(int i=0; i<n_alpha_common; i++){
     for(int j=0; j<n_eta_common-1; j++){
-      for(int k=0; k<n_pt-1; k++){
+      eta_cut_bool = fabs(eta_common_bins[j])>eta_cut; 
+      for(int k=0; k<( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ); k++){
 	pair<double,double> res_mc_rel_r,res_data_rel_r;
 	pair<double,double> res_mc_mpf_r,res_data_mpf_r;
 
@@ -345,7 +356,7 @@ void CorrectionObject::InputForGlobalFit(){
       hmc_dijet_GG[i][j]->Divide(hmc_dijet_total[i][j]);
       hmc_dijet_QG[i][j]->Divide(hmc_dijet_total[i][j]);
 
-      for(int k=0; k<n_pt-1; k++){
+      for(int k=0; k<( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ); k++){
 	flavorFrac_probejet_glu[i][j][k] = hmc_probejet_glu[i][j]->GetBinContent(k);
 	err_flavorFrac_probejet_glu[i][j][k] = hmc_probejet_glu[i][j]->GetBinError(k);
 	flavorFrac_probejet_gluExt[i][j][k] = hmc_probejet_gluExt[i][j]->GetBinContent(k);
@@ -380,11 +391,14 @@ void CorrectionObject::InputForGlobalFit(){
 
 
   //Store results in TGraphErrors
-  double res_xbin_tgraph[n_pt-1];// = {(pt_bins[0]+pt_bins[1])/2
-  double res_zero[n_pt-1];
-  for(int i=0;i<n_pt-1;i++){
-    res_xbin_tgraph[i]=(pt_bins[i]+pt_bins[i+1])/2;
-    res_zero[i]=(pt_bins[i+1]-pt_bins[i])/2 ;
+  double res_xbin_tgraph[n_eta-1][n_pt_-1];// = {(pt_bins[0]+pt_bins[1])/2
+  double res_zero[n_eta-1][n_pt_-1];
+  for(int j=0; j<n_eta-1; j++){
+    eta_cut_bool = fabs(eta_common_bins[j])>eta_cut; 
+    for(int i=0;i<( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 );i++){
+      res_xbin_tgraph[j][i]=(( eta_cut_bool ?pt_bins_HF:pt_bins)[i]+( eta_cut_bool ?pt_bins_HF:pt_bins)[i+1])/2;
+      res_zero[j][i]=(( eta_cut_bool ?pt_bins_HF:pt_bins)[i+1]-( eta_cut_bool ?pt_bins_HF:pt_bins)[i])/2 ;
+    }
   }
 
   TGraphErrors *mpf_data[n_alpha_common][n_eta_common-1];
@@ -410,26 +424,26 @@ void CorrectionObject::InputForGlobalFit(){
 
   for(int i=0; i<n_alpha_common; i++){
     for(int j=0; j<n_eta_common-1; j++){
-      mpf_data[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,data_al_mpf[i][j],res_zero,err_data_al_mpf[i][j]);
-      mpf_mc[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,mc_al_mpf[i][j],res_zero,err_mc_al_mpf[i][j]);
-      rrel_data[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,data_al_pTbal[i][j],res_zero,err_data_al_pTbal[i][j]);
-      rrel_mc[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,mc_al_pTbal[i][j],res_zero,err_mc_al_pTbal[i][j]);
-      mpf_ratio[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,ratio_al_mpf[i][j],res_zero,err_ratio_al_mpf[i][j]);
-      rrel_ratio[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,ratio_al_pTbal[i][j],res_zero,err_ratio_al_pTbal[i][j]);
+      mpf_data[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph[j],data_al_mpf[i][j],res_zero[j],err_data_al_mpf[i][j]);
+      mpf_mc[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph[j],mc_al_mpf[i][j],res_zero[j],err_mc_al_mpf[i][j]);
+      rrel_data[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph[j],data_al_pTbal[i][j],res_zero[j],err_data_al_pTbal[i][j]);
+      rrel_mc[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph[j],mc_al_pTbal[i][j],res_zero[j],err_mc_al_pTbal[i][j]);
+      mpf_ratio[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph[j],ratio_al_mpf[i][j],res_zero[j],err_ratio_al_mpf[i][j]);
+      rrel_ratio[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph[j],ratio_al_pTbal[i][j],res_zero[j],err_ratio_al_pTbal[i][j]);
 
-      gr_flavorFrac_probejet_glu[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,flavorFrac_probejet_glu[i][j],res_zero,err_flavorFrac_probejet_glu[i][j]);
-      gr_flavorFrac_probejet_gluExt[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,flavorFrac_probejet_gluExt[i][j],res_zero,err_flavorFrac_probejet_gluExt[i][j]);
-      gr_flavorFrac_probejet_b[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,flavorFrac_probejet_b[i][j],res_zero,err_flavorFrac_probejet_b[i][j]);
-      gr_flavorFrac_probejet_c[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,flavorFrac_probejet_c[i][j],res_zero,err_flavorFrac_probejet_c[i][j]);
-      gr_flavorFrac_probejet_s[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,flavorFrac_probejet_s[i][j],res_zero,err_flavorFrac_probejet_s[i][j]);
-      gr_flavorFrac_probejet_ud[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,flavorFrac_probejet_ud[i][j],res_zero,err_flavorFrac_probejet_ud[i][j]);
-      gr_flavorFrac_probejet_uds[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,flavorFrac_probejet_uds[i][j],res_zero,err_flavorFrac_probejet_uds[i][j]);
-      gr_flavorFrac_probejet_undefined[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,flavorFrac_probejet_undefined[i][j],res_zero,err_flavorFrac_probejet_undefined[i][j]);
+      gr_flavorFrac_probejet_glu[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph[j],flavorFrac_probejet_glu[i][j],res_zero[j],err_flavorFrac_probejet_glu[i][j]);
+      gr_flavorFrac_probejet_gluExt[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph[j],flavorFrac_probejet_gluExt[i][j],res_zero[j],err_flavorFrac_probejet_gluExt[i][j]);
+      gr_flavorFrac_probejet_b[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph[j],flavorFrac_probejet_b[i][j],res_zero[j],err_flavorFrac_probejet_b[i][j]);
+      gr_flavorFrac_probejet_c[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph[j],flavorFrac_probejet_c[i][j],res_zero[j],err_flavorFrac_probejet_c[i][j]);
+      gr_flavorFrac_probejet_s[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph[j],flavorFrac_probejet_s[i][j],res_zero[j],err_flavorFrac_probejet_s[i][j]);
+      gr_flavorFrac_probejet_ud[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph[j],flavorFrac_probejet_ud[i][j],res_zero[j],err_flavorFrac_probejet_ud[i][j]);
+      gr_flavorFrac_probejet_uds[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph[j],flavorFrac_probejet_uds[i][j],res_zero[j],err_flavorFrac_probejet_uds[i][j]);
+      gr_flavorFrac_probejet_undefined[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph[j],flavorFrac_probejet_undefined[i][j],res_zero[j],err_flavorFrac_probejet_undefined[i][j]);
 
-      gr_flavorFrac_dijet_QQ[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,flavorFrac_dijet_QQ[i][j],res_zero,err_flavorFrac_dijet_QQ[i][j]);
-      gr_flavorFrac_dijet_GQ[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,flavorFrac_dijet_GQ[i][j],res_zero,err_flavorFrac_dijet_GQ[i][j]);
-      gr_flavorFrac_dijet_GG[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,flavorFrac_dijet_GG[i][j],res_zero,err_flavorFrac_dijet_GG[i][j]);
-      gr_flavorFrac_dijet_QG[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph,flavorFrac_dijet_QG[i][j],res_zero,err_flavorFrac_dijet_QG[i][j]);
+      gr_flavorFrac_dijet_QQ[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph[j],flavorFrac_dijet_QQ[i][j],res_zero[j],err_flavorFrac_dijet_QQ[i][j]);
+      gr_flavorFrac_dijet_GQ[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph[j],flavorFrac_dijet_GQ[i][j],res_zero[j],err_flavorFrac_dijet_GQ[i][j]);
+      gr_flavorFrac_dijet_GG[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph[j],flavorFrac_dijet_GG[i][j],res_zero[j],err_flavorFrac_dijet_GG[i][j]);
+      gr_flavorFrac_dijet_QG[i][j] = new TGraphErrors(n_pt-1,res_xbin_tgraph[j],flavorFrac_dijet_QG[i][j],res_zero[j],err_flavorFrac_dijet_QG[i][j]);
 
     }
   }
@@ -531,13 +545,7 @@ void CorrectionObject::InputForGlobalFit(){
 
 
 
-
-
-
-
   //delete everything
-
-
 
   delete outputfile;
 
@@ -549,26 +557,20 @@ void CorrectionObject::InputForGlobalFit(){
       delete rrel_mc[i][j];
       delete mpf_ratio[i][j];
       delete rrel_ratio[i][j];
-
     }
   }
 
-
-
-
   for(int i=0; i<n_alpha_common; i++){
     for(int j=0; j<n_eta_common-1; j++){
-      for(int k=0; k<n_pt-1; k++){
+      eta_cut_bool = fabs(eta_common_bins[j])>eta_cut;
+      for(int k=0; k<( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ); k++){
 	delete hdata_rel_r[k][j][i];
 	delete hdata_mpf_r[k][j][i];
 	delete hmc_rel_r[k][j][i];
 	delete hmc_mpf_r[k][j][i];
-
       }
     }
   }
-
-
 
   delete m_gStyle;
 }

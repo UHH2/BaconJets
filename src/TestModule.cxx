@@ -489,7 +489,7 @@ TestModule::TestModule(uhh2::Context & ctx) :
   if(isMC){
     // if(JEC_Version == "Summer16_07Aug2017_V7") jetER_smearer.reset(new GenericJetResolutionSmearer(ctx, "jets", "genjets", true, JERSmearing::SF_13TeV_2016_03Feb2017)); //Old SF
     if(JEC_Version == "Summer16_07Aug2017_V7") jetER_smearer.reset(new GenericJetResolutionSmearer(ctx, "jets", "genjets", true, JERSmearing::SF_13TeV_2016_07Aug2017_v1)); //03 May 2018: Updated SF
-    if(JEC_Version == "Summer16_07Aug2017_V11") jetER_smearer.reset(new GenericJetResolutionSmearer(ctx, "jets", "genjets", true, JERSmearing::SF_13TeV_2016_07Aug2017_v1)); //03 May 2018: Updated SF
+    else if(JEC_Version == "Summer16_07Aug2017_V11") jetER_smearer.reset(new GenericJetResolutionSmearer(ctx, "jets", "genjets", true, JERSmearing::SF_13TeV_2016_07Aug2017_v1)); //03 May 2018: Updated SF
     else throw runtime_error("In TestModule.cxx: When setting up JER smearer, invalid 'JEC_Version' was specified.");
   }
   

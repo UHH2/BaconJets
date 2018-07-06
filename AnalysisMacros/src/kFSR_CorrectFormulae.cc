@@ -283,7 +283,7 @@ void CorrectionObject::kFSR_CorrectFormulae(){
      for(int j=0; j<n_eta-1; j++){
        eta_cut_bool = fabs(eta_bins[j])>eta_cut;
        for(int k= 0 ; k <  ( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ) ; k++ ){ 
-
+	 /*
 	 //get <A> and error on <A>
 	 pair <double,double> A_mc = GetValueAndError(hmc_asymmetry_gaus[j][k][i]);
 	 pair <double,double> A_data = GetValueAndError(hdata_asymmetry_gaus[j][k][i]);
@@ -331,8 +331,8 @@ void CorrectionObject::kFSR_CorrectFormulae(){
 	 if(res_data_mpf_r.first > 0) ratio_al_mpf_r[k][j][i] = res_mc_mpf_r.first/res_data_mpf_r.first;
 	 else ratio_al_mpf_r[k][j][i] = 0;
 	 err_ratio_al_mpf_r[k][j][i] = sqrt(pow(1/res_data_mpf_r.first*res_mc_mpf_r.second,2) + pow(res_mc_mpf_r.first/( res_data_mpf_r.first* res_data_mpf_r.first)* res_data_mpf_r.second,2));
-
-	 /*
+	 */
+	 
 	 //responses for data, MC separately. Only for bins with >= 100 entries
 	 double mpf_mc = (1+pr_mc_B[j][i]->GetBinContent(k+1))/(1-pr_mc_B[j][i]->GetBinContent(k+1));
 	 if(!enough_entries[i][j][k]) mpf_mc = 0;
@@ -372,7 +372,7 @@ void CorrectionObject::kFSR_CorrectFormulae(){
 	 if(mpf_data > 0) ratio_al_mpf_r[k][j][i] = mpf_mc/mpf_data;
 	 else ratio_al_mpf_r[k][j][i] = 0;
 	 err_ratio_al_mpf_r[k][j][i] = sqrt(pow(1/mpf_data*err_mpf_mc,2) + pow(mpf_mc/(mpf_data*mpf_data)*err_mpf_data,2));
-	 */
+	 
        }
      }
    }

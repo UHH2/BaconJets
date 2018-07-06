@@ -113,7 +113,7 @@ void CMS_lumi( TPad* pad, int iPeriod=3, int iPosX=10, TString lumi_13TeV = "27.
 // Create h after calling setTDRStyle to get all the settings right
 void tdrCanvas(TCanvas *&canv_in, const char* canvName, TH1D *&h,
 		   int iPeriod = 2, int iPos = 11,
-		   bool square = kRectangular, TString lumi_13TeV = "27.2 fb^{-1}");
+		   bool square = kSquare, TString lumi_13TeV = "27.2 fb^{-1}");
 
 
 

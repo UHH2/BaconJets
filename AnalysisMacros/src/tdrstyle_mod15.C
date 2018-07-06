@@ -433,7 +433,7 @@ void tdrCanvas(TCanvas *&canv_in, const char* canvName, TH1D *&h,
   //               iPeriod = 7 means: 7 TeV + 8 TeV + 13 TeV 
   // Initiated by: Gautier Hamel de Monchenault (Saclay)
   //
-  int W_ref = (square ? 600 : 800); 
+  int W_ref = (square ? 600 : 600); 
   int H_ref = (square ? 600 : 600); 
 
   // references for T, B, L, R

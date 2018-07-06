@@ -24,11 +24,12 @@ pair<double,double> GetValueAndError(TH1D *hin){
   //  if(hin->GetEntries()>30){
   //  if(hin->GetEntries()>50){
    if(hin->GetEntries()>100){  
+     //Get Mean from Root Hist directly
     
-  // res.first = hin->GetMean();
+    res.first = hin->GetMean();
     // GetMeanError calculates the uncertainty on the mean value, arising due to limited statistics in the sample. We dont care for the width itself, only the uncertainty on the predicted mean is relevant.
-     //  res.second = hin->GetMeanError();
-   
+    res.second = hin->GetMeanError();
+     
     /*
     //Using median
     hin->ComputeIntegral();
@@ -44,8 +45,9 @@ pair<double,double> GetValueAndError(TH1D *hin){
     hin->GetQuantiles(1, &res_high, &q_res_high);
     res_symm = ((res_high - median) + (median - res_low))/2 / sqrt(hin->GetEntries());
     */
+
     //Using gauss fit to core
-    
+    /*
      TF1 *f1 = new TF1("f1", "gaus",-0.5,0.5);
     hin->Fit("f1","R");
     double gaus_mean = f1->GetParameter(1);
@@ -55,7 +57,7 @@ pair<double,double> GetValueAndError(TH1D *hin){
     res.first = gaus_mean;
     res.second = gaus_sigma;
     delete f1;
-	
+    */
     //   cout << "Mean: " << res.first << ", error: " << res.second << ". " << endl;
     //cout << "If using median -- value: " << median  << " + "<< res_high-median  << " - " << median - res_low << ", symm error: " << res_symm << endl;
     //   cout << "If using gauss  -- value: " << gaus_mean  << " +- "<< gaus_sigma <<"Chi2/ndf: "<<f1->GetChisquare()/f1->GetNDF()<< endl;
@@ -131,7 +133,7 @@ TGraphErrors* CleanEmptyPoints(TGraphErrors* input){
   }
 
   TGraphErrors* output = new TGraphErrors(count,Xnew_m,Ynew_m,Xerrornew_m,Yerrornew_m);
-  if(input->GetN()!=output->GetN()) cout<<"Number of points in input: "<<input->GetN()<<" in output: "<<output->GetN()<<endl;
+  // if(input->GetN()!=output->GetN()) cout<<"Number of points in input: "<<input->GetN()<<" in output: "<<output->GetN()<<endl;
   return output;
 }
 
