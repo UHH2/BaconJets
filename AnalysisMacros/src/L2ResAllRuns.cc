@@ -32,7 +32,7 @@ void CorrectionObject::L2ResAllRuns(){
   tdrCanvas(c1,"c1",h,4,10,true,CorrectionObject::_lumitag);
 
   TLegend leg1 = tdrLeg(0.20,0.19,0.65,0.4);
-
+  leg1 . SetHeader("p_{T} - balance");      
   TLine *line = new TLine(0,1,5.191,1);              
                   
   int n_runnr = 3;
@@ -40,7 +40,7 @@ void CorrectionObject::L2ResAllRuns(){
   TString legend_v[n_runnr] ={"Run2016BCD","Run2016EF","Run2016GH"};
 
   TCanvas* c2 = new TCanvas;
-  tdrCanvas(c2,"c2",h,4,10,true,"All Runs");
+  tdrCanvas(c2,"c2",h,4,10,true,"Run 2016  36.5 fb^{-1}");
   TFile* f_Res_rel;
   TH1D* res_logpt_rel_kfsrfit;
   for(int j=0;j<n_runnr;j++){
@@ -51,10 +51,13 @@ void CorrectionObject::L2ResAllRuns(){
     res_logpt_rel_kfsrfit = (TH1D*)f_Res_rel->Get("res_logpt_dijet");
     res_logpt_rel_kfsrfit->SetMarkerStyle(1);
     res_logpt_rel_kfsrfit->SetLineWidth(3);
-    res_logpt_rel_kfsrfit->SetLineColor(1+j); 
-    if(j == 2) res_logpt_rel_kfsrfit->SetLineColor(kGreen-2); 
-    if(j == 4) res_logpt_rel_kfsrfit->SetLineColor(kCyan-3); 
-    leg1.AddEntry(res_logpt_rel_kfsrfit,"Run2016"+runnr,"L");
+    if(j == 0) res_logpt_rel_kfsrfit->SetLineColor(kBlack);
+    // if(j == 0)  res_logpt_rel_kfsrfit->SetMarkerColor(kBlack);
+    if(j == 1) res_logpt_rel_kfsrfit->SetLineColor(kRed); 
+    // if(j == 1)  res_logpt_rel_kfsrfit->SetMarkerColor(kRed);
+    if(j == 2) res_logpt_rel_kfsrfit->SetLineColor(kBlue); 
+    // if(j == 2)  res_logpt_rel_kfsrfit->SetMarkerColor(kBlue);
+    leg1.AddEntry(res_logpt_rel_kfsrfit,"Run2016"+runnr,"LP");
     res_logpt_rel_kfsrfit->Draw("E SAME");  
 
   }

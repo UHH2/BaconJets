@@ -794,7 +794,7 @@ for(int j=0; j<n_eta-1; j++){
 
       if(CorrectionObject::_collection == "AK4CHS"){
 	if(CorrectionObject::_runnr == "BCDEFGH"){
-	  if(!CorrectionObject::_closuretest) kfsr_fit_mpf->SetParameters( -3, 33000,8300); //RES // Down: -6,87000,11000 //Up: -10, 80000,7000
+	  if(!CorrectionObject::_closuretest) kfsr_fit_mpf->SetParameters( -3.7, 33000,7500); //RES // Down: -6,87000,11000 //Up: -10, 80000,7000
 	  else kfsr_fit_mpf->SetParameters(2,2,50); //CLOSURETEST
 	  fit_fullrange = true;
 	}
@@ -1181,7 +1181,7 @@ for(int j=0; j<n_eta-1; j++){
     if(CorrectionObject::_generator == "pythia"){
        if(CorrectionObject::_collection == "AK4CHS"){ 
 	if(CorrectionObject::_runnr == "BCDEFGH"){
-	  if(!CorrectionObject::_closuretest) kfsr_fit_dijet->SetParameters(-2,360,100); //RES
+	  if(!CorrectionObject::_closuretest) kfsr_fit_dijet->SetParameters(-6,1800,240); //RES
 	  else kfsr_fit_dijet->SetParameters(1,500,150); //CLOSURETEST
 	  //fit_fullrange = true;
 	  fit_285 = true;
