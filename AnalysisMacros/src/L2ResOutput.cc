@@ -20,8 +20,8 @@ void CorrectionObject::L2ResOutput(){
   TFile* f_Res_mpf = new TFile(CorrectionObject::_outpath+"Histo_Res_MPF_L1_"+CorrectionObject::_generator_tag+"_"+CorrectionObject::_jettag+".root","READ");
   TFile* f_Res_dijet = new TFile(CorrectionObject::_outpath+"Histo_Res_DiJet_L1_"+CorrectionObject::_generator_tag+"_"+CorrectionObject::_jettag+".root","READ");  
 
-  TFile* f_Res_mpf_old   = new TFile("/nfs/dust/cms/user/multh/JEC/2016Legacy/Residuals/Summer16_07Aug2017_V3/AK4CHS/MC_NoReweighted_NewTriggerThresholds/Run"+CorrectionObject::_runnr+"/Histo_Res_MPF_L1_"+CorrectionObject::_generator_tag+"_"+CorrectionObject::_jettag+".root","READ");
-  TFile* f_Res_dijet_old = new TFile("/nfs/dust/cms/user/multh/JEC/2016Legacy/Residuals/Summer16_07Aug2017_V3/AK4CHS/MC_NoReweighted_NewTriggerThresholds/Run"+CorrectionObject::_runnr+"/Histo_Res_DiJet_L1_"+CorrectionObject::_generator_tag+"_"+CorrectionObject::_jettag+".root","READ");  
+  TFile* f_Res_mpf_old   = new TFile("/nfs/dust/cms/user/multh/JEC/2016Legacy/Residuals/Summer16_07Aug2017_V14/AK4CHS/MC_NoReweighted_NewTriggerThresholds/Run"+CorrectionObject::_runnr+"/Histo_Res_MPF_L1_"+CorrectionObject::_generator_tag+"_"+CorrectionObject::_jettag+".root","READ");
+  TFile* f_Res_dijet_old = new TFile("/nfs/dust/cms/user/multh/JEC/2016Legacy/Residuals/Summer16_07Aug2017_V14/AK4CHS/MC_NoReweighted_NewTriggerThresholds/Run"+CorrectionObject::_runnr+"/Histo_Res_DiJet_L1_"+CorrectionObject::_generator_tag+"_"+CorrectionObject::_jettag+".root","READ");  
    cout<<"After files"<<endl;
 
   TString JetDescrib;                                                                    
@@ -164,7 +164,7 @@ void CorrectionObject::L2ResOutput(){
   TString axistitle = "(R^{MC}/R^{data})_";
   axistitle +=altitle;
   h->GetYaxis()->SetTitle(axistitle);
-  h->GetYaxis()->SetRangeUser(0.81,1.15); 
+  h->GetYaxis()->SetRangeUser(0.8,1.2); 
   
   pt_depend_const_mpf->SetMarkerStyle(1);
   pt_depend_const_dijet->SetMarkerStyle(1);
@@ -185,7 +185,7 @@ void CorrectionObject::L2ResOutput(){
   tdrCanvas(c3,"c3",h,4,10,kSquare,CorrectionObject::_lumitag);
   h->GetYaxis()->SetTitle("k_{FSR}");
   h->GetYaxis()->SetTitleSize(0.045);
-  h->GetYaxis()->SetRangeUser(0.81,1.15);
+  h->GetYaxis()->SetRangeUser(0.8,1.2);
   kfsr_dijet_fit->SetMarkerStyle(1);
   kfsr_mpf_fit->SetMarkerStyle(1);
   kfsr_mpf->SetMarkerStyle(1);

@@ -795,7 +795,17 @@ for(int j=0; j<n_eta-1; j++){
       if(CorrectionObject::_collection == "AK4CHS"){
 	if(CorrectionObject::_runnr == "BCDEFGH"){
 	  if(!CorrectionObject::_closuretest) kfsr_fit_mpf->SetParameters( -3.7, 33000,7500); //RES // Down: -6,87000,11000 //Up: -10, 80000,7000
-	  else kfsr_fit_mpf->SetParameters(2,2,50); //CLOSURETEST
+	  else kfsr_fit_mpf->SetParameters(0.9,7,70); //CLOSURETEST
+	  fit_fullrange = true;
+	}
+      }
+    }    
+    else if(CorrectionObject::_generator == "madgraph"){
+
+      if(CorrectionObject::_collection == "AK4CHS"){
+	if(CorrectionObject::_runnr == "BCDEFGH"){
+	  if(!CorrectionObject::_closuretest) kfsr_fit_mpf->SetParameters( 0.5, 26000,50000); //RES // Down: -6,87000,11000 //Up: -10, 80000,7000
+	  else kfsr_fit_mpf->SetParameters(0.9,7.5,70); //CLOSURETEST
 	  fit_fullrange = true;
 	}
       }
@@ -1182,6 +1192,16 @@ for(int j=0; j<n_eta-1; j++){
        if(CorrectionObject::_collection == "AK4CHS"){ 
 	if(CorrectionObject::_runnr == "BCDEFGH"){
 	  if(!CorrectionObject::_closuretest) kfsr_fit_dijet->SetParameters(-6,1800,240); //RES
+	  else kfsr_fit_dijet->SetParameters(1,500,150); //CLOSURETEST
+	  //fit_fullrange = true;
+	  fit_285 = true;
+	}
+      }
+    }
+    else if(CorrectionObject::_generator == "madgraph"){
+       if(CorrectionObject::_collection == "AK4CHS"){ 
+	if(CorrectionObject::_runnr == "BCDEFGH"){
+	  if(!CorrectionObject::_closuretest) kfsr_fit_dijet->SetParameters(150,-3600000,22000); //RES
 	  else kfsr_fit_dijet->SetParameters(1,500,150); //CLOSURETEST
 	  //fit_fullrange = true;
 	  fit_285 = true;

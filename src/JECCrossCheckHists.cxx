@@ -76,6 +76,7 @@ void JECCrossCheckHists::fill(const uhh2::Event & ev, const int rand){
   double weight = ev.weight;
   const int njets = ev.jets->size();
   hist("N_jets")->Fill(njets, weight);
+  /*
   if(!ev.isRealData){
     double pt_hat = ev.genInfo->binningValues()[0];
   double PU_pt_hat = ev.genInfo->PU_pT_hat_max();
@@ -85,6 +86,7 @@ void JECCrossCheckHists::fill(const uhh2::Event & ev, const int rand){
     PU_vs_pt_hat->Fill(pt_hat, PU_pt_hat,weight);
     Weight_vs_pt_hat->Fill(pt_hat, weight, weight);
   }
+  */
     
   for (int i=0; i<njets; i++){
     Jet* jets = &ev.jets->at(i);

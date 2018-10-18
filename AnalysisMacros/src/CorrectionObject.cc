@@ -26,9 +26,8 @@ CorrectionObject::CorrectionObject(const TString & runnr, const TString & genera
       if(_generator == "pythia"){
 	if(_trigger_central && !_trigger_fwd)     { _MCpath = inputPath + "uhh2.AnalysisModuleRunner.MC.QCDPt50toInf_pythia8_AK4CHS_Flat.root";}
 	else if(!_trigger_central && _trigger_fwd){ _MCpath = inputPath + "uhh2.AnalysisModuleRunner.MC.QCDPt50toInf_pythia8_AK4CHS_Fwd.root";}
-       // else if(_trigger_central && _trigger_fwd) {_MCpath = input_path + "uhh2.AnalysisModuleRunner.MC.QCDPt-15to7000_Flat_FlatPU_pythia8_" + _collection  +"_Run" + _runnr  +".root";}
-        else if(_trigger_central && _trigger_fwd)  {_MCpath = input_path + "uhh2.AnalysisModuleRunner.MC.QCDPt50toInf_pythia8_" + _collection  +"_RunBCDEFGH.root";}
-	//else if(_trigger_central && _trigger_fwd)  {_MCpath = "/nfs/dust/cms/user/karavdia/JERC/Fall17_17Nov_V4_L2Res_wMPF_CentralTriggersONLY/uhh2.AnalysisModuleRunner.MC.QCDPt15to7000.root";}
+	else if(_trigger_central && _trigger_fwd)  {_MCpath = input_path + "uhh2.AnalysisModuleRunner.MC.QCDPt50toInf_pythia8_" + _collection  +"_RunBCDEFGH.root";}
+
 	else throw runtime_error("In Correction Object: No valid Trigger-Flag (main.C) was set.");
 	
 	_MCpath_ForWeights_FLAT = _weightpath_FLAT + "uhh2.AnalysisModuleRunner.MC.QCDPt50toInf_pythia8_" + _collection  + "_Flat.root";
@@ -38,22 +37,18 @@ CorrectionObject::CorrectionObject(const TString & runnr, const TString & genera
 	//	_MCpath_ForWeights  = _weightpath + "uhh2.AnalysisModuleRunner.MC.QCDPt-15to7000_Flat_pythia8_" + _collection  +"_Run" + _runnr  +".root";
 	_generator_tag = "pythia8";
       }
-     
-      else if(_generator == "herwig"){
-	_MCpath = input_path + "uhh2.AnalysisModuleRunner.MC.QCDPt15to7000_herwigpp_"+ _collection  +".root";
-	_MCpath_ForWeights_FLAT = _weightpath_FLAT + "uhh2.AnalysisModuleRunner.MC.QCDPt15to7000_herwigpp_" + _collection  + "_Flat.root";
-	_MCpath_ForWeights_FWD = _weightpath_FWD + "uhh2.AnalysisModuleRunner.MC.QCDPt15to7000_herwigpp_" + _collection  + "_Fwd.root";
-	_generator_tag = "herwigpp";
-      }
+  
+
       else if(_generator == "madgraph"){
-	_MCpath = input_path + "uhh2.AnalysisModuleRunner.MC.QCDHtFULL_madgraph_"+ _collection  +".root";
-	_MCpath_ForWeights_FLAT = _weightpath_FLAT + "uhh2.AnalysisModuleRunner.MC.QCDHtFULL_madgraph_" + _collection  + "_Flat.root";
-	_MCpath_ForWeights_FWD = _weightpath_FWD + "uhh2.AnalysisModuleRunner.MC.QCDHtFULL_madgraph_" + _collection  + "_Fwd.root";
-	_generator_tag = "madgraphMLM";
+
+        if(_trigger_central && _trigger_fwd)  {_MCpath = input_path + "uhh2.AnalysisModuleRunner.MC.QCD_HT50toInf_madgraph_" + _collection  +"_RunBCDEFGH.root";}
+	_MCpath_ForWeights_FLAT = _weightpath_FLAT + "uhh2.AnalysisModuleRunner.MC.QCD_HT50toInf_madgraph_" + _collection  +"_RunBCDEFGH.root";
+	_MCpath_ForWeights_FWD  = _weightpath_FWD + "uhh2.AnalysisModuleRunner.MC.QCD_HT50toInf_madgraph_" + _collection  +"_RunBCDEFGH.root";
+       	_MCpath_ForWeights  = _weightpath + "uhh2.AnalysisModuleRunner.MC.QCD_HT50toInf_madgraph_" + _collection  +"_RunBCDEFGH.root";
+	_generator_tag = "madgraph";
       }
 
       //DATA 
-      // _DATApath ="/nfs/dust/cms/user/karavdia/JERC/Fall17_17Nov_V4_L2Res_wMPF_CentralTriggersONLY/uhh2.AnalysisModuleRunner.MC.QCDPt15to7000.root";  //2017 MC
       // _DATApath = input_path + "uhh2.AnalysisModuleRunner.MC.QCDPt50toInf_pythia8_" + _collection  +"_RunBCDEFGH.root";
       _DATApath = input_path + "uhh2.AnalysisModuleRunner.DATA.DATA_Run" + _runnr + "_" + _collection + ".root";
       _DATApath_ForWeights_FLAT = _weightpath_FLAT + "uhh2.AnalysisModuleRunner.DATA.DATA_Run" + _runnr + "_" + _collection + ".root";

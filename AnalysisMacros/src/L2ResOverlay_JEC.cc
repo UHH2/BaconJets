@@ -24,8 +24,8 @@ using namespace std;
 void CorrectionObject::L2ResOverlay_JEC(){
   cout << "--------------- Starting L2ResOverlay_JEC() ---------------" << endl << endl;
 
-  const int n_runs = 5;
-  TString runnr_v[n_runs]={"BCDEFGH","BCDEFearly","BCD","EFearly","FlateGH"};
+  const int n_runs = 4;
+  TString runnr_v[n_runs]={"BCDEFGH","BCD","EFearly","FlateGH"};
 
   TFile* f_Res_mpf_nom;
   TFile* f_Res_mpf_down;
@@ -52,13 +52,13 @@ void CorrectionObject::L2ResOverlay_JEC(){
       path_rel   = CorrectionObject::_input_path + "/Run" + runnr + "/" + "Histo_Res_DiJet_L1_"+CorrectionObject::_generator_tag+"_"+CorrectionObject::_jettag;
   
 
-    f_Res_mpf_nom  = new TFile("/nfs/dust/cms/user/multh/JEC/2016Legacy/Residuals/Summer16_07Aug2017_V14/AK4CHS/MC_NoReweighted_CHS_newMCTruth/Run" + runnr + "/" + "Histo_Res_MPF_L1_"+CorrectionObject::_generator_tag+"_"+CorrectionObject::_jettag+".root","READ");   
-    f_Res_mpf_down = new TFile("/nfs/dust/cms/user/multh/JEC/2016Legacy/Residuals/Summer16_07Aug2017_V14/AK4CHS/MC_NoReweighted_CHS_newMCTruth_JERdown/Run" + runnr + "/" + "Histo_Res_MPF_L1_"+CorrectionObject::_generator_tag+"_"+CorrectionObject::_jettag+".root","READ"); 
-    f_Res_mpf_up     = new TFile("/nfs/dust/cms/user/multh/JEC/2016Legacy/Residuals/Summer16_07Aug2017_V14/AK4CHS/MC_NoReweighted_CHS_newMCTruth_JERup/Run" + runnr + "/" + "Histo_Res_MPF_L1_"+CorrectionObject::_generator_tag+"_"+CorrectionObject::_jettag+".root","READ");
+    f_Res_mpf_nom  = new TFile("/nfs/dust/cms/user/multh/JEC/2016Legacy/ClosureTest/Summer16_07Aug2017_V18/AK4CHS/MC_NoReweighted_CHS_newMCTruth/Run" + runnr + "/" + "Histo_Res_MPF_L1_"+CorrectionObject::_generator_tag+"_"+CorrectionObject::_jettag+".root","READ");   
+    f_Res_mpf_down = new TFile("/nfs/dust/cms/user/multh/JEC/2016Legacy/ClosureTest/Summer16_07Aug2017_V18/AK4CHS/MC_NoReweighted_CHS_newMCTruth_JERDown/Run" + runnr + "/" + "Histo_Res_MPF_L1_"+CorrectionObject::_generator_tag+"_"+CorrectionObject::_jettag+".root","READ"); 
+    f_Res_mpf_up     = new TFile("/nfs/dust/cms/user/multh/JEC/2016Legacy/ClosureTest/Summer16_07Aug2017_V18/AK4CHS/MC_NoReweighted_CHS_newMCTruth_JERUp/Run" + runnr + "/" + "Histo_Res_MPF_L1_"+CorrectionObject::_generator_tag+"_"+CorrectionObject::_jettag+".root","READ");
 
-    f_Res_rel_nom  = new TFile("/nfs/dust/cms/user/multh/JEC/2016Legacy/Residuals/Summer16_07Aug2017_V14/AK4CHS/MC_NoReweighted_CHS_newMCTruth/Run" + runnr + "/" + "Histo_Res_DiJet_L1_"+CorrectionObject::_generator_tag+"_"+CorrectionObject::_jettag+".root","READ");   
-    f_Res_rel_down = new TFile("/nfs/dust/cms/user/multh/JEC/2016Legacy/Residuals/Summer16_07Aug2017_V14/AK4CHS/MC_NoReweighted_CHS_newMCTruth_JERdown/Run" + runnr + "/" + "Histo_Res_DiJet_L1_"+CorrectionObject::_generator_tag+"_"+CorrectionObject::_jettag+".root","READ"); 
-    f_Res_rel_up     = new TFile("/nfs/dust/cms/user/multh/JEC/2016Legacy/Residuals/Summer16_07Aug2017_V14/AK4CHS/MC_NoReweighted_CHS_newMCTruth_JERup/Run" + runnr + "/" + "Histo_Res_DiJet_L1_"+CorrectionObject::_generator_tag+"_"+CorrectionObject::_jettag+".root","READ");
+    f_Res_rel_nom  = new TFile("/nfs/dust/cms/user/multh/JEC/2016Legacy/ClosureTest/Summer16_07Aug2017_V18/AK4CHS/MC_NoReweighted_CHS_newMCTruth/Run" + runnr + "/" + "Histo_Res_DiJet_L1_"+CorrectionObject::_generator_tag+"_"+CorrectionObject::_jettag+".root","READ");   
+    f_Res_rel_down = new TFile("/nfs/dust/cms/user/multh/JEC/2016Legacy/ClosureTest/Summer16_07Aug2017_V18/AK4CHS/MC_NoReweighted_CHS_newMCTruth_JERDown/Run" + runnr + "/" + "Histo_Res_DiJet_L1_"+CorrectionObject::_generator_tag+"_"+CorrectionObject::_jettag+".root","READ"); 
+    f_Res_rel_up     = new TFile("/nfs/dust/cms/user/multh/JEC/2016Legacy/ClosureTest/Summer16_07Aug2017_V18/AK4CHS/MC_NoReweighted_CHS_newMCTruth_JERUp/Run" + runnr + "/" + "Histo_Res_DiJet_L1_"+CorrectionObject::_generator_tag+"_"+CorrectionObject::_jettag+".root","READ");
     
  
     res_mpf_kfsrfit_nom  = (TH1D*)f_Res_mpf_nom->Get("res_logpt_mpf");
