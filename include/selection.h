@@ -57,6 +57,8 @@ class Selection {
     bool PUpthat(uhh2::Event& evt);
     bool EtaPhi_HCAL(uhh2::Event& evt);
     bool EtaPhiCleaning(uhh2::Event& evt);
+    bool EnergyEtaCut();
+
 };
 
 }

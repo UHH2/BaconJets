@@ -23,6 +23,13 @@ using namespace std;
 void CorrectionObject::L2ResAllRuns(){
   cout << "--------------- Starting L2ResAllRuns() ---------------" << endl << endl;
 
+
+  TString JetDescrib;                                                                    
+  if (CorrectionObject::_collection=="AK4CHS") JetDescrib = "Anti-k_{t} R = 0.4, PF+CHS";
+  if (CorrectionObject::_collection=="AK4Puppi") JetDescrib = "Anti-k_{t} R = 0.4, PF+PUPPI";
+  if (CorrectionObject::_collection=="AK8CHS") JetDescrib = "Anti-k_{t} R = 0.8, PF+CHS";
+  if (CorrectionObject::_collection=="AK8Puppi") JetDescrib = "Anti-k_{t} R = 0.8, PF+PUPPI"; 
+
   TCanvas* c1 = new TCanvas();
   TH1D *h = new TH1D("h",";|#eta|;Relative correction",41,0,5.191);
   h->SetMaximum(1.2); //1.2
@@ -61,6 +68,10 @@ void CorrectionObject::L2ResAllRuns(){
     res_logpt_rel_kfsrfit->Draw("E SAME");  
 
   }
+  TLatex *tex1 = new TLatex();
+  tex1->SetNDC();
+  tex1->SetTextSize(0.045);  
+  tex1->DrawLatex(0.45,0.87,JetDescrib);
 
   line->Draw("SAME");
   leg1.Draw();
@@ -94,12 +105,6 @@ void CorrectionObject::L2ResAllRuns(){
 
   TLegend leg2 = tdrLeg(0.20,0.17,0.45,0.36);
   leg2 . SetHeader("MPF");      
-
-  TString JetDescrib;                                                                    
-  if (CorrectionObject::_collection=="AK4CHS") JetDescrib = "Anti-k_{t} R = 0.4, PF+CHS";
-  if (CorrectionObject::_collection=="AK4Puppi") JetDescrib = "Anti-k_{t} R = 0.4, PF+PUPPI";
-  if (CorrectionObject::_collection=="AK8CHS") JetDescrib = "Anti-k_{t} R = 0.8, PF+CHS";
-  if (CorrectionObject::_collection=="AK8Puppi") JetDescrib = "Anti-k_{t} R = 0.8, PF+PUPPI"; 
 
 
   TLine *line2 = new TLine(0,1,5.191,1);              

@@ -377,7 +377,7 @@ void trigger_study_data_run2_L1_data_corr()
     TFile* _DATAFile = new TFile("/nfs/dust/cms/user/multh/JEC/2016ReReco/Residuals/Summer16_03Feb2017_V3/AK4CHS/MC_Reweighted_chsMET_PhiCleaning/uhh2.AnalysisModuleRunner.DATA.DATA_RunH_AK4CHS.root","READ");
  */
  
-     TFile* _DATAFile = new TFile("/nfs/dust/cms/user/multh/JEC/2016Legacy/Residuals/Summer16_07Aug2017_V3/AK4CHS/MC_NoReweighted_TriggerThresholds/uhh2.AnalysisModuleRunner.DATA.DATA_RunBCDEFGH_AK4CHS.root","READ");
+     TFile* _DATAFile = new TFile("/nfs/dust/cms/user/multh/JEC/2016Legacy/Residuals/Summer16_07Aug2017_V14/AK4CHS/MC_NoReweighted_CHS_newMCTruth/uhh2.AnalysisModuleRunner.DATA.DATA_RunBCDEFGH_AK4CHS.root","READ");
  
   //Get relevant information from DATA, loop over DATA events
   TTreeReader myReader_DATA("AnalysisTree", _DATAFile);
@@ -420,9 +420,8 @@ void trigger_study_data_run2_L1_data_corr()
     exclusive = (*trg40)^(*trg60)^(*trg80)^(*trg140)^(*trg200)^(*trg260)^(*trg320)^(*trg400)^(*trg500);
     exclusive_HF = (*trg60_HF)^(*trg80_HF)^(*trg100_HF)^(*trg160_HF)^(*trg220_HF)^(*trg300_HF);
     
-    if(fabs(*probejet_eta_data)<2.8){
       for(int j=0; j<trg_nr; j++){
-	if((trg_arr[j])){
+	if((trg_arr[j]) ||  fabs(*probejet_eta_data)<2.853){
 	  hdata_pt_ave[j]->Fill(*pt_ave_data);
 	  if(*pt_ave_data>triggerThres[j]){
 	    hdata_pt_ave_yield[j]->Fill(*pt_ave_data, *weight_data);
@@ -431,16 +430,16 @@ void trigger_study_data_run2_L1_data_corr()
 	      hdata_pt_ave_eta[j]->Fill(*probejet_eta_data, *weight_data);
 	    }
 	  }
-	}
+       
 	
 	if((trg_arr[j+1])){
 	  hdata_pt_ave_next[j]->Fill(*pt_ave_data);
 	} 
       }
     }
-    else{
+
       for(int j=0; j<trg_HF; j++){
-	if((trg_arr_HF[j])){
+	if((trg_arr_HF[j]) ||  fabs(*probejet_eta_data)>2.853){
 	  hdata_pt_ave_HF[j]->Fill(*pt_ave_data);
 	  if(*pt_ave_data>triggerThres_HF[j]){
 	    hdata_pt_ave_HF_yield[j]->Fill(*pt_ave_data, *weight_data);
@@ -456,7 +455,7 @@ void trigger_study_data_run2_L1_data_corr()
 	}
 	
       }
-    }
+    
     myCount++;
     if(!exclusive){
       myCount_notX++;
@@ -518,7 +517,7 @@ void trigger_study_data_run2_L1_data_corr()
       leg1 -> AddEntry(hdata_pt_ave_yield[i],trigger_name[i],"p");
     }
     leg1->Draw("SAME");
-    c3->Print("/nfs/dust/cms/user/multh/JEC/2016Legacy/Residuals/Summer16_07Aug2017_V3/AK4CHS/MC_NoReweighted_TriggerThresholds/Trigger/Trigger_yield.pdf");
+    c3->Print("/nfs/dust/cms/user/multh/JEC/2016Legacy/Residuals/Summer16_07Aug2017_V14/AK4CHS/MC_NoReweighted_CHS_newMCTruth/Trigger_yield.pdf");
 
 
     TLegend *leg2 = new TLegend(0.5,0.48,0.8,0.8);
@@ -548,7 +547,7 @@ void trigger_study_data_run2_L1_data_corr()
       leg2 -> AddEntry(hdata_pt_ave_HF_yield[i],trigger_name_HF[i],"p");
     }
     leg2->Draw("SAME");
-    c4->Print("/nfs/dust/cms/user/multh/JEC/2016Legacy/Residuals/Summer16_07Aug2017_V3/AK4CHS/MC_NoReweighted_TriggerThresholds/Trigger_HF_yield.pdf");
+    c4->Print("/nfs/dust/cms/user/multh/JEC/2016Legacy/Residuals/Summer16_07Aug2017_V14/AK4CHS/MC_NoReweighted_CHS_newMCTruth/Trigger_HF_yield.pdf");
     
     TLegend *leg3 = new TLegend(0.6,0.15,0.8,0.45);
     leg3 -> SetBorderSize(0);
@@ -578,7 +577,7 @@ void trigger_study_data_run2_L1_data_corr()
       leg3 -> AddEntry(hdata_pt_ave_evt[i],trigger_name[i],"p");
     }
     leg3->Draw("SAME");
-    c5->Print("/nfs/dust/cms/user/multh/JEC/2016Legacy/Residuals/Summer16_07Aug2017_V3/AK4CHS/MC_NoReweighted_TriggerThresholds/Trigger/Trigger_Events.pdf");
+    c5->Print("/nfs/dust/cms/user/multh/JEC/2016Legacy/Residuals/Summer16_07Aug2017_V14/AK4CHS/MC_NoReweighted_CHS_newMCTruth/Trigger_Events.pdf");
 
 
     TLegend *leg4 = new TLegend(0.5,0.5,0.8,0.8);
@@ -610,7 +609,7 @@ void trigger_study_data_run2_L1_data_corr()
       leg4 -> AddEntry(hdata_pt_ave_HF_evt[i],trigger_name_HF[i],"p");
     }
     leg4->Draw("SAME");
-    c6->Print("/nfs/dust/cms/user/multh/JEC/2016ReReco/Residuals/Summer16_03Feb2017_V3/AK4CHS/MC_NoReweighted_CHS_NewSF_Monitoring/Trigger/Trigger_HF_Events.pdf");
+    c6->Print("/nfs/dust/cms/user/multh/JEC/2016Legacy/Residuals/Summer16_07Aug2017_V14/AK4CHS/MC_NoReweighted_CHS_newMCTruth/Trigger_HF_Events.pdf");
 
 
 
@@ -640,7 +639,7 @@ void trigger_study_data_run2_L1_data_corr()
       line1 = new TLine(2.853, 0, 2.8, 1500000);
       line1->SetLineStyle(2);
       line1->Draw("SAME");
-    c7->Print("/nfs/dust/cms/user/multh/JEC/2016Legacy/Residuals/Summer16_07Aug2017_V3/AK4CHS/MC_NoReweighted_TriggerThresholds/Trigger/Trigger_eta.pdf");
+    c7->Print("/nfs/dust/cms/user/multh/JEC/2016Legacy/Residuals/Summer16_07Aug2017_V14/AK4CHS/MC_NoReweighted_CHS_newMCTruth/Trigger_eta.pdf");
 
 
     TCanvas* c8 = new TCanvas("trig_eta_HF","",0,0,800,600);
@@ -669,6 +668,6 @@ void trigger_study_data_run2_L1_data_corr()
       line1 = new TLine(2.853, 0, 2.8, 1500000);
       line1->SetLineStyle(2);
       line1->Draw("SAME");
-      c8->Print("/nfs/dust/cms/user/multh/JEC/2016Legacy/Residuals/Summer16_07Aug2017_V3/AK4CHS/MC_NoReweighted_TriggerThresholds/Trigger/Trigger_HF_eta.pdf");
+      c8->Print("/nfs/dust/cms/user/multh/JEC/2016Legacy/Residuals/Summer16_07Aug2017_V14/AK4CHS/MC_NoReweighted_CHS_newMCTruth/Trigger_HF_eta.pdf");
 
 }

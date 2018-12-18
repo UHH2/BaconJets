@@ -365,6 +365,18 @@ bool Selection::DiJetAdvanced(uhh2::Event& evt)
     return true;
   }
   
+  bool Selection::EnergyEtaCut()
+  {
+    // cut away events with jets containing energy more than sqrt(s)/2
+    assert(event);
+    double probejet_eta = event->get(tt_probejet_eta);
+    double ptave = event->get(tt_pt_ave);
+
+    if(ptave*cosh(probejet_eta)>3250) return false; //3250 GeV =sqrt(s)/2 with s=13 TeV    
+    return true;
+}
+
+
 
 
 Selection::~Selection()
