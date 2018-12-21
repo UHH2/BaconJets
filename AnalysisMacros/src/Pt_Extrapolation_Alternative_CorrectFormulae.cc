@@ -794,7 +794,7 @@ for(int j=0; j<n_eta-1; j++){
 
       if(CorrectionObject::_collection == "AK4CHS"){
 	if(CorrectionObject::_runnr == "BCDEFGH"){
-	  if(!CorrectionObject::_closuretest) kfsr_fit_mpf->SetParameters( -3.7, 33000,7500); //RES // Down: -6,87000,11000 //Up: -10, 80000,7000
+	  if(!CorrectionObject::_closuretest) kfsr_fit_mpf->SetParameters( -0.8, 2700,1500); //RES // Down: -6,87000,11000 //Up: -10, 80000,7000
 	  else kfsr_fit_mpf->SetParameters(0.9,7,70); //CLOSURETEST
 	  fit_fullrange = true;
 	}
