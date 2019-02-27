@@ -192,7 +192,7 @@ void JECAnalysisFinalStateHadronsHists::fill(const uhh2::Event & ev, const int g
   if(ev.isRealData) return;//fill only for MC
   Jet & probe_jet = ev.jets->at(reco_jet_id);// probe RECO jet
   double dR_GenReco = deltaR(ev.jets->at(reco_jet_id), ev.genjets->at(gen_jet_id));
-  Particle & genj = ev.genjets->at(gen_jet_id);
+  GenJet & genj = ev.genjets->at(gen_jet_id);
   double weight = ev.weight;
   if(dR_GenReco>0.2)  cout<<"Attention., dR is "<<dR_GenReco<<endl;
   double genjet_eta=fabs(genj.eta());
@@ -210,21 +210,22 @@ void JECAnalysisFinalStateHadronsHists::fill(const uhh2::Event & ev, const int g
 
   for(int i=0;i<dR_vec_nr;i++){
     double genjet_energy_recalcTMP=0;
-    for(GenParticle & genp: *ev.genparticles){
-      if(genp.status()!=1) continue;//looking only at final state stable particles used for jet clustering
+    for (const auto candInd : genj.genparticles_indices()) {
+      GenParticle & genp = ev.genparticles->at(candInd);
       double dr = deltaR(genj,genp); 
       if(dr<dR_vec[i]){
-	genjet_energy_recalcTMP +=genp.energy();
+	genjet_energy_recalcTMP += genp.energy();
       }
     }
     //    cout<<"dR = "<<dR_vec[i]<<" energy Response = "<<genjet_energy_recalcTMP/genjet_energy<<endl;
     ((TH2D*)hist("Hadrons_energy_rel_dRmax"))->Fill(dR_vec[i],genjet_energy_recalcTMP/genjet_energy,weight);
   }
-
   //[END] to select max_dR ---
   //  double dr_max=0.2;
-  double dr_max=0.4;
+  //  double dr_max=0.4;
   //  double dr_max=0.5;
+
+  double dr_max=1000.;
  
   
   double gamma_energy=0; double pipm_energy=0; double K0L_energy=0; 
@@ -237,11 +238,11 @@ void JECAnalysisFinalStateHadronsHists::fill(const uhh2::Event & ev, const int g
   int other_count=0;
   double genjet_energy_recalc=0;
   sort_by_pt<GenParticle>(*ev.genparticles);
-  for(GenParticle & genp: *ev.genparticles){
-    if(genp.status()!=1) continue;//looking only at final state stable particles used for jet clustering
+  for (const auto candInd : genj.genparticles_indices()) {
+    GenParticle & genp = ev.genparticles->at(candInd);
     double dr = deltaR(genj,genp); 
     if(dr<dr_max){
-      int energycl_id = genp.flavor();
+      int energycl_id = genp.partonFlavour() ;
       double energycl_energy = genp.energy();
       ((TH2D*)hist("Hadron_energy_rel_dR"))->Fill(dr,energycl_energy/genjet_energy,weight);
     
