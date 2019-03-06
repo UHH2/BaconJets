@@ -395,53 +395,53 @@ void AnalysisModule_DiJetTrg::init_JEC(uhh2::Context& ctx){
   }
   if(is2018){
     cout<<"AnalysisModule_DiJetTrg uses JEC for 2018 data/MC"<<endl;
-    JEC_AK4CHS_A       = JERFiles::Autumn18_V4_A_L123_AK4PFchs_DATA;
-    JEC_AK4CHS_B       = JERFiles::Autumn18_V4_B_L123_AK4PFchs_DATA;
-    JEC_AK4CHS_C       = JERFiles::Autumn18_V4_C_L123_AK4PFchs_DATA;
-    //    JEC_AK4CHS_D       = JERFiles::Autumn18_V4_D_L123_AK4PFchs_DATA;
-    JEC_AK4CHS_MC       = JERFiles::Autumn18_V4_L123_AK4PFchs_MC;
+    JEC_AK4CHS_A       = JERFiles::Autumn18_V7_A_L123_AK4PFchs_DATA;
+    JEC_AK4CHS_B       = JERFiles::Autumn18_V7_B_L123_AK4PFchs_DATA;
+    JEC_AK4CHS_C       = JERFiles::Autumn18_V7_C_L123_AK4PFchs_DATA;
+    JEC_AK4CHS_D       = JERFiles::Autumn18_V7_D_L123_AK4PFchs_DATA;
+    JEC_AK4CHS_MC       = JERFiles::Autumn18_V7_L123_AK4PFchs_MC;
 
-    JEC_AK8CHS_A       = JERFiles::Autumn18_V4_A_L123_AK8PFchs_DATA;
-    JEC_AK8CHS_B       = JERFiles::Autumn18_V4_B_L123_AK8PFchs_DATA;
-    JEC_AK8CHS_C       = JERFiles::Autumn18_V4_C_L123_AK8PFchs_DATA;
-    //    JEC_AK8CHS_D       = JERFiles::Autumn18_V4_D_L123_AK8PFchs_DATA;
-    JEC_AK8CHS_MC       = JERFiles::Autumn18_V4_L123_AK8PFchs_MC;
+    JEC_AK8CHS_A       = JERFiles::Autumn18_V7_A_L123_AK8PFchs_DATA;
+    JEC_AK8CHS_B       = JERFiles::Autumn18_V7_B_L123_AK8PFchs_DATA;
+    JEC_AK8CHS_C       = JERFiles::Autumn18_V7_C_L123_AK8PFchs_DATA;
+    JEC_AK8CHS_D       = JERFiles::Autumn18_V7_D_L123_AK8PFchs_DATA;
+    JEC_AK8CHS_MC      = JERFiles::Autumn18_V7_L123_AK8PFchs_MC;
 
-    JEC_AK4Puppi_A = JERFiles::Autumn18_V4_A_L123_AK4PFPuppi_DATA;
-    JEC_AK4Puppi_B = JERFiles::Autumn18_V4_B_L123_AK4PFPuppi_DATA;
-    JEC_AK4Puppi_C = JERFiles::Autumn18_V4_C_L123_AK4PFPuppi_DATA;
-    //    JEC_AK4Puppi_D = JERFiles::Autumn18_V4_D_L123_AK4PFPuppi_DATA;
-    JEC_AK4Puppi_MC = JERFiles::Autumn18_V4_L123_AK4PFPuppi_MC;
+    JEC_AK4Puppi_A = JERFiles::Autumn18_V7_A_L123_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_B = JERFiles::Autumn18_V7_B_L123_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_C = JERFiles::Autumn18_V7_C_L123_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_D = JERFiles::Autumn18_V7_D_L123_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_MC = JERFiles::Autumn18_V7_L123_AK4PFPuppi_MC;
 
-    JEC_AK8Puppi_A = JERFiles::Autumn18_V4_A_L123_AK8PFPuppi_DATA;
-    JEC_AK8Puppi_B = JERFiles::Autumn18_V4_B_L123_AK8PFPuppi_DATA;
-    JEC_AK8Puppi_C = JERFiles::Autumn18_V4_C_L123_AK8PFPuppi_DATA;
-    //    JEC_AK8Puppi_D = JERFiles::Autumn18_V4_D_L123_AK8PFPuppi_DATA;
-    JEC_AK8Puppi_MC = JERFiles::Autumn18_V4_L123_AK8PFPuppi_MC;
+    JEC_AK8Puppi_A = JERFiles::Autumn18_V7_A_L123_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_B = JERFiles::Autumn18_V7_B_L123_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_C = JERFiles::Autumn18_V7_C_L123_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_D = JERFiles::Autumn18_V7_D_L123_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_MC = JERFiles::Autumn18_V7_L123_AK8PFPuppi_MC;
 
-    JEC_AK4CHS_A_L1RC       = JERFiles::Autumn18_V4_A_L1RC_AK4PFchs_DATA;
-    JEC_AK4CHS_B_L1RC      = JERFiles::Autumn18_V4_B_L1RC_AK4PFchs_DATA;
-    JEC_AK4CHS_C_L1RC       = JERFiles::Autumn18_V4_C_L1RC_AK4PFchs_DATA;
-    //    JEC_AK4CHS_D_L1RC       = JERFiles::Autumn18_V4_D_L1RC_AK4PFchs_DATA;
-    JEC_AK4CHS_MC_L1RC       = JERFiles::Autumn18_V4_L1RC_AK4PFchs_MC;
+    JEC_AK4CHS_A_L1RC       = JERFiles::Autumn18_V7_A_L1RC_AK4PFchs_DATA;
+    JEC_AK4CHS_B_L1RC      = JERFiles::Autumn18_V7_B_L1RC_AK4PFchs_DATA;
+    JEC_AK4CHS_C_L1RC       = JERFiles::Autumn18_V7_C_L1RC_AK4PFchs_DATA;
+    JEC_AK4CHS_D_L1RC       = JERFiles::Autumn18_V7_D_L1RC_AK4PFchs_DATA;
+    JEC_AK4CHS_MC_L1RC       = JERFiles::Autumn18_V7_L1RC_AK4PFchs_MC;
 
-    JEC_AK8CHS_A_L1RC       = JERFiles::Autumn18_V4_A_L1RC_AK8PFchs_DATA;
-    JEC_AK8CHS_B_L1RC       = JERFiles::Autumn18_V4_B_L1RC_AK8PFchs_DATA;
-    JEC_AK8CHS_C_L1RC       = JERFiles::Autumn18_V4_C_L1RC_AK8PFchs_DATA;
-    //    JEC_AK8CHS_D_L1RC       = JERFiles::Autumn18_V4_D_L1RC_AK8PFchs_DATA;
-    JEC_AK8CHS_MC_L1RC       = JERFiles::Autumn18_V4_L1RC_AK8PFchs_MC;
+    JEC_AK8CHS_A_L1RC       = JERFiles::Autumn18_V7_A_L1RC_AK8PFchs_DATA;
+    JEC_AK8CHS_B_L1RC       = JERFiles::Autumn18_V7_B_L1RC_AK8PFchs_DATA;
+    JEC_AK8CHS_C_L1RC       = JERFiles::Autumn18_V7_C_L1RC_AK8PFchs_DATA;
+    JEC_AK8CHS_D_L1RC       = JERFiles::Autumn18_V7_D_L1RC_AK8PFchs_DATA;
+    JEC_AK8CHS_MC_L1RC       = JERFiles::Autumn18_V7_L1RC_AK8PFchs_MC;
 
-    JEC_AK4Puppi_A_L1RC = JERFiles::Autumn18_V4_A_L1RC_AK4PFPuppi_DATA;
-    JEC_AK4Puppi_B_L1RC = JERFiles::Autumn18_V4_B_L1RC_AK4PFPuppi_DATA;
-    JEC_AK4Puppi_C_L1RC = JERFiles::Autumn18_V4_C_L1RC_AK4PFPuppi_DATA;
-    //    JEC_AK4Puppi_D_L1RC = JERFiles::Autumn18_V4_D_L1RC_AK4PFPuppi_DATA;
-    JEC_AK4Puppi_MC_L1RC = JERFiles::Autumn18_V4_L1RC_AK4PFPuppi_MC;
+    JEC_AK4Puppi_A_L1RC = JERFiles::Autumn18_V7_A_L1RC_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_B_L1RC = JERFiles::Autumn18_V7_B_L1RC_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_C_L1RC = JERFiles::Autumn18_V7_C_L1RC_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_D_L1RC = JERFiles::Autumn18_V7_D_L1RC_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_MC_L1RC = JERFiles::Autumn18_V7_L1RC_AK4PFPuppi_MC;
 
-    JEC_AK8Puppi_A_L1RC = JERFiles::Autumn18_V4_A_L1RC_AK8PFPuppi_DATA;
-    JEC_AK8Puppi_B_L1RC = JERFiles::Autumn18_V4_B_L1RC_AK8PFPuppi_DATA;
-    JEC_AK8Puppi_C_L1RC = JERFiles::Autumn18_V4_C_L1RC_AK8PFPuppi_DATA;
-    //    JEC_AK8Puppi_D_L1RC = JERFiles::Autumn18_V4_D_L1RC_AK8PFPuppi_DATA;
-    JEC_AK8Puppi_MC_L1RC = JERFiles::Autumn18_V4_L1RC_AK8PFPuppi_MC;
+    JEC_AK8Puppi_A_L1RC = JERFiles::Autumn18_V7_A_L1RC_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_B_L1RC = JERFiles::Autumn18_V7_B_L1RC_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_C_L1RC = JERFiles::Autumn18_V7_C_L1RC_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_D_L1RC = JERFiles::Autumn18_V7_D_L1RC_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_MC_L1RC = JERFiles::Autumn18_V7_L1RC_AK8PFPuppi_MC;
   }
 
   //jet_corrector_B.reset(new JetCorrector(ctx, JEC_corr_B, JEC_corr_B_L1RC));
@@ -450,9 +450,9 @@ void AnalysisModule_DiJetTrg::init_JEC(uhh2::Context& ctx){
     if(is2018) jet_corrector_A.reset(new JetCorrector(ctx, JEC_AK4CHS_A,JEC_AK4CHS_A_L1RC));
     jet_corrector_B.reset(new JetCorrector(ctx, JEC_AK4CHS_B,JEC_AK4CHS_B_L1RC));
     jet_corrector_C.reset(new JetCorrector(ctx, JEC_AK4CHS_C,JEC_AK4CHS_C_L1RC));
-    //    jet_corrector_D.reset(new JetCorrector(ctx, JEC_AK4CHS_D,JEC_AK4CHS_D_L1RC));
+    jet_corrector_D.reset(new JetCorrector(ctx, JEC_AK4CHS_D,JEC_AK4CHS_D_L1RC));
     if(is2017 or is2016v2 or is2016v3){
-      jet_corrector_D.reset(new JetCorrector(ctx, JEC_AK4CHS_D,JEC_AK4CHS_D_L1RC));//tmp
+      //  jet_corrector_D.reset(new JetCorrector(ctx, JEC_AK4CHS_D,JEC_AK4CHS_D_L1RC));//tmp
       jet_corrector_E.reset(new JetCorrector(ctx, JEC_AK4CHS_E,JEC_AK4CHS_E_L1RC));
       jet_corrector_F.reset(new JetCorrector(ctx, JEC_AK4CHS_F,JEC_AK4CHS_F_L1RC));
       if(is2016v2 or is2016v3){
@@ -466,9 +466,9 @@ void AnalysisModule_DiJetTrg::init_JEC(uhh2::Context& ctx){
     if(is2018) jet_corrector_A.reset(new JetCorrector(ctx, JEC_AK4Puppi_A,JEC_AK4Puppi_A_L1RC));
     jet_corrector_B.reset(new JetCorrector(ctx, JEC_AK4Puppi_B,JEC_AK4Puppi_B_L1RC));
     jet_corrector_C.reset(new JetCorrector(ctx, JEC_AK4Puppi_C,JEC_AK4Puppi_C_L1RC));
-    //    jet_corrector_D.reset(new JetCorrector(ctx, JEC_AK4Puppi_D,JEC_AK4Puppi_D_L1RC));
+    jet_corrector_D.reset(new JetCorrector(ctx, JEC_AK4Puppi_D,JEC_AK4Puppi_D_L1RC));
     if(is2017 or is2016v2 or is2016v3){
-      jet_corrector_D.reset(new JetCorrector(ctx, JEC_AK4Puppi_D,JEC_AK4Puppi_D_L1RC));//tmp
+      //jet_corrector_D.reset(new JetCorrector(ctx, JEC_AK4Puppi_D,JEC_AK4Puppi_D_L1RC));//tmp
       jet_corrector_E.reset(new JetCorrector(ctx, JEC_AK4Puppi_E,JEC_AK4Puppi_E_L1RC));
       jet_corrector_F.reset(new JetCorrector(ctx, JEC_AK4Puppi_F,JEC_AK4Puppi_F_L1RC));
       if(is2016v2 or is2016v3){

@@ -9,7 +9,7 @@
 
 <!-- <!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JERC/17Nov2017/Residuals/Run17DEF_Data_JEC_V32_noClosure_noJER_slimmedMETs_CHSPFMETjetRaw50GeV_dR04_addLowPtHF_qScale12_minGenJetPt15_minJetPt15_EnergyEtaCut_fixedFlavorMatching/"> -->
 
-<!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JERC/RunII_102X_v1_TEST/2018/">
+<!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JERC/RunII_102X_v1_TEST/2018/Autumn18V7_L1L2L3/">
 
 <!ENTITY b_closuretest       "false">
 <!-- <!ENTITY jec_version         "Fall17_17Nov2017_V32"> --> <!-- FixME -->
@@ -37,7 +37,7 @@
 
 <!--
 <ConfigParse NEventsBreak="0" FileSplit="40" AutoResubmit="5"/>
-<ConfigSGE RAM ="2" DISK ="3" Mail="xxx@desy.de" Notification="as" Workdir="workdir_DiJet_RunDEF_xcheckWdijet_with_V2_branch_correctedMETCorrection3_woL1bxclean_noClosure_slimmedMETs_V11_L1RC_METtest_15GeV_15GeV_NOJER"/>
+<ConfigSGE RAM ="2" DISK ="3" Mail="xxx@desy.de" Notification="as" Workdir="workdir_DiJet_RunA"/>
 -->
 
 <!-- OutputLevel controls which messages are printed; set to VERBOSE or DEBUG for more verbosity, to WARNING or ERROR or INFO for less -->
@@ -48,13 +48,14 @@
  <Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&OUTdir;/" PostFix="" TargetLumi="13480" > 
 <!-- <Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&OUTdir;/" PostFix="" TargetLumi="4553" RunMode="PROOF" ProofServer="lite://" ProofWorkDir="&PROOFdir;/" ProofNodes="15" > -->
 
-<!--
+
 <InputData Lumi="13480" NEventsMax="&NEVT;" Type="MC" Version="QCD_Flat2018_pythia8_2018_AK4CHS" Cacheable="&CACHEABLE;">
           &QCD_Flat2018_pythia8;
           <InputTree Name="AnalysisTree"/>
           <OutputTree Name="AnalysisTree"/>
      </InputData>
--->
+
+
 <InputData Lumi="13480" NEventsMax="&NEVT;" Type="DATA" Version="DATA_RunA_2018_AK4CHS" Cacheable="&CACHEABLE;">
           &DATA_RunA_2018;
           <InputTree Name="AnalysisTree"/>
