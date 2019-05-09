@@ -11,7 +11,8 @@
 #include "../include/JECAnalysisHists.h"
 #include "../include/JECCrossCheckHists.h"
 #include "../include/JECRunnumberHists.h"
-#include "../include/JECAnalysisFinalStateHadronsHists.h"
+#include "../include/JECAnalysisRecoGenMatchedHistsFractions.h"
+#include "../include/JECAnalysisPUjetsHists.h"
 #include <UHH2/common/include/MCWeight.h>
 #include <UHH2/common/include/JetCorrections.h>
 #include <UHH2/common/include/LumiSelection.h> //includes also LuminosityHists.h
@@ -69,6 +70,7 @@ class AnalysisModule_DiJetTrg: public uhh2::AnalysisModule {
    // std::unique_ptr<JetLeptonCleaner> jetleptoncleaner;
    // std::unique_ptr<JetLeptonCleaner>  JLC_B, JLC_C, JLC_D, JLC_E, JLC_F;
    std::unique_ptr<JetCleaner> jetID;
+   std::unique_ptr<JetCleaner> jetPUid;
    std::unique_ptr<JetCleaner> jetcleaner;
    std::unique_ptr<GenJetCleaner> genjetcleaner;
    std::unique_ptr<MuonCleaner>     muoSR_cleaner;   
@@ -104,6 +106,8 @@ class AnalysisModule_DiJetTrg: public uhh2::AnalysisModule {
   unique_ptr<AnalysisModule>  Jet_printer;
   unique_ptr<AnalysisModule>  GenJet_printer;
   unique_ptr<AnalysisModule> GenParticles_printer;
+  unique_ptr<AnalysisModule> LumiWeight_module;
+
   
     Event::Handle<float> tt_jet1_ptGen;  Event::Handle<float> tt_jet2_ptGen;  Event::Handle<float> tt_jet3_ptGen;
     Event::Handle<float> tt_gen_pthat; Event::Handle<float> tt_gen_weight;  Event::Handle<float> tt_gen_PUpthat;
@@ -190,13 +194,42 @@ class AnalysisModule_DiJetTrg: public uhh2::AnalysisModule {
     Event::Handle<int> tt_jet3_l1bx;  
  
 
-  std::unique_ptr<JECAnalysisFinalStateHadronsHists> h_hadrons;
-  std::unique_ptr<JECAnalysisFinalStateHadronsHists> h_hadrons_BB;   std::unique_ptr<JECAnalysisFinalStateHadronsHists> h_hadrons_EC1;
-  std::unique_ptr<JECAnalysisFinalStateHadronsHists> h_hadrons_EC2;   std::unique_ptr<JECAnalysisFinalStateHadronsHists> h_hadrons_HF;
-  std::unique_ptr<JECAnalysisFinalStateHadronsHists> h_hadrons_trg40, h_hadrons_trg60, h_hadrons_trg80, h_hadrons_trg140, h_hadrons_trg200,h_hadrons_trg260,h_hadrons_trg320,h_hadrons_trg400,h_hadrons_trg500;
-  std::unique_ptr<JECAnalysisFinalStateHadronsHists> h_hadrons_trgHF60, h_hadrons_trgHF80,h_hadrons_trgHF100, h_hadrons_trgHF160,h_hadrons_trgHF220, h_hadrons_trgHF300;   
+  // std::unique_ptr<JECAnalysisRecoGenMatchedHistsFractions> h_hadrons;
+  // std::unique_ptr<JECAnalysisRecoGenMatchedHistsFractions> h_hadrons_BB;   std::unique_ptr<JECAnalysisRecoGenMatchedHistsFractions> h_hadrons_EC1;
+  // std::unique_ptr<JECAnalysisRecoGenMatchedHistsFractions> h_hadrons_EC2;   std::unique_ptr<JECAnalysisRecoGenMatchedHistsFractions> h_hadrons_HF;
+  // std::unique_ptr<JECAnalysisRecoGenMatchedHistsFractions> h_hadrons_trg40, h_hadrons_trg60, h_hadrons_trg80, h_hadrons_trg140, h_hadrons_trg200,h_hadrons_trg260,h_hadrons_trg320,h_hadrons_trg400,h_hadrons_trg500;
+  // std::unique_ptr<JECAnalysisRecoGenMatchedHistsFractions> h_hadrons_trgHF60, h_hadrons_trgHF80,h_hadrons_trgHF100, h_hadrons_trgHF160,h_hadrons_trgHF220, h_hadrons_trgHF300;   
 
-  std::unique_ptr<JECAnalysisFinalStateHadronsHists> h_hadrons_3rdjet;
+  // std::unique_ptr<JECAnalysisRecoGenMatchedHistsFractions> h_hadrons_3rdjet;
+
+  std::unique_ptr<JECAnalysisRecoGenMatchedHistsFractions> h_matched_all;//uses PF and GEN fractions only
+  std::unique_ptr<JECAnalysisRecoGenMatchedHistsFractions> h_matched_pt[n_pt-1];//uses PF and GEN fractions only
+
+  std::unique_ptr<JECAnalysisPUjetsHists> h_goodRECO_all;
+  std::unique_ptr<JECAnalysisPUjetsHists> h_badRECO_all;
+  std::unique_ptr<JECAnalysisPUjetsHists> h_goodRECO_3rd_all;
+  std::unique_ptr<JECAnalysisPUjetsHists> h_badRECO_3rd_all;
+
+  std::unique_ptr<JECAnalysisPUjetsHists> h_goodpartonRECO_all;
+  std::unique_ptr<JECAnalysisPUjetsHists> h_badpartonRECO_all;
+  std::unique_ptr<JECAnalysisPUjetsHists> h_goodpartonRECO_3rd_all;
+  std::unique_ptr<JECAnalysisPUjetsHists> h_badpartonRECO_3rd_all;
+
+  std::unique_ptr<JECAnalysisPUjetsHists> h_dataRECO_all;
+  std::unique_ptr<JECAnalysisPUjetsHists> h_dataRECO_3rd_all;
+
+  std::unique_ptr<JECAnalysisPUjetsHists> h_goodRECO_pt[n_pt-1];
+  std::unique_ptr<JECAnalysisPUjetsHists> h_badRECO_pt[n_pt-1];
+  std::unique_ptr<JECAnalysisPUjetsHists> h_goodpartonRECO_pt[n_pt-1];
+  std::unique_ptr<JECAnalysisPUjetsHists> h_badpartonRECO_pt[n_pt-1];
+
+  std::unique_ptr<JECAnalysisPUjetsHists> h_goodRECO_3rd_pt[n_pt-1];
+  std::unique_ptr<JECAnalysisPUjetsHists> h_badRECO_3rd_pt[n_pt-1];
+  std::unique_ptr<JECAnalysisPUjetsHists> h_goodpartonRECO_3rd_pt[n_pt-1];
+  std::unique_ptr<JECAnalysisPUjetsHists> h_badpartonRECO_3rd_pt[n_pt-1];
+
+  std::unique_ptr<JECAnalysisPUjetsHists> h_dataRECO_pt[n_pt-1];
+  std::unique_ptr<JECAnalysisPUjetsHists> h_dataRECO_3rd_pt[n_pt-1];
 
   std::unique_ptr<JECAnalysisHists> h_nocuts, h_sel, h_dijet, h_match, h_final;
   std::unique_ptr<JECAnalysisHists> h_trg40, h_trg60, h_trg80, h_trg140, h_trg200,h_trg260,h_trg320,h_trg400,h_trg500;
@@ -211,12 +244,13 @@ class AnalysisModule_DiJetTrg: public uhh2::AnalysisModule {
   bool debug;
   bool ispythia8;
     bool no_genp;
-  bool split_JEC_DATA, split_JEC_MC, ClosureTest, apply_weights, apply_lumiweights, apply_unflattening, apply_smear, apply_METoverPt_cut, apply_EtaPhi_cut, trigger_central, trigger_fwd, ts, onlyBtB, apply_L1seed_from_bx1_filter;
+  bool split_JEC_DATA, split_JEC_MC, ClosureTest, apply_weights, apply_lumiweights, apply_unflattening, apply_smear, apply_METoverPt_cut, apply_EtaPhi_cut, trigger_central, trigger_fwd, ts, onlyBtB, apply_L1seed_from_bx1_filter, apply_PUid;
     double lumiweight;
     string jetLabel;
    TString dataset_version;
   // TString JEC_Version;
     JetId Jet_PFID;
+    JetId Jet_PUid;
     int n_evt;
     std::unique_ptr<TFile> f_weights;
     
@@ -393,55 +427,106 @@ void AnalysisModule_DiJetTrg::init_JEC(uhh2::Context& ctx){
     JEC_AK8Puppi_F_L1RC = JERFiles::Fall17_17Nov2017_V32_F_L1RC_AK8PFPuppi_DATA;
     JEC_AK8Puppi_MC_L1RC = JERFiles::Fall17_17Nov2017_V32_L1RC_AK8PFPuppi_MC;
   }
-  if(is2018){
+  if(is2018 && !ClosureTest){
     cout<<"AnalysisModule_DiJetTrg uses JEC for 2018 data/MC"<<endl;
-    JEC_AK4CHS_A       = JERFiles::Autumn18_V7_A_L123_AK4PFchs_DATA;
-    JEC_AK4CHS_B       = JERFiles::Autumn18_V7_B_L123_AK4PFchs_DATA;
-    JEC_AK4CHS_C       = JERFiles::Autumn18_V7_C_L123_AK4PFchs_DATA;
-    JEC_AK4CHS_D       = JERFiles::Autumn18_V7_D_L123_AK4PFchs_DATA;
-    JEC_AK4CHS_MC       = JERFiles::Autumn18_V7_L123_AK4PFchs_MC;
+    JEC_AK4CHS_A       = JERFiles::Autumn18_V8_A_L123_AK4PFchs_DATA;
+    JEC_AK4CHS_B       = JERFiles::Autumn18_V8_B_L123_AK4PFchs_DATA;
+    JEC_AK4CHS_C       = JERFiles::Autumn18_V8_C_L123_AK4PFchs_DATA;
+    JEC_AK4CHS_D       = JERFiles::Autumn18_V8_D_L123_AK4PFchs_DATA;
+    JEC_AK4CHS_MC       = JERFiles::Autumn18_V8_L123_AK4PFchs_MC;
 
-    JEC_AK8CHS_A       = JERFiles::Autumn18_V7_A_L123_AK8PFchs_DATA;
-    JEC_AK8CHS_B       = JERFiles::Autumn18_V7_B_L123_AK8PFchs_DATA;
-    JEC_AK8CHS_C       = JERFiles::Autumn18_V7_C_L123_AK8PFchs_DATA;
-    JEC_AK8CHS_D       = JERFiles::Autumn18_V7_D_L123_AK8PFchs_DATA;
-    JEC_AK8CHS_MC      = JERFiles::Autumn18_V7_L123_AK8PFchs_MC;
+    JEC_AK8CHS_A       = JERFiles::Autumn18_V8_A_L123_AK8PFchs_DATA;
+    JEC_AK8CHS_B       = JERFiles::Autumn18_V8_B_L123_AK8PFchs_DATA;
+    JEC_AK8CHS_C       = JERFiles::Autumn18_V8_C_L123_AK8PFchs_DATA;
+    JEC_AK8CHS_D       = JERFiles::Autumn18_V8_D_L123_AK8PFchs_DATA;
+    JEC_AK8CHS_MC      = JERFiles::Autumn18_V8_L123_AK8PFchs_MC;
 
-    JEC_AK4Puppi_A = JERFiles::Autumn18_V7_A_L123_AK4PFPuppi_DATA;
-    JEC_AK4Puppi_B = JERFiles::Autumn18_V7_B_L123_AK4PFPuppi_DATA;
-    JEC_AK4Puppi_C = JERFiles::Autumn18_V7_C_L123_AK4PFPuppi_DATA;
-    JEC_AK4Puppi_D = JERFiles::Autumn18_V7_D_L123_AK4PFPuppi_DATA;
-    JEC_AK4Puppi_MC = JERFiles::Autumn18_V7_L123_AK4PFPuppi_MC;
+    JEC_AK4Puppi_A = JERFiles::Autumn18_V8_A_L123_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_B = JERFiles::Autumn18_V8_B_L123_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_C = JERFiles::Autumn18_V8_C_L123_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_D = JERFiles::Autumn18_V8_D_L123_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_MC = JERFiles::Autumn18_V8_L123_AK4PFPuppi_MC;
 
-    JEC_AK8Puppi_A = JERFiles::Autumn18_V7_A_L123_AK8PFPuppi_DATA;
-    JEC_AK8Puppi_B = JERFiles::Autumn18_V7_B_L123_AK8PFPuppi_DATA;
-    JEC_AK8Puppi_C = JERFiles::Autumn18_V7_C_L123_AK8PFPuppi_DATA;
-    JEC_AK8Puppi_D = JERFiles::Autumn18_V7_D_L123_AK8PFPuppi_DATA;
-    JEC_AK8Puppi_MC = JERFiles::Autumn18_V7_L123_AK8PFPuppi_MC;
+    JEC_AK8Puppi_A = JERFiles::Autumn18_V8_A_L123_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_B = JERFiles::Autumn18_V8_B_L123_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_C = JERFiles::Autumn18_V8_C_L123_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_D = JERFiles::Autumn18_V8_D_L123_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_MC = JERFiles::Autumn18_V8_L123_AK8PFPuppi_MC;
 
-    JEC_AK4CHS_A_L1RC       = JERFiles::Autumn18_V7_A_L1RC_AK4PFchs_DATA;
-    JEC_AK4CHS_B_L1RC      = JERFiles::Autumn18_V7_B_L1RC_AK4PFchs_DATA;
-    JEC_AK4CHS_C_L1RC       = JERFiles::Autumn18_V7_C_L1RC_AK4PFchs_DATA;
-    JEC_AK4CHS_D_L1RC       = JERFiles::Autumn18_V7_D_L1RC_AK4PFchs_DATA;
-    JEC_AK4CHS_MC_L1RC       = JERFiles::Autumn18_V7_L1RC_AK4PFchs_MC;
+    JEC_AK4CHS_A_L1RC       = JERFiles::Autumn18_V8_A_L1RC_AK4PFchs_DATA;
+    JEC_AK4CHS_B_L1RC      = JERFiles::Autumn18_V8_B_L1RC_AK4PFchs_DATA;
+    JEC_AK4CHS_C_L1RC       = JERFiles::Autumn18_V8_C_L1RC_AK4PFchs_DATA;
+    JEC_AK4CHS_D_L1RC       = JERFiles::Autumn18_V8_D_L1RC_AK4PFchs_DATA;
+    JEC_AK4CHS_MC_L1RC       = JERFiles::Autumn18_V8_L1RC_AK4PFchs_MC;
 
-    JEC_AK8CHS_A_L1RC       = JERFiles::Autumn18_V7_A_L1RC_AK8PFchs_DATA;
-    JEC_AK8CHS_B_L1RC       = JERFiles::Autumn18_V7_B_L1RC_AK8PFchs_DATA;
-    JEC_AK8CHS_C_L1RC       = JERFiles::Autumn18_V7_C_L1RC_AK8PFchs_DATA;
-    JEC_AK8CHS_D_L1RC       = JERFiles::Autumn18_V7_D_L1RC_AK8PFchs_DATA;
-    JEC_AK8CHS_MC_L1RC       = JERFiles::Autumn18_V7_L1RC_AK8PFchs_MC;
+    JEC_AK8CHS_A_L1RC       = JERFiles::Autumn18_V8_A_L1RC_AK8PFchs_DATA;
+    JEC_AK8CHS_B_L1RC       = JERFiles::Autumn18_V8_B_L1RC_AK8PFchs_DATA;
+    JEC_AK8CHS_C_L1RC       = JERFiles::Autumn18_V8_C_L1RC_AK8PFchs_DATA;
+    JEC_AK8CHS_D_L1RC       = JERFiles::Autumn18_V8_D_L1RC_AK8PFchs_DATA;
+    JEC_AK8CHS_MC_L1RC       = JERFiles::Autumn18_V8_L1RC_AK8PFchs_MC;
 
-    JEC_AK4Puppi_A_L1RC = JERFiles::Autumn18_V7_A_L1RC_AK4PFPuppi_DATA;
-    JEC_AK4Puppi_B_L1RC = JERFiles::Autumn18_V7_B_L1RC_AK4PFPuppi_DATA;
-    JEC_AK4Puppi_C_L1RC = JERFiles::Autumn18_V7_C_L1RC_AK4PFPuppi_DATA;
-    JEC_AK4Puppi_D_L1RC = JERFiles::Autumn18_V7_D_L1RC_AK4PFPuppi_DATA;
-    JEC_AK4Puppi_MC_L1RC = JERFiles::Autumn18_V7_L1RC_AK4PFPuppi_MC;
+    JEC_AK4Puppi_A_L1RC = JERFiles::Autumn18_V8_A_L1RC_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_B_L1RC = JERFiles::Autumn18_V8_B_L1RC_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_C_L1RC = JERFiles::Autumn18_V8_C_L1RC_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_D_L1RC = JERFiles::Autumn18_V8_D_L1RC_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_MC_L1RC = JERFiles::Autumn18_V8_L1RC_AK4PFPuppi_MC;
 
-    JEC_AK8Puppi_A_L1RC = JERFiles::Autumn18_V7_A_L1RC_AK8PFPuppi_DATA;
-    JEC_AK8Puppi_B_L1RC = JERFiles::Autumn18_V7_B_L1RC_AK8PFPuppi_DATA;
-    JEC_AK8Puppi_C_L1RC = JERFiles::Autumn18_V7_C_L1RC_AK8PFPuppi_DATA;
-    JEC_AK8Puppi_D_L1RC = JERFiles::Autumn18_V7_D_L1RC_AK8PFPuppi_DATA;
-    JEC_AK8Puppi_MC_L1RC = JERFiles::Autumn18_V7_L1RC_AK8PFPuppi_MC;
+    JEC_AK8Puppi_A_L1RC = JERFiles::Autumn18_V8_A_L1RC_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_B_L1RC = JERFiles::Autumn18_V8_B_L1RC_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_C_L1RC = JERFiles::Autumn18_V8_C_L1RC_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_D_L1RC = JERFiles::Autumn18_V8_D_L1RC_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_MC_L1RC = JERFiles::Autumn18_V8_L1RC_AK8PFPuppi_MC;
+  }
+
+  if(is2018 && ClosureTest){
+    cout<<"AnalysisModule_DiJetTrg uses JEC for 2018 data/MC without L2L3Res"<<endl;
+    JEC_AK4CHS_A       = JERFiles::Autumn18_V8_A_L123_noRes_AK4PFchs_DATA;
+    JEC_AK4CHS_B       = JERFiles::Autumn18_V8_B_L123_noRes_AK4PFchs_DATA;
+    JEC_AK4CHS_C       = JERFiles::Autumn18_V8_C_L123_noRes_AK4PFchs_DATA;
+    JEC_AK4CHS_D       = JERFiles::Autumn18_V8_D_L123_noRes_AK4PFchs_DATA;
+    JEC_AK4CHS_MC       = JERFiles::Autumn18_V8_L123_AK4PFchs_MC;
+
+    JEC_AK8CHS_A       = JERFiles::Autumn18_V8_A_L123_noRes_AK8PFchs_DATA;
+    JEC_AK8CHS_B       = JERFiles::Autumn18_V8_B_L123_noRes_AK8PFchs_DATA;
+    JEC_AK8CHS_C       = JERFiles::Autumn18_V8_C_L123_noRes_AK8PFchs_DATA;
+    JEC_AK8CHS_D       = JERFiles::Autumn18_V8_D_L123_noRes_AK8PFchs_DATA;
+    JEC_AK8CHS_MC      = JERFiles::Autumn18_V8_L123_AK8PFchs_MC;
+
+    JEC_AK4Puppi_A = JERFiles::Autumn18_V8_A_L123_noRes_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_B = JERFiles::Autumn18_V8_B_L123_noRes_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_C = JERFiles::Autumn18_V8_C_L123_noRes_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_D = JERFiles::Autumn18_V8_D_L123_noRes_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_MC = JERFiles::Autumn18_V8_L123_AK4PFPuppi_MC;
+
+    JEC_AK8Puppi_A = JERFiles::Autumn18_V8_A_L123_noRes_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_B = JERFiles::Autumn18_V8_B_L123_noRes_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_C = JERFiles::Autumn18_V8_C_L123_noRes_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_D = JERFiles::Autumn18_V8_D_L123_noRes_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_MC = JERFiles::Autumn18_V8_L123_AK8PFPuppi_MC;
+
+    JEC_AK4CHS_A_L1RC       = JERFiles::Autumn18_V8_A_L1RC_AK4PFchs_DATA;
+    JEC_AK4CHS_B_L1RC      = JERFiles::Autumn18_V8_B_L1RC_AK4PFchs_DATA;
+    JEC_AK4CHS_C_L1RC       = JERFiles::Autumn18_V8_C_L1RC_AK4PFchs_DATA;
+    JEC_AK4CHS_D_L1RC       = JERFiles::Autumn18_V8_D_L1RC_AK4PFchs_DATA;
+    JEC_AK4CHS_MC_L1RC       = JERFiles::Autumn18_V8_L1RC_AK4PFchs_MC;
+
+    JEC_AK8CHS_A_L1RC       = JERFiles::Autumn18_V8_A_L1RC_AK8PFchs_DATA;
+    JEC_AK8CHS_B_L1RC       = JERFiles::Autumn18_V8_B_L1RC_AK8PFchs_DATA;
+    JEC_AK8CHS_C_L1RC       = JERFiles::Autumn18_V8_C_L1RC_AK8PFchs_DATA;
+    JEC_AK8CHS_D_L1RC       = JERFiles::Autumn18_V8_D_L1RC_AK8PFchs_DATA;
+    JEC_AK8CHS_MC_L1RC       = JERFiles::Autumn18_V8_L1RC_AK8PFchs_MC;
+
+    JEC_AK4Puppi_A_L1RC = JERFiles::Autumn18_V8_A_L1RC_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_B_L1RC = JERFiles::Autumn18_V8_B_L1RC_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_C_L1RC = JERFiles::Autumn18_V8_C_L1RC_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_D_L1RC = JERFiles::Autumn18_V8_D_L1RC_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_MC_L1RC = JERFiles::Autumn18_V8_L1RC_AK4PFPuppi_MC;
+
+    JEC_AK8Puppi_A_L1RC = JERFiles::Autumn18_V8_A_L1RC_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_B_L1RC = JERFiles::Autumn18_V8_B_L1RC_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_C_L1RC = JERFiles::Autumn18_V8_C_L1RC_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_D_L1RC = JERFiles::Autumn18_V8_D_L1RC_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_MC_L1RC = JERFiles::Autumn18_V8_L1RC_AK8PFPuppi_MC;
   }
 
   //jet_corrector_B.reset(new JetCorrector(ctx, JEC_corr_B, JEC_corr_B_L1RC));
@@ -452,7 +537,6 @@ void AnalysisModule_DiJetTrg::init_JEC(uhh2::Context& ctx){
     jet_corrector_C.reset(new JetCorrector(ctx, JEC_AK4CHS_C,JEC_AK4CHS_C_L1RC));
     jet_corrector_D.reset(new JetCorrector(ctx, JEC_AK4CHS_D,JEC_AK4CHS_D_L1RC));
     if(is2017 or is2016v2 or is2016v3){
-      //  jet_corrector_D.reset(new JetCorrector(ctx, JEC_AK4CHS_D,JEC_AK4CHS_D_L1RC));//tmp
       jet_corrector_E.reset(new JetCorrector(ctx, JEC_AK4CHS_E,JEC_AK4CHS_E_L1RC));
       jet_corrector_F.reset(new JetCorrector(ctx, JEC_AK4CHS_F,JEC_AK4CHS_F_L1RC));
       if(is2016v2 or is2016v3){
@@ -468,7 +552,6 @@ void AnalysisModule_DiJetTrg::init_JEC(uhh2::Context& ctx){
     jet_corrector_C.reset(new JetCorrector(ctx, JEC_AK4Puppi_C,JEC_AK4Puppi_C_L1RC));
     jet_corrector_D.reset(new JetCorrector(ctx, JEC_AK4Puppi_D,JEC_AK4Puppi_D_L1RC));
     if(is2017 or is2016v2 or is2016v3){
-      //jet_corrector_D.reset(new JetCorrector(ctx, JEC_AK4Puppi_D,JEC_AK4Puppi_D_L1RC));//tmp
       jet_corrector_E.reset(new JetCorrector(ctx, JEC_AK4Puppi_E,JEC_AK4Puppi_E_L1RC));
       jet_corrector_F.reset(new JetCorrector(ctx, JEC_AK4Puppi_F,JEC_AK4Puppi_F_L1RC));
       if(is2016v2 or is2016v3){
@@ -631,28 +714,35 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
     h_afterLumiReweight.reset(new JECCrossCheckHists(ctx,"CrossCheck_afterLumiReweight"));
     h_afterUnflat.reset(new JECCrossCheckHists(ctx,"CrossCheck_afterUnflat"));
     h_afternVts.reset(new JECCrossCheckHists(ctx,"CrossCheck_afternVts"));
-    h_hadrons.reset(new JECAnalysisFinalStateHadronsHists(ctx,"Hadrons"));
-    h_hadrons_BB.reset(new JECAnalysisFinalStateHadronsHists(ctx,"Hadrons_BB"));
-    h_hadrons_EC1.reset(new JECAnalysisFinalStateHadronsHists(ctx,"Hadrons_EC1"));
-    h_hadrons_EC2.reset(new JECAnalysisFinalStateHadronsHists(ctx,"Hadrons_EC2"));
-    h_hadrons_HF.reset(new JECAnalysisFinalStateHadronsHists(ctx,"Hadrons_HF"));
-    h_hadrons_3rdjet.reset(new JECAnalysisFinalStateHadronsHists(ctx,"Hadrons_3rdJet"));
-    h_hadrons_trg40.reset(new JECAnalysisFinalStateHadronsHists(ctx,"Hadrons_HLT_DiPFJetAve40"));
-    h_hadrons_trg60.reset(new JECAnalysisFinalStateHadronsHists(ctx,"Hadrons_HLT_DiPFJetAve60"));
-    h_hadrons_trg80.reset(new JECAnalysisFinalStateHadronsHists(ctx,"Hadrons_HLT_DiPFJetAve80"));
-    h_hadrons_trg140.reset(new JECAnalysisFinalStateHadronsHists(ctx,"Hadrons_HLT_DiPFJetAve140"));
-    h_hadrons_trg200.reset(new JECAnalysisFinalStateHadronsHists(ctx,"Hadrons_HLT_DiPFJetAve200"));
-    h_hadrons_trg260.reset(new JECAnalysisFinalStateHadronsHists(ctx,"Hadrons_HLT_DiPFJetAve260"));
-    h_hadrons_trg320.reset(new JECAnalysisFinalStateHadronsHists(ctx,"Hadrons_HLT_DiPFJetAve320"));
-    h_hadrons_trg400.reset(new JECAnalysisFinalStateHadronsHists(ctx,"Hadrons_HLT_DiPFJetAve400"));
-    h_hadrons_trg500.reset(new JECAnalysisFinalStateHadronsHists(ctx,"Hadrons_HLT_DiPFJetAve500"));
+    h_matched_all.reset(new JECAnalysisRecoGenMatchedHistsFractions(ctx,"MatchedRecoGen_all"));
+    for(int i=0;i<n_pt-1;i++){
+      TString ptname = pt_range[i]; ptname +="_"; ptname +=pt_range[i+1];
+      TString histname = "MatchedRecoGen_"; histname+=ptname;
+      cout<<histname.Data()<<endl;
+      h_matched_pt[i].reset(new JECAnalysisRecoGenMatchedHistsFractions(ctx,histname.Data()));
+    }
+    // h_hadrons.reset(new JECAnalysisRecoGenMatchedHistsFractions(ctx,"Hadrons"));
+    // h_hadrons_BB.reset(new JECAnalysisRecoGenMatchedHistsFractions(ctx,"Hadrons_BB"));
+    // h_hadrons_EC1.reset(new JECAnalysisRecoGenMatchedHistsFractions(ctx,"Hadrons_EC1"));
+    // h_hadrons_EC2.reset(new JECAnalysisRecoGenMatchedHistsFractions(ctx,"Hadrons_EC2"));
+    // h_hadrons_HF.reset(new JECAnalysisRecoGenMatchedHistsFractions(ctx,"Hadrons_HF"));
+    // h_hadrons_3rdjet.reset(new JECAnalysisRecoGenMatchedHistsFractions(ctx,"Hadrons_3rdJet"));
+    // h_hadrons_trg40.reset(new JECAnalysisRecoGenMatchedHistsFractions(ctx,"Hadrons_HLT_DiPFJetAve40"));
+    // h_hadrons_trg60.reset(new JECAnalysisRecoGenMatchedHistsFractions(ctx,"Hadrons_HLT_DiPFJetAve60"));
+    // h_hadrons_trg80.reset(new JECAnalysisRecoGenMatchedHistsFractions(ctx,"Hadrons_HLT_DiPFJetAve80"));
+    // h_hadrons_trg140.reset(new JECAnalysisRecoGenMatchedHistsFractions(ctx,"Hadrons_HLT_DiPFJetAve140"));
+    // h_hadrons_trg200.reset(new JECAnalysisRecoGenMatchedHistsFractions(ctx,"Hadrons_HLT_DiPFJetAve200"));
+    // h_hadrons_trg260.reset(new JECAnalysisRecoGenMatchedHistsFractions(ctx,"Hadrons_HLT_DiPFJetAve260"));
+    // h_hadrons_trg320.reset(new JECAnalysisRecoGenMatchedHistsFractions(ctx,"Hadrons_HLT_DiPFJetAve320"));
+    // h_hadrons_trg400.reset(new JECAnalysisRecoGenMatchedHistsFractions(ctx,"Hadrons_HLT_DiPFJetAve400"));
+    // h_hadrons_trg500.reset(new JECAnalysisRecoGenMatchedHistsFractions(ctx,"Hadrons_HLT_DiPFJetAve500"));
 
-    h_hadrons_trgHF60.reset(new JECAnalysisFinalStateHadronsHists(ctx,"Hadrons_HLT_DiPFJetAve60_HFJEC"));
-    h_hadrons_trgHF80.reset(new JECAnalysisFinalStateHadronsHists(ctx,"Hadrons_HLT_DiPFJetAve80_HFJEC"));
-    h_hadrons_trgHF100.reset(new JECAnalysisFinalStateHadronsHists(ctx,"Hadrons_HLT_DiPFJetAve100_HFJEC"));
-    h_hadrons_trgHF160.reset(new JECAnalysisFinalStateHadronsHists(ctx,"Hadrons_HLT_DiPFJetAve160_HFJEC"));
-    h_hadrons_trgHF220.reset(new JECAnalysisFinalStateHadronsHists(ctx,"Hadrons_HLT_DiPFJetAve220_HFJEC"));
-    h_hadrons_trgHF300.reset(new JECAnalysisFinalStateHadronsHists(ctx,"Hadrons_HLT_DiPFJetAve300_HFJEC")); //ADD them into the code below!
+    // h_hadrons_trgHF60.reset(new JECAnalysisRecoGenMatchedHistsFractions(ctx,"Hadrons_HLT_DiPFJetAve60_HFJEC"));
+    // h_hadrons_trgHF80.reset(new JECAnalysisRecoGenMatchedHistsFractions(ctx,"Hadrons_HLT_DiPFJetAve80_HFJEC"));
+    // h_hadrons_trgHF100.reset(new JECAnalysisRecoGenMatchedHistsFractions(ctx,"Hadrons_HLT_DiPFJetAve100_HFJEC"));
+    // h_hadrons_trgHF160.reset(new JECAnalysisRecoGenMatchedHistsFractions(ctx,"Hadrons_HLT_DiPFJetAve160_HFJEC"));
+    // h_hadrons_trgHF220.reset(new JECAnalysisRecoGenMatchedHistsFractions(ctx,"Hadrons_HLT_DiPFJetAve220_HFJEC"));
+    // h_hadrons_trgHF300.reset(new JECAnalysisRecoGenMatchedHistsFractions(ctx,"Hadrons_HLT_DiPFJetAve300_HFJEC")); //ADD them into the code below!
 
     h_nocuts.reset(new JECAnalysisHists(ctx,"NoCuts"));
     h_dijet.reset(new JECAnalysisHists(ctx,"diJet"));
@@ -699,6 +789,46 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
     h_lumi_TrigHF220.reset(new LuminosityHists(ctx,"Lumi_TrigHF220")); 
     h_lumi_TrigHF300.reset(new LuminosityHists(ctx,"Lumi_TrigHF300"));
     h_monitoring_final.reset(new LumiHists(ctx, "Monitoring_Final"));
+
+    h_goodRECO_all.reset(new JECAnalysisPUjetsHists(ctx,"goodRECO_all"));
+    h_badRECO_all.reset(new JECAnalysisPUjetsHists(ctx,"badRECO_all"));
+    h_goodpartonRECO_all.reset(new JECAnalysisPUjetsHists(ctx,"goodpartonRECO_all"));
+    h_badpartonRECO_all.reset(new JECAnalysisPUjetsHists(ctx,"badpartonRECO_all"));
+
+    h_goodRECO_3rd_all.reset(new JECAnalysisPUjetsHists(ctx,"good3rdRECO_all"));
+    h_badRECO_3rd_all.reset(new JECAnalysisPUjetsHists(ctx,"bad3rdRECO_all"));
+    h_goodpartonRECO_3rd_all.reset(new JECAnalysisPUjetsHists(ctx,"goodparton3rdRECO_all"));
+    h_badpartonRECO_3rd_all.reset(new JECAnalysisPUjetsHists(ctx,"badparton3rdRECO_all"));
+
+    h_dataRECO_all.reset(new JECAnalysisPUjetsHists(ctx,"dataRECO_all"));
+    h_dataRECO_3rd_all.reset(new JECAnalysisPUjetsHists(ctx,"data3rdRECO_all"));
+
+    for(int i=0;i<n_pt-1;i++){
+      TString ptname = pt_range[i]; ptname +="_"; ptname +=pt_range[i+1];
+      TString histname = "goodRECO_"; histname+=ptname;
+      h_goodRECO_pt[i].reset(new JECAnalysisPUjetsHists(ctx,histname.Data()));
+      histname = "badRECO_"; histname+=ptname;
+      h_badRECO_pt[i].reset(new JECAnalysisPUjetsHists(ctx,histname.Data()));
+      histname = "goodpartonRECO_"; histname+=ptname;
+      h_goodpartonRECO_pt[i].reset(new JECAnalysisPUjetsHists(ctx,histname.Data()));
+      histname = "badpartonRECO_"; histname+=ptname;
+      h_badpartonRECO_pt[i].reset(new JECAnalysisPUjetsHists(ctx,histname.Data()));
+
+      histname = "good3rdRECO_"; histname+=ptname;
+      h_goodRECO_3rd_pt[i].reset(new JECAnalysisPUjetsHists(ctx,histname.Data()));
+      histname = "bad3rdRECO_"; histname+=ptname;
+      h_badRECO_3rd_pt[i].reset(new JECAnalysisPUjetsHists(ctx,histname.Data()));
+      histname = "goodparton3rdRECO_"; histname+=ptname;
+      h_goodpartonRECO_3rd_pt[i].reset(new JECAnalysisPUjetsHists(ctx,histname.Data()));
+      histname = "badparton3rdRECO_"; histname+=ptname;
+      h_badpartonRECO_3rd_pt[i].reset(new JECAnalysisPUjetsHists(ctx,histname.Data()));
+
+      histname = "dataRECO_"; histname+=ptname;
+      h_dataRECO_pt[i].reset(new JECAnalysisPUjetsHists(ctx,histname.Data()));
+      histname = "data3rdRECO_"; histname+=ptname;
+      h_dataRECO_3rd_pt[i].reset(new JECAnalysisPUjetsHists(ctx,histname.Data()));
+
+    }
     
 }
 
@@ -727,7 +857,7 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
     ispuppi = false; //TEST
     cout << "Is this running on puppi: " << ispuppi << endl;
     is2016v2 = (ctx.get("dataset_version").find("2016v2") != std::string::npos);
-    is2016v3 = (ctx.get("dataset_version").find("2016v2") != std::string::npos);
+    is2016v3 = (ctx.get("dataset_version").find("2016v3") != std::string::npos);
     is2017 = (ctx.get("dataset_version").find("2017") != std::string::npos);
     is2018 = (ctx.get("dataset_version").find("2018") != std::string::npos);
  
@@ -792,7 +922,8 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
       metfilters_sel->add<TriggerSelection>("BadChargedCandidateFilter", "Flag_BadChargedCandidateFilter");
       metfilters_sel->add<TriggerSelection>("eeBadScFilter", "Flag_eeBadScFilter");
       //    metfilters_sel->add<TriggerSelection>("ecalBadCalibFilter","Flag_ecalBadCalibFilter");
-      metfilters_sel->add<TriggerSelection>("ecalBadCalibFilter","ecalBadCalibReducedMINIAODFilter");
+      //      metfilters_sel->add<TriggerSelection>("ecalBadCalibFilter","ecalBadCalibReducedMINIAODFilter");
+      metfilters_sel->add<EcalBadCalibSelection>("EcalBadCalibSelection");
     }
 
     init_JEC(ctx);//set up JECs
@@ -802,6 +933,10 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
     else
       Jet_PFID = JetPFID(JetPFID::WP_TIGHT_CHS);
     jetID.reset(new JetCleaner(ctx, Jet_PFID));
+
+    Jet_PUid = JetPUid(JetPUid::WP_TIGHT);
+    jetPUid.reset(new JetCleaner(ctx, Jet_PUid));
+
     //remove low pt jets
     minJetPt = stod(ctx.get("minJetPt"));
     minGenJetPt = stod(ctx.get("minGenJetPt"));
@@ -867,9 +1002,13 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
      
     //JER Smearing for corresponding JEC-Version
     if(isMC){
-      if(is2018) jetER_smearer.reset(new GenericJetResolutionSmearer(ctx, "jets", "genjets",  JERSmearing::SF_13TeV_Fall17_V3_RunBCDEF_Madgraph,"Fall17_V3_MC_PtResolution_AK4PFchs.txt"));//JER SFs obtained with Madgraph
-      if(is2017) jetER_smearer.reset(new GenericJetResolutionSmearer(ctx, "jets", "genjets",  JERSmearing::SF_13TeV_Fall17_V3_RunBCDEF_Madgraph,"Fall17_V3_MC_PtResolution_AK4PFchs.txt"));//JER SFs obtained with Madgraph
-      if(is2016v2 || is2016v3)  jetER_smearer.reset(new GenericJetResolutionSmearer(ctx, "jets", "genjets",  JERSmearing::SF_13TeV_Summer16_25nsV1,"Summer16_25nsV1_MC_PtResolution_AK4PFchs.txt"));
+      if(is2018){ 
+	cout<<"JER smearer ..."<<endl;
+	jetER_smearer.reset(new GenericJetResolutionSmearer(ctx, "jets", "genjets", JERSmearing::SF_13TeV_Autumn18_RunABC_V4,"2018/Autumn18_V4_MC_PtResolution_AK4PFchs.txt"));//JER SFs obtained with Madgraph
+	cout<<"JER smearer is ready!"<<endl;
+      }
+      if(is2017) jetER_smearer.reset(new GenericJetResolutionSmearer(ctx, "jets", "genjets", JERSmearing::SF_13TeV_Fall17_V3_RunBCDEF_Madgraph,"2017/Fall17_V3_MC_PtResolution_AK4PFchs.txt"));//JER SFs obtained with Madgraph
+      if(is2016v2 || is2016v3)  jetER_smearer.reset(new GenericJetResolutionSmearer(ctx, "jets", "genjets",  JERSmearing::SF_13TeV_Summer16_25nsV1,"2016/Summer16_25nsV1_MC_PtResolution_AK4PFchs.txt"));
     }
      
     //output
@@ -889,7 +1028,8 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
     
     if(!no_genp) 
       GenParticles_printer.reset(new GenParticlesPrinter(ctx));
-    
+
+    LumiWeight_module.reset(new MCLumiWeight(ctx));
     
     n_evt = 0;
     TString name_weights = ctx.get("MC_Weights_Path");
@@ -919,6 +1059,7 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
     apply_lumiweights = (ctx.get("Apply_Lumiweights") == "true" && isMC);
     apply_unflattening = (ctx.get("Apply_Unflattening") == "true" && isMC);
     apply_smear = (ctx.get("Apply_MC_Smear")=="true" && isMC);
+    apply_PUid = (ctx.get("Apply_PUid_3rdjet")=="true");
     if(apply_weights && apply_lumiweights) throw runtime_error("In AnalysisModule_DiJetTrg.cxx: 'apply_weights' and 'apply_lumiweights' are set 'true' simultaneously. This won't work, please decide on one");
     if(isMC){
       lumiweight = string2double(ctx.get("dataset_lumi"));
@@ -996,6 +1137,11 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
       cout << " Evt# "<<event.event<<" Run: "<<event.run<<" " << endl;
       //      cout << "pfparticles.size() = " <<event.pfparticles->size()<<endl;
     }
+
+    // Weight modules
+    LumiWeight_module->process(event);
+
+
     //Dump Input
     h_input->fill(event);
 
@@ -1061,12 +1207,26 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
     // if(jetLabel == "AK4CHS" // || jetLabel == "AK8CHS"
     //    ) 
     jetID->process(event);//FixME: make sure JetID works for AK8
+    if(apply_PUid)
+      jetPUid->process(event);
     int n_jets_afterCleaner = event.jets->size();
     if(debug) cout<<"#jets after clean "<<n_jets_afterCleaner<<endl;   
      //discard events if not all jets fulfill JetID instead of just discarding single jets
      //    if (n_jets_beforeCleaner != n_jets_afterCleaner) return false;
     if(!isMC) h_afterCleaner->fill(event); 
-
+    // if(debug) cout<<"event.jets->at(0).tagname2tag(pileup_loose) = "<<event.jets->at(0).tagname2tag("pileup_loose")<<endl;
+    // if(debug) cout<<"event.jets->at(0).tagname2tag(pileup_medium) = "<<event.jets->at(0).tagname2tag("pileup_medium")<<endl;
+    // if(debug) cout<<"event.jets->at(0).tagname2tag(pileup_tight) = "<<event.jets->at(0).tagname2tag("pileup_tight")<<endl;
+    // if(n_jets_afterCleaner>3){
+    //   if(debug) cout<<"event.jets->at(2).PU_id = "<<event.jets->at(2).pileupID()<<endl;
+    //   if(debug) cout<<"event.jets->at(2).get_tag(pileup_loose) = "<<event.jets->at(2).get_tag(event.jets->at(2).tagname2tag("pileup_loose"))<<endl;
+    //   if(debug) cout<<"event.jets->at(2).get_tag(pileup_medium) = "<<event.jets->at(2).get_tag(event.jets->at(2).tagname2tag("pileup_medium"))<<endl;
+    //   if(debug) cout<<"event.jets->at(2).get_tag(pileup_tight) = "<<event.jets->at(2).get_tag(event.jets->at(2).tagname2tag("pileup_tight"))<<endl;
+    //   //PUid ToDo: add flag to config file
+    //   //      if(event.jets->at(2).get_tag(event.jets->at(2).tagname2tag("pileup_loose"))<1) return false;//TEST
+    //   if(apply_PUid)
+    // 	if(event.jets->at(2).get_tag(event.jets->at(2).tagname2tag("pileup_tight"))<1) return false;//TEST
+    // }
 //###########################################################################################
   
 //####################  Select and Apply proper JEC-Versions for every Run ##################
@@ -1512,6 +1672,7 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
       auto factor_raw3 = jet3->JEC_factor_raw();
       jet3_ptRaw = jet3_pt*factor_raw3;
     }
+    //    float alpha_min = minJetPt/pt_ave;
     float alpha = jet3_pt/pt_ave;
     float asymmetry = (probejet_pt - barreljet_pt)/(probejet_pt + barreljet_pt);
     float rel_r = (1+asymmetry)/(1-asymmetry);
@@ -1602,7 +1763,7 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
     event.set(tt_rel_r,rel_r);
     event.set(tt_mpf_r,mpf_r);
     event.set(tt_nPU,nPU);
-    event.set(tt_ev_weight,event.weight);
+
     event.set(tt_jets_pt,jets_pt);
     event.set(tt_jet_n,jet_n);
     event.set(tt_rho,event.rho);    
@@ -1828,6 +1989,8 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
     else 
       event.set(tt_ele_pt,0);
 
+
+
     if(debug){
     //    if(B<-0.9){
       cout<<"-- Event -- "<<endl;
@@ -2045,6 +2208,16 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
  	dR_GenJet_GenParticle_probe_matched =   deltaR(event.genjets->at(idx_matched_RecoGenjets[idx_probejet]),event.genparticles->at(idx_matched_jets[idx_probejet]));
       }
       if(idx_matched_RecoGenjets[idx_probejet] !=-1){//GEN and RECO jets are matched
+	// h_goodRECO_all->fill(event,idx_probejet);//event, reco_id
+	// bool isStop=false;
+	// for(int kpt=0;kpt<n_pt-1;kpt++){
+	//   if((event.jets->at(idx_probejet).pt())>pt_bins[kpt] && ((event.jets->at(idx_probejet).pt())<=pt_bins[kpt+1])){
+	//     h_goodRECO_pt[kpt]->fill(event,idx_probejet);//event, reco_id
+	//     isStop = true;
+	//   }
+	//   if(isStop) break;
+	// }
+
  	if(idx_matched_jets[idx_probejet]<0){//ME parton and GEN/RECO jet are not matched
 	  flavor_probejet = -1;
 	  response_probejet = -1;
@@ -2056,59 +2229,69 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
 	probejet_ptgen = event.genjets->at(idx_matched_RecoGenjets[idx_probejet]).pt();
  	probejet_etagen = event.genjets->at(idx_matched_RecoGenjets[idx_probejet]).eta();
  	probejet_phigen = event.genjets->at(idx_matched_RecoGenjets[idx_probejet]).phi();
-	h_hadrons->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
-	if(fabs(probejet_eta)<0.522 && fabs(probejet_eta)>0.261) 
-	  h_hadrons_BB->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
-	if(fabs(probejet_eta)<2.322 && fabs(probejet_eta)>2.172) 
-	  h_hadrons_EC1->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
-	if(fabs(probejet_eta)<2.650 && fabs(probejet_eta)>2.5) 
-	  h_hadrons_EC2->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
-	if(fabs(probejet_eta)<3.839 && fabs(probejet_eta)>3.489) 
-	  h_hadrons_HF->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
 
-	if(jet_n>2 && idx_matched_RecoGenjets[2]>-1)
-	  h_hadrons_3rdjet->fill(event,idx_matched_RecoGenjets[2],2);
-	//fill hadron hists per pt bins
-	//The same as trigger selection, but without triggers
-	bool eta_cut_bool = abs(probejet_eta) <  eta_cut;     
-	if(!trigger_fwd) eta_cut_bool = true;
-	bool eta_cut_bool_HF = abs(probejet_eta) >=  eta_cut;
-	if(!trigger_central) eta_cut_bool_HF = true;      
+	//	h_hadrons->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
+	h_matched_all->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);//event, gen_id, reco_id
+       	bool isStop=false;
+	for(int jpt=0;jpt<n_pt-1;jpt++){
+	    if((event.genjets->at(idx_matched_RecoGenjets[idx_probejet]).pt())>pt_bins[jpt] && ((event.genjets->at(idx_matched_RecoGenjets[idx_probejet]).pt())<=pt_bins[jpt+1])){
+	      h_matched_pt[jpt]->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);//event, gen_id, reco_id
+	      isStop = true;
+	    }
+	    if(isStop) break;
+	  }
+	// if(fabs(probejet_eta)<0.522 && fabs(probejet_eta)>0.261) 
+	//   h_hadrons_BB->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
+	// if(fabs(probejet_eta)<2.322 && fabs(probejet_eta)>2.172) 
+	//   h_hadrons_EC1->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
+	// if(fabs(probejet_eta)<2.650 && fabs(probejet_eta)>2.5) 
+	//   h_hadrons_EC2->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
+	// if(fabs(probejet_eta)<3.839 && fabs(probejet_eta)>3.489) 
+	//   h_hadrons_HF->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
+
+	// if(jet_n>2 && idx_matched_RecoGenjets[2]>-1)
+	//   h_hadrons_3rdjet->fill(event,idx_matched_RecoGenjets[2],2);
+	// //fill hadron hists per pt bins
+	// //The same as trigger selection, but without triggers
+	// bool eta_cut_bool = abs(probejet_eta) <  eta_cut;     
+	// if(!trigger_fwd) eta_cut_bool = true;
+	// bool eta_cut_bool_HF = abs(probejet_eta) >=  eta_cut;
+	// if(!trigger_central) eta_cut_bool_HF = true;      
       
-	bool pass_trigger40_MC = (pt_ave>trg_thresh[0]   && pt_ave<trg_thresh[1]);//remove requirement on eta_bool = add one more bin in forward region
-	bool pass_trigger60_MC = (pt_ave>trg_thresh[1]   && pt_ave<trg_thresh[2] && eta_cut_bool);
-	bool pass_trigger80_MC = (pt_ave>trg_thresh[2]   && pt_ave<trg_thresh[3]&& eta_cut_bool); 
-	bool pass_trigger140_MC = (pt_ave>trg_thresh[3] && pt_ave<trg_thresh[4]&& eta_cut_bool); 
-	bool pass_trigger200_MC = (pt_ave>trg_thresh[4] && pt_ave<trg_thresh[5]&& eta_cut_bool); 
-	bool pass_trigger260_MC = (pt_ave>trg_thresh[5] && pt_ave<trg_thresh[6]&& eta_cut_bool);
-	bool pass_trigger320_MC = (pt_ave>trg_thresh[6] && pt_ave<trg_thresh[7]&& eta_cut_bool);
-	bool pass_trigger400_MC = (pt_ave>trg_thresh[7] && pt_ave<trg_thresh[8]&& eta_cut_bool);
-	bool pass_trigger500_MC = (pt_ave>trg_thresh[8] && eta_cut_bool);
+	// bool pass_trigger40_MC = (pt_ave>trg_thresh[0]   && pt_ave<trg_thresh[1]);//remove requirement on eta_bool = add one more bin in forward region
+	// bool pass_trigger60_MC = (pt_ave>trg_thresh[1]   && pt_ave<trg_thresh[2] && eta_cut_bool);
+	// bool pass_trigger80_MC = (pt_ave>trg_thresh[2]   && pt_ave<trg_thresh[3]&& eta_cut_bool); 
+	// bool pass_trigger140_MC = (pt_ave>trg_thresh[3] && pt_ave<trg_thresh[4]&& eta_cut_bool); 
+	// bool pass_trigger200_MC = (pt_ave>trg_thresh[4] && pt_ave<trg_thresh[5]&& eta_cut_bool); 
+	// bool pass_trigger260_MC = (pt_ave>trg_thresh[5] && pt_ave<trg_thresh[6]&& eta_cut_bool);
+	// bool pass_trigger320_MC = (pt_ave>trg_thresh[6] && pt_ave<trg_thresh[7]&& eta_cut_bool);
+	// bool pass_trigger400_MC = (pt_ave>trg_thresh[7] && pt_ave<trg_thresh[8]&& eta_cut_bool);
+	// bool pass_trigger500_MC = (pt_ave>trg_thresh[8] && eta_cut_bool);
       
-	//FWD Trigger
-	bool pass_trigger60_HFJEC_MC = (trigger_fwd && pt_ave>trgHF_thresh[0]   && pt_ave<trgHF_thresh[1] &&eta_cut_bool_HF);
-	bool pass_trigger80_HFJEC_MC = (trigger_fwd && pt_ave>trgHF_thresh[1]   && pt_ave<trgHF_thresh[2] && eta_cut_bool_HF);
-	bool pass_trigger100_HFJEC_MC = (trigger_fwd && pt_ave>trgHF_thresh[2] && pt_ave<trgHF_thresh[3] &&eta_cut_bool_HF);
-	bool pass_trigger160_HFJEC_MC = (trigger_fwd && pt_ave>trgHF_thresh[3] && pt_ave<trgHF_thresh[4] && eta_cut_bool_HF);
-	bool pass_trigger220_HFJEC_MC = (trigger_fwd && pt_ave>trgHF_thresh[4] && pt_ave<trgHF_thresh[5] && eta_cut_bool_HF);
-	bool pass_trigger300_HFJEC_MC = (trigger_fwd && pt_ave>trgHF_thresh[5] && eta_cut_bool_HF);      
+	// //FWD Trigger
+	// bool pass_trigger60_HFJEC_MC = (trigger_fwd && pt_ave>trgHF_thresh[0]   && pt_ave<trgHF_thresh[1] &&eta_cut_bool_HF);
+	// bool pass_trigger80_HFJEC_MC = (trigger_fwd && pt_ave>trgHF_thresh[1]   && pt_ave<trgHF_thresh[2] && eta_cut_bool_HF);
+	// bool pass_trigger100_HFJEC_MC = (trigger_fwd && pt_ave>trgHF_thresh[2] && pt_ave<trgHF_thresh[3] &&eta_cut_bool_HF);
+	// bool pass_trigger160_HFJEC_MC = (trigger_fwd && pt_ave>trgHF_thresh[3] && pt_ave<trgHF_thresh[4] && eta_cut_bool_HF);
+	// bool pass_trigger220_HFJEC_MC = (trigger_fwd && pt_ave>trgHF_thresh[4] && pt_ave<trgHF_thresh[5] && eta_cut_bool_HF);
+	// bool pass_trigger300_HFJEC_MC = (trigger_fwd && pt_ave>trgHF_thresh[5] && eta_cut_bool_HF);      
 
 
-	if(pass_trigger40_MC) h_hadrons_trg40->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
-	if(pass_trigger60_MC) h_hadrons_trg60->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
-	if(pass_trigger80_MC) h_hadrons_trg80->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
-	if(pass_trigger140_MC) h_hadrons_trg140->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
-	if(pass_trigger200_MC) h_hadrons_trg200->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
-	if(pass_trigger260_MC) h_hadrons_trg260->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
-	if(pass_trigger320_MC) h_hadrons_trg320->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
-	if(pass_trigger400_MC) h_hadrons_trg400->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
-	if(pass_trigger500_MC) h_hadrons_trg500->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
-	if(pass_trigger60_HFJEC_MC) h_hadrons_trgHF60->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
-	if(pass_trigger80_HFJEC_MC) h_hadrons_trgHF80->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
-	if(pass_trigger100_HFJEC_MC) h_hadrons_trgHF100->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
-	if(pass_trigger160_HFJEC_MC) h_hadrons_trgHF160->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
-	if(pass_trigger220_HFJEC_MC) h_hadrons_trgHF220->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
-	if(pass_trigger300_HFJEC_MC) h_hadrons_trgHF300->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
+	// if(pass_trigger40_MC) h_hadrons_trg40->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
+	// if(pass_trigger60_MC) h_hadrons_trg60->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
+	// if(pass_trigger80_MC) h_hadrons_trg80->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
+	// if(pass_trigger140_MC) h_hadrons_trg140->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
+	// if(pass_trigger200_MC) h_hadrons_trg200->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
+	// if(pass_trigger260_MC) h_hadrons_trg260->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
+	// if(pass_trigger320_MC) h_hadrons_trg320->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
+	// if(pass_trigger400_MC) h_hadrons_trg400->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
+	// if(pass_trigger500_MC) h_hadrons_trg500->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
+	// if(pass_trigger60_HFJEC_MC) h_hadrons_trgHF60->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
+	// if(pass_trigger80_HFJEC_MC) h_hadrons_trgHF80->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
+	// if(pass_trigger100_HFJEC_MC) h_hadrons_trgHF100->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
+	// if(pass_trigger160_HFJEC_MC) h_hadrons_trgHF160->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
+	// if(pass_trigger220_HFJEC_MC) h_hadrons_trgHF220->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
+	// if(pass_trigger300_HFJEC_MC) h_hadrons_trgHF300->fill(event,idx_matched_RecoGenjets[idx_probejet],idx_probejet);
 
       }
       if(idx_matched_RecoGenjets[idx_probejet]<0 && idx_matched_jets[idx_probejet]<0){ //nothing is matched
@@ -2119,8 +2302,118 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
  	probejet_statusptcl = -1;
  	probejet_drminparton = -1;
 	dR_GenJet_GenParticle_probe_matched =  -1;
+	// h_badRECO_all->fill(event,idx_probejet);//event, reco_id
+	// bool isStop=false;
+	//   for(int kpt=0;kpt<n_pt-1;kpt++){
+	//     if((event.jets->at(idx_probejet).pt())>pt_bins[kpt] && ((event.jets->at(idx_probejet).pt())<=pt_bins[kpt+1])){
+	//       h_badRECO_pt[kpt]->fill(event,idx_probejet);//event, reco_id
+	//       isStop = true;
+	//     }
+	//     if(isStop) break;
+	//   }
       }
  
+
+      //Fill PUid related histograms
+      for(int idx_curr=0;idx_curr<2;idx_curr++){//barrel and leading jets
+	if(idx_matched_RecoGenjets[idx_curr] !=-1){//RECO to GEN
+	  h_goodRECO_all->fill(event,idx_curr);//event, reco_id
+	  bool isStop=false;
+	  for(int kpt=0;kpt<n_pt-1;kpt++){
+	    if((event.jets->at(idx_curr).pt())>pt_bins[kpt] && ((event.jets->at(idx_curr).pt())<=pt_bins[kpt+1])){
+	      h_goodRECO_pt[kpt]->fill(event,idx_curr);//event, reco_id
+	      isStop = true;
+	    }
+	    if(isStop) break;
+	  }
+	  if(idx_matched_jets[idx_matched_RecoGenjets[idx_curr]] !=-1){ //parton is matched
+	    h_goodpartonRECO_all->fill(event,idx_curr);//event, reco_id
+	    bool isStop=false;
+	    for(int kpt=0;kpt<n_pt-1;kpt++){
+	      if((event.jets->at(idx_curr).pt())>pt_bins[kpt] && ((event.jets->at(idx_curr).pt())<=pt_bins[kpt+1])){
+		h_goodpartonRECO_pt[kpt]->fill(event,idx_curr);//event, reco_id
+		isStop = true;
+	      }
+	      if(isStop) break;
+	    }
+	  }
+	  else{//parton is not matched
+	    h_badpartonRECO_all->fill(event,idx_curr);//event, reco_id
+	    bool isStop=false;
+	    for(int kpt=0;kpt<n_pt-1;kpt++){
+	      if((event.jets->at(idx_curr).pt())>pt_bins[kpt] && ((event.jets->at(idx_curr).pt())<=pt_bins[kpt+1])){
+		h_badpartonRECO_pt[kpt]->fill(event,idx_curr);//event, reco_id
+		isStop = true;
+	      }
+	      if(isStop) break;
+	    }	  
+	  }
+	}
+	else{//RECO and GEN are not matched
+	  h_badRECO_all->fill(event,idx_curr);//event, reco_id
+	  bool isStop=false;
+	  for(int kpt=0;kpt<n_pt-1;kpt++){
+	    if((event.jets->at(idx_curr).pt())>pt_bins[kpt] && ((event.jets->at(idx_curr).pt())<=pt_bins[kpt+1])){
+	      h_badRECO_pt[kpt]->fill(event,idx_curr);//event, reco_id
+	      isStop = true;
+	    }
+	    if(isStop) break;
+	  }	  
+	}
+      }
+      if(jet_n>2){
+      for(int idx_curr=2;idx_curr<3;idx_curr++){//3rd jets
+	//	cout<<"Fill PU hists for 3rd jet"<<endl;
+	if(idx_matched_RecoGenjets[idx_curr] !=-1){//RECO to GEN
+	  //	  cout<<"3rd jet IS matched"<<endl;
+	  h_goodRECO_3rd_all->fill(event,idx_curr);//event, reco_id
+	  bool isStop=false;
+	  for(int kpt=0;kpt<n_pt-1;kpt++){
+	    if((event.jets->at(idx_curr).pt())>pt_bins[kpt] && ((event.jets->at(idx_curr).pt())<=pt_bins[kpt+1])){
+	      h_goodRECO_3rd_pt[kpt]->fill(event,idx_curr);//event, reco_id
+	      isStop = true;
+	    }
+	    if(isStop) break;
+	  }
+	  if(idx_matched_jets[idx_matched_RecoGenjets[idx_curr]] !=-1){ //parton is matched
+	    h_goodpartonRECO_3rd_all->fill(event,idx_curr);//event, reco_id
+	    bool isStop=false;
+	    for(int kpt=0;kpt<n_pt-1;kpt++){
+	      if((event.jets->at(idx_curr).pt())>pt_bins[kpt] && ((event.jets->at(idx_curr).pt())<=pt_bins[kpt+1])){
+		h_goodpartonRECO_3rd_pt[kpt]->fill(event,idx_curr);//event, reco_id
+		isStop = true;
+	      }
+	      if(isStop) break;
+	    }
+	  }
+	  else{//parton is not matched
+	    h_badpartonRECO_3rd_all->fill(event,idx_curr);//event, reco_id
+	    bool isStop=false;
+	    for(int kpt=0;kpt<n_pt-1;kpt++){
+	      if((event.jets->at(idx_curr).pt())>pt_bins[kpt] && ((event.jets->at(idx_curr).pt())<=pt_bins[kpt+1])){
+		h_badpartonRECO_3rd_pt[kpt]->fill(event,idx_curr);//event, reco_id
+		isStop = true;
+	      }
+	      if(isStop) break;
+	    }	  
+	  }
+	}
+	else{//RECO_3rd and GEN are not matched
+	  //	  cout<<"3rd jet is not matched"<<endl;
+	  h_badRECO_3rd_all->fill(event,idx_curr);//event, reco_id
+	  bool isStop=false;
+	  for(int kpt=0;kpt<n_pt-1;kpt++){
+	    if((event.jets->at(idx_curr).pt())>pt_bins[kpt] && ((event.jets->at(idx_curr).pt())<=pt_bins[kpt+1])){
+	      h_badRECO_3rd_pt[kpt]->fill(event,idx_curr);//event, reco_id
+	      isStop = true;
+	    }
+	    if(isStop) break;
+	  }	  
+	}
+      }
+      }
+
+
 
       //find the closest parton to the jet even if not matched (to check dR matching)
       //Code should be the same as matching before!
@@ -2357,7 +2650,31 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
 
     } //isMC
 
-    else{
+    else{//data
+      for(unsigned int idx_probejet=0; idx_probejet<2; idx_probejet++){
+	h_dataRECO_all->fill(event,idx_probejet);//event, reco_id
+	bool isStop=false;
+	for(int kpt=0;kpt<n_pt-1;kpt++){
+	  if((event.jets->at(idx_probejet).pt())>pt_bins[kpt] && ((event.jets->at(idx_probejet).pt())<=pt_bins[kpt+1])){
+	    h_dataRECO_pt[kpt]->fill(event,idx_probejet);//event, reco_id
+	    isStop = true;
+	  }
+	  if(isStop) break;
+	}
+      }
+
+      if(event.jets->size()>2){
+	h_dataRECO_3rd_all->fill(event,2);//event, reco_id
+	bool isStop=false;
+	for(int kpt=0;kpt<n_pt-1;kpt++){
+	  if((event.jets->at(2).pt())>pt_bins[kpt] && ((event.jets->at(2).pt())<=pt_bins[kpt+1])){
+	    h_dataRECO_3rd_pt[kpt]->fill(event,2);//event, reco_id
+	    isStop = true;
+	  }
+	  if(isStop) break;
+	}
+      }
+
       event.set(tt_flavor3rdjet,-1);   
       event.set(tt_flavorBarreljet,-1);   
       event.set(tt_responseBarreljet,-1);   
@@ -2412,6 +2729,7 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
  
     event.set(tt_dR_jet3_barreljet,dR_jet3_barreljet);
     event.set(tt_dR_jet3_probejet,dR_jet3_probejet);   
+    event.set(tt_ev_weight,event.weight);
     if(debug) cout<<"THIS IS THE END"<<endl;
     //    if(debug) cout<<"parton - GEN jet "<<event.get(tt_parton1_genjetID)<<" "<<event.get(tt_parton2_genjetID)<<" parton - RECO jet "<<event.get(tt_parton1_jetID)<<" "<<event.get(tt_parton2_jetID)<<endl;
     return true;

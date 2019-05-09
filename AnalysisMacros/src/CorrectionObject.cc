@@ -68,19 +68,24 @@ CorrectionObject::CorrectionObject(const TString & runnr, const TString & genera
       if(_DATAFile->GetSize()==-1) throw runtime_error("In CorrectionObject.cc: File or Directory " + _DATApath+" does not exist!");
 
 
-      //lumitags
-      if(_runnr == "BC") _lumitag      = "RunBC 14.4 fb^{-1}";   //2017! 
-      //FIXME differentiate between 2016 (5.8 fb^{-1}) and 2017
-      else if(_runnr == "B") _lumitag      = "RunB  4.8 fb^{-1}";
-      else if(_runnr == "C") _lumitag      = "RunC  9.6 fb^{-1}";
-      else if(_runnr == "D") _lumitag      = "RunD  4.2 fb^{-1}";
-      else if(_runnr == "E") _lumitag      = "RunE  9.3 fb^{-1}";
-      else if(_runnr == "F") _lumitag      = "RunF  13.5 fb^{-1}";
-      else if(_runnr == "DE") _lumitag      = "RunDE  13.5 fb^{-1}"; 
-      else if(_runnr == "DEF") _lumitag      = "RunDEF  26.9 fb^{-1}"; 
-      else if(_runnr == "BCD") _lumitag      = "RunBCD  18.6 fb^{-1}";
-      else if(_runnr == "BCDEF") _lumitag      = "RunBCDEF  41.3 fb^{-1}";
-      else if(_runnr == "CDEF") _lumitag      = "RunCDEF 36.5 fb^{-1}";
+      // //lumitags
+      // if(_runnr == "BC") _lumitag      = "RunBC 14.4 fb^{-1}";   //2017! 
+      // //FIXME differentiate between 2016 (5.8 fb^{-1}) and 2017
+      // else if(_runnr == "B") _lumitag      = "RunB  4.8 fb^{-1}";
+      // else if(_runnr == "C") _lumitag      = "RunC  9.6 fb^{-1}";
+      // else if(_runnr == "D") _lumitag      = "RunD  4.2 fb^{-1}";
+      // else if(_runnr == "E") _lumitag      = "RunE  9.3 fb^{-1}";
+      // else if(_runnr == "F") _lumitag      = "RunF  13.5 fb^{-1}";
+      // else if(_runnr == "DE") _lumitag      = "RunDE  13.5 fb^{-1}"; 
+      // else if(_runnr == "DEF") _lumitag      = "RunDEF  26.9 fb^{-1}"; 
+      // else if(_runnr == "BCD") _lumitag      = "RunBCD  18.6 fb^{-1}";
+      // else if(_runnr == "BCDEF") _lumitag      = "RunBCDEF  41.3 fb^{-1}";
+      // else if(_runnr == "CDEF") _lumitag      = "RunCDEF 36.5 fb^{-1}";
+
+      if(_runnr == "A") _lumitag      = "Run2018A 13.48 fb^{-1}";   //2018!
+      else if(_runnr == "B") _lumitag      = "Run2018B  6.79 fb^{-1}";
+      else if(_runnr == "C") _lumitag      = "Run2018C  6.61 fb^{-1}";
+      else if(_runnr == "D") _lumitag      = "Run2018D  31.95 fb^{-1}";
       else throw runtime_error("In constructor: Invalid RunNr. specified.");
     }
 

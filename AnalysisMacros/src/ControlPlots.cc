@@ -20,7 +20,7 @@ void CorrectionObject::ControlPlots(bool forEverySingleTrigger){
   gStyle->SetOptStat(0);
   gStyle->SetPalette(55);
   
-  TString dirNames[16] = {"Selection", "HLT_PFJet40", "HLT_PFJet60", "HLT_PFJet80","HLT_PFJet140","HLT_PFJet200","HLT_PFJet260","HLT_PFJet320","HLT_PFJet400","HLT_PFJet500", "HLT_DiPFJetAve60_HFJEC", "HLT_DiPFJetAve80_HFJEC", "HLT_DiPFJetAve100_HFJEC", "HLT_DiPFJetAve160_HFJEC", "HLT_DiPFJetAve220_HFJEC", "HLT_DiPFJetAve300_HFJEC"};
+  TString dirNames[16] = {"Selection", "HLT_DiPFJetAve40", "HLT_DiPFJetAve60", "HLT_DiPFJetAve80","HLT_DiPFJetAve140","HLT_DiPFJetAve200","HLT_DiPFJetAve260","HLT_DiPFJetAve320","HLT_DiPFJetAve400","HLT_DiPFJetAve500", "HLT_DiPFJetAve60_HFJEC", "HLT_DiPFJetAve80_HFJEC", "HLT_DiPFJetAve100_HFJEC", "HLT_DiPFJetAve160_HFJEC", "HLT_DiPFJetAve220_HFJEC", "HLT_DiPFJetAve300_HFJEC"};
 
   int loop_inter = 1;
   if(forEverySingleTrigger) loop_inter=16;
@@ -30,7 +30,7 @@ void CorrectionObject::ControlPlots(bool forEverySingleTrigger){
    TString dirName = (TString)dirNames[i];
    
     cout<<endl;  
-   cout<<dirName<<endl;
+    cout<<"DirName: "<<dirName<<endl;
       
   TString DATAtitle = "DATA";
   TString MCtitle = "MC";
@@ -80,6 +80,9 @@ void CorrectionObject::ControlPlots(bool forEverySingleTrigger){
     cout<<"no MC found, wont be used"<<endl;
     use_mc=false;
   }
+  else{
+    cout<<"Number of events in MC: "<<pt_jet1_MC->GetEntries()<<endl;
+  }
 
   cout<<"+++++++++++++++++++++ Plot extremely nice histograms ++++++++++++++++++++++++++++\n";
   TCanvas* a = new TCanvas();
@@ -101,6 +104,15 @@ if(use_mc)     pt_jet1_DATA->GetYaxis()->SetRangeUser(0,0.1);
   pt_jet1_MC->SetMarkerSize(0.5);
   pt_jet1_MC->SetMarkerColor(2);
   pt_jet1_MC->SetLineColor(2);
+  if(use_mc){
+    cout<<"pt_jet1_MC->Integral() = "<<pt_jet1_MC->Integral()<<endl;
+    cout<<"pt_jet2_MC->Integral() = "<<pt_jet2_MC->Integral()<<endl;
+    cout<<"pt_jet3_MC->Integral() = "<<pt_jet3_MC->Integral()<<endl;
+    cout<<"pt_jet1_DATA->Integral() = "<<pt_jet1_DATA->Integral()<<endl;
+    cout<<"pt_jet2_DATA->Integral() = "<<pt_jet2_DATA->Integral()<<endl;
+    cout<<"pt_jet3_DATA->Integral() = "<<pt_jet3_DATA->Integral()<<endl;
+
+  }
   if(use_mc)  pt_jet1_MC->Scale(1/pt_jet1_MC->Integral());
   if(use_mc)    pt_jet1_MC->Draw("same");
 
@@ -206,8 +218,8 @@ if(use_mc)     pt_jet2_DATA->GetYaxis()->SetRangeUser(0,0.1);
     // cout<<a<<endl;
     // a->Draw();
          // cout<<"1.2\n"; 
-    a->Print(SavePlots + "_jets.pdf","pdf");
-    // cout<<"1.5\n";
+  a->Print(SavePlots + "_jets.pdf","pdf");
+  cout<<" Random message 1 \n";
 
   TCanvas* b = new TCanvas();
   b->Divide(3,2);

@@ -87,10 +87,13 @@ using namespace std;
     //Main functions for calculating L2 residuals, defined in CorrectionObject.cc
     void ControlPlots(bool forEverySingleTrigger = false);
     void ControlPlotsHadrons(bool forEverySingleTrigger = true);
+    void ControlPlotsRecoGenCompare(bool forEverySingleTrigger = true);
+    void ControlPlotsRecoGenCompareFrac(bool forEverySingleTrigger = true);
+    void ControlPlotsPUjets(bool forEverySingleTrigger = true);
+    /* void Derive_Thresholds_SiMuCrosscheck(TString siMu_dirName_); */
+    /* void Derive_Thresholds_SiJet(bool pt_check = false, bool useHF = false); */
+    /* void Derive_Thresholds_DiJet(bool pt_check = false, bool useHF = false); */
 
-    void Derive_Thresholds_SiMuCrosscheck(TString siMu_dirName_);
-    void Derive_Thresholds_SiJet(bool pt_check = false, bool useHF = false);
-    void Derive_Thresholds_DiJet(bool pt_check = false, bool useHF = false);
     void NPVtoEtaPlots();
     void Monitoring(bool SiRuns=false);
     void kFSR();

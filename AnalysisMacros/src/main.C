@@ -102,14 +102,16 @@ int main(int argc,char *argv[]){
 				   "-FCP",
 				   "-tCP",
 				   "-CPHadrons",
+				   "-CPRecGenCompare",
+				    "-CPPUjets",
 				   "-FlavorP",
 				    "-GenResponse",
 				   "-lFCP",
 				   "-aFCP",
-				   "-derThreshSi",
-				   "-derThreshSi_ptCheck",
-				   "-derThreshDi",
-				   "-derThreshDi_ptCheck",
+				   // "-derThreshSi",
+				   // "-derThreshSi_ptCheck",
+				   // "-derThreshDi",
+				   // "-derThreshDi_ptCheck",
 				   "-BC",
 				   "-D",
 				   "-E",
@@ -157,8 +159,11 @@ int main(int argc,char *argv[]){
 				    "--inputDi"};
   
   TString run_nr = "B";
-  TString dataname_end = "17Nov17_2017";
-  TString dataname_endSi = "17Nov17_2017";
+  // TString dataname_end = "17Nov17_2017";
+  // TString dataname_endSi = "17Nov17_2017";
+  TString dataname_end = "_";
+  TString dataname_endSi = "_";
+
   TString outSuf = "";
   bool muonCrosscheck = false;
   TString muonTriggerName = "HLT_Mu17";
@@ -174,14 +179,16 @@ int main(int argc,char *argv[]){
   bool do_fullPlotsef=false;
   bool do_trgControlPlots=false;
   bool do_ControlPlotsHadrons=false;
+  bool do_ControlPlotsRecoGenCompare=false;
+  bool do_ControlPlotsPUjets=false;
   bool do_ControlPlotsFlavor=false;
   bool do_ControlPlotsGeneratorResponse=false;
   bool do_lumiControlPlots=false;
   bool do_asymControlPlots=false;
-  bool do_deriveThresholdsSi=false;
-  bool do_deriveThresholdsSi_ptCheck=false; 
-  bool do_deriveThresholdsDi=false;
-  bool do_deriveThresholdsDi_ptCheck=false;
+  // bool do_deriveThresholdsSi=false;
+  // bool do_deriveThresholdsSi_ptCheck=false; 
+  // bool do_deriveThresholdsDi=false;
+  // bool do_deriveThresholdsDi_ptCheck=false;
   bool do_lumi_plot=false;
   bool do_matchtrg_plot=false;
   bool do_oor_plot=false; 
@@ -255,6 +262,12 @@ int main(int argc,char *argv[]){
 	  else if(arg=="-CPHadrons"){
 	    do_ControlPlotsHadrons=true;
 	  }
+	  else if(arg=="-CPRecGenCompare"){
+	    do_ControlPlotsRecoGenCompare=true;
+	  }
+	  else if(arg=="-CPPUjets"){
+	    do_ControlPlotsPUjets=true;
+	  }
 	  else if(arg=="-FlavorP"){
 	    do_ControlPlotsFlavor=true;
 	  }
@@ -291,18 +304,18 @@ int main(int argc,char *argv[]){
 	  else if(arg=="-useStraightkfsr"){
 	    do_useStraightkfsr=true;
 	  }	  
-	  else if(arg=="-derThreshSi"){
-	    do_deriveThresholdsSi=true;
-	  }
-	  else if(arg=="-derThreshSi_ptCheck"){
-	    do_deriveThresholdsSi_ptCheck=true;
-	  }	  	    	  
-	  else if(arg=="-derThreshDi"){
-	    do_deriveThresholdsDi=true;
-	  }
-	  else if(arg=="-derThreshDi_ptCheck"){
-	    do_deriveThresholdsDi_ptCheck=true;
-	  }	  
+	  // else if(arg=="-derThreshSi"){
+	  //   do_deriveThresholdsSi=true;
+	  // }
+	  // else if(arg=="-derThreshSi_ptCheck"){
+	  //   do_deriveThresholdsSi_ptCheck=true;
+	  // }	  	    	  
+	  // else if(arg=="-derThreshDi"){
+	  //   do_deriveThresholdsDi=true;
+	  // }
+	  // else if(arg=="-derThreshDi_ptCheck"){
+	  //   do_deriveThresholdsDi_ptCheck=true;
+	  // }	  
 	  else if(arg=="-mu"){
 	    muonCrosscheck=true;
 	  }
@@ -379,10 +392,10 @@ int main(int argc,char *argv[]){
 		run_nr = argv[i+1];
 	      }
 	    	    
-	      else if(arg=="--muTrg"){
-		muonTriggerName = argv[i+1];
-		muonCrosscheck=true;
-	      }
+	      // else if(arg=="--muTrg"){
+	      // 	muonTriggerName = argv[i+1];
+	      // 	muonCrosscheck=true;
+	      // }
 	      else if(arg=="--asym_cut"){
 		asym_cut = stod(argv[i+1]);
 	      }
@@ -411,7 +424,8 @@ int main(int argc,char *argv[]){
 	}
   }
 
-  if(not (do_fullPlots or do_fullPlotsef or do_trgControlPlots or do_lumiControlPlots or do_asymControlPlots or do_deriveThresholdsSi or do_deriveThresholdsSi_ptCheck or do_deriveThresholdsDi or do_deriveThresholdsDi_ptCheck or muonCrosscheck or asym_cut or do_lumi_plot  or do_matchtrg_plot or do_finalControlPlots or do_addAsymPlots or do_addAsymPlotsef or do_triggerEx or do_oor_plot or do_matchtrg_plotdi or do_oor_plotdi or do_NPVEtaPlot or do_JEF or do_mon or do_monSi or do_IGF or do_IGFw or do_MEPC or do_calcMCW or kfsrXrange or do_useCombinedkSFR or do_l1bx or do_kFSR or do_L2AR or do_L2JER or do_ControlPlotsHadrons or do_ControlPlotsFlavor or do_ControlPlotsGeneratorResponse)){
+  //  if(not (do_fullPlots or do_fullPlotsef or do_trgControlPlots or do_lumiControlPlots or do_asymControlPlots or do_deriveThresholdsSi or do_deriveThresholdsSi_ptCheck or do_deriveThresholdsDi or do_deriveThresholdsDi_ptCheck or muonCrosscheck or asym_cut or do_lumi_plot  or do_matchtrg_plot or do_finalControlPlots or do_addAsymPlots or do_addAsymPlotsef or do_triggerEx or do_oor_plot or do_matchtrg_plotdi or do_oor_plotdi or do_NPVEtaPlot or do_JEF or do_mon or do_monSi or do_IGF or do_IGFw or do_MEPC or do_calcMCW or kfsrXrange or do_useCombinedkSFR or do_l1bx or do_kFSR or do_L2AR or do_L2JER or do_ControlPlotsHadrons or do_ControlPlotsFlavor or do_ControlPlotsGeneratorResponse)){
+  if(not (do_fullPlots or do_fullPlotsef or do_trgControlPlots or do_lumiControlPlots or do_asymControlPlots or asym_cut or do_lumi_plot  or do_matchtrg_plot or do_finalControlPlots or do_addAsymPlots or do_addAsymPlotsef or do_triggerEx or do_oor_plot or do_matchtrg_plotdi or do_oor_plotdi or do_NPVEtaPlot or do_JEF or do_mon or do_monSi or do_IGF or do_IGFw or do_MEPC or do_calcMCW or kfsrXrange or do_useCombinedkSFR or do_l1bx or do_kFSR or do_L2AR or do_L2JER or do_ControlPlotsHadrons or do_ControlPlotsFlavor or do_ControlPlotsGeneratorResponse or do_ControlPlotsRecoGenCompare or do_ControlPlotsPUjets)){
 
     cout<<"No plots were specified! Only the existence of the files will be checked."<<endl;
     show_usage(argv[0]);
@@ -426,7 +440,7 @@ int main(int argc,char *argv[]){
 
   cout<<"Run Nr.: "<<run_nr<<endl;
   cout<<dataname_end<<mode<<endl;
-  if(muonCrosscheck) cout<<"Doing single muon crosscheck plots"<<endl;
+  //  if(muonCrosscheck) cout<<"Doing single muon crosscheck plots"<<endl;
 
   TString input_path;
   if(input_path_!=""){
@@ -447,7 +461,7 @@ int main(int argc,char *argv[]){
   if(mode!="") input_path+="_";
   input_path+=mode + "/Run";
   input_path+= run_nr;
-  if(muonCrosscheck) input_path +="_"+ muonTriggerName;
+  //  if(muonCrosscheck) input_path +="_"+ muonTriggerName;
   if(dataname_end!="") input_path+="_";
   input_path += dataname_end + ".root";
   }
@@ -500,19 +514,22 @@ int main(int argc,char *argv[]){
     if(do_fullPlotsef) for(unsigned int i=0; i<Objects.size(); i++) Objects[i].FullCycle_CorrectFormulae_eta();    
     if(do_trgControlPlots) for(unsigned int i=0; i<Objects.size(); i++) Objects[i].ControlPlots(true);
     if(do_ControlPlotsHadrons) for(unsigned int i=0; i<Objects.size(); i++) Objects[i].ControlPlotsHadrons(true);
+    //    if(do_ControlPlotsRecoGenCompare) for(unsigned int i=0; i<Objects.size(); i++) Objects[i].ControlPlotsRecoGenCompare(true);
+    if(do_ControlPlotsRecoGenCompare) for(unsigned int i=0; i<Objects.size(); i++) Objects[i].ControlPlotsRecoGenCompareFrac(true);//only fractions
+    if(do_ControlPlotsPUjets) for(unsigned int i=0; i<Objects.size(); i++) Objects[i].ControlPlotsPUjets(true);
+
     if(do_ControlPlotsFlavor) for(unsigned int i=0; i<Objects.size(); i++) Objects[i].Flavor_JetPFFractions();
     if(do_ControlPlotsGeneratorResponse) for(unsigned int i=0; i<Objects.size(); i++) Objects[i].GenResponsePlots();
     if(do_kFSR) for(unsigned int i=0; i<Objects.size(); i++) Objects[i].kFSR_CorrectFormulae();
 
     if(kfsrXrange)for(unsigned int i=0; i<Objects.size(); i++) Objects[i].genJetLinearity();    
 
-    if(do_deriveThresholdsSi) for(unsigned int i=0; i<Objects.size(); i++) Objects[i].Derive_Thresholds_SiJet(false,useHF);
-    if(do_deriveThresholdsSi_ptCheck) for(unsigned int i=0; i<Objects.size(); i++) Objects[i].Derive_Thresholds_SiJet(true,useHF);
+    // if(do_deriveThresholdsSi) for(unsigned int i=0; i<Objects.size(); i++) Objects[i].Derive_Thresholds_SiJet(false,useHF);
+    // if(do_deriveThresholdsSi_ptCheck) for(unsigned int i=0; i<Objects.size(); i++) Objects[i].Derive_Thresholds_SiJet(true,useHF);
 
-    if(do_deriveThresholdsDi) for(unsigned int i=0; i<Objects.size(); i++) Objects[i].Derive_Thresholds_DiJet(false,useHF);
-    if(do_deriveThresholdsDi_ptCheck) for(unsigned int i=0; i<Objects.size(); i++) Objects[i].Derive_Thresholds_DiJet(true,useHF);    
- 
-    if(muonCrosscheck) for(unsigned int i=0; i<Objects.size(); i++) Objects[i].Derive_Thresholds_SiJet();
+    // if(do_deriveThresholdsDi) for(unsigned int i=0; i<Objects.size(); i++) Objects[i].Derive_Thresholds_DiJet(false,useHF);
+    // if(do_deriveThresholdsDi_ptCheck) for(unsigned int i=0; i<Objects.size(); i++) Objects[i].Derive_Thresholds_DiJet(true,useHF);    
+    //    if(muonCrosscheck) for(unsigned int i=0; i<Objects.size(); i++) Objects[i].Derive_Thresholds_SiJet();
     
     if(do_finalControlPlots) for(unsigned int i=0; i<Objects.size(); i++) Objects[i].FinalControlPlots_CorrectFormulae();
     

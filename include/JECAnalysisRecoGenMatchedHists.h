@@ -12,14 +12,14 @@
  * many histograms. Therefore, it is recommended to use histogram
  * pointers as member data instead, like in 'common/include/ElectronHists.h'.
  */
-class JECAnalysisFinalStateHadronsHists: public uhh2::Hists {
-//class JECAnalysisFinalStateHadronsHists: public HistsBASE {
+class JECAnalysisRecoGenMatchedHists: public uhh2::Hists {
+//class JECAnalysisRecoGenMatchedHists: public HistsBASE {
 public:
     // use the same constructor arguments as Hists for forwarding:
-    JECAnalysisFinalStateHadronsHists(uhh2::Context & ctx, const std::string & dirname);
+    JECAnalysisRecoGenMatchedHists(uhh2::Context & ctx, const std::string & dirname);
 
     virtual void fill(const uhh2::Event & ev) override;
     void fill(const uhh2::Event & ev, const int genjet_id, const int recjet_id);
-    virtual ~JECAnalysisFinalStateHadronsHists();
+    virtual ~JECAnalysisRecoGenMatchedHists();
    
 };

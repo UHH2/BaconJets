@@ -25,6 +25,8 @@ Selection::Selection(uhh2::Context & ctx) :
     context(ctx),
     event(0)
 { 
+
+  //FixME: why these variables are declared here?!
   tt_gen_pthat = ctx.declare_event_output<float>("gen_pthat");
   tt_gen_weight = ctx.declare_event_output<float>("gen_weight");
   tt_jet1_pt = ctx.declare_event_output<float>("jet1_pt");

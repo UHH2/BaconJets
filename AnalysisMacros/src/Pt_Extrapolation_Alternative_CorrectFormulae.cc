@@ -298,6 +298,7 @@ void CorrectionObject::Pt_Extrapolation_Alternative_CorrectFormulae(bool mpfMeth
   // double xbin_tgraph[n_pt-1];
   // double zero[n_pt-1];
   double xbin_tgraph[n_eta-1][n_pt_-1];
+
   double zero[n_eta-1][n_pt_-1];
 
 for(int j=0; j<n_eta-1; j++){
@@ -420,7 +421,8 @@ for(int j=0; j<n_eta-1; j++){
       graph1_mpf[j]->GetYaxis()->SetTitle("(R^{MC}/R^{data})");
       graph1_mpf[j]->GetYaxis()->SetTitleSize(0.05);
       graph1_mpf[j]->GetYaxis()->SetTitleOffset(0.80);
-      graph1_mpf[j]->GetYaxis()->SetRangeUser(0.85,1.25);
+      //      graph1_mpf[j]->GetYaxis()->SetRangeUser(0.85,1.25);
+      graph1_mpf[j]->GetYaxis()->SetRangeUser(1.00,1.55);
     }
  
     line->SetLineStyle(2);
@@ -517,10 +519,12 @@ for(int j=0; j<n_eta-1; j++){
 
    //Store plots
    if(mpfMethod){
-      graph1_mpf[j]->Write("pTextrapolation_MPF_"+CorrectionObject::_generator_tag+"_pT_"+eta_range2[j]+"_"+eta_range2[j+1]);
-      asd[j]->Print(CorrectionObject::_outpath+"plots/pTextrapolation_MPF_"+CorrectionObject::_generator_tag+"_pT_"+eta_range2[j]+"_"+eta_range2[j+1]+".pdf");
+     graph1_mpf[j]->SetTitle("");
+     graph1_mpf[j]->Write("pTextrapolation_MPF_"+CorrectionObject::_generator_tag+"_pT_"+eta_range2[j]+"_"+eta_range2[j+1]);
+     asd[j]->Print(CorrectionObject::_outpath+"plots/pTextrapolation_MPF_"+CorrectionObject::_generator_tag+"_pT_"+eta_range2[j]+"_"+eta_range2[j+1]+".pdf");
     }
     else{
+      graph1_mpf[j]->SetTitle("");
       graph1_mpf[j]->Write("pTextrapolation_Pt_"+CorrectionObject::_generator_tag+"_pT_"+eta_range2[j]+"_"+eta_range2[j+1]);
       asd[j]->Print(CorrectionObject::_outpath+"plots/pTextrapolation_Pt_"+CorrectionObject::_generator_tag+"_pT_"+eta_range2[j]+"_"+eta_range2[j+1]+".pdf");
     }

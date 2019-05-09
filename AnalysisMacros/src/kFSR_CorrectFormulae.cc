@@ -148,7 +148,7 @@ void CorrectionObject::kFSR_CorrectFormulae(float pt_min){
 
   while (myReader_DATA.Next()) {
 
-    if(*alpha_data<0) continue; 
+    if(*alpha_data<0.05) continue; 
 
     for(int j=0; j<n_eta-1; j++){
       if(fabs(*probejet_eta_data)>eta_bins[j+1] || fabs(*probejet_eta_data)<eta_bins[j]) continue;
@@ -183,7 +183,7 @@ void CorrectionObject::kFSR_CorrectFormulae(float pt_min){
 
    while (myReader_MC.Next()) {
 
-    if(*alpha_mc<0) continue; 
+    if(*alpha_mc<0.05) continue; 
      //     if(idx>1000) break;//for tetsts
 
      for(int j=0; j<n_eta-1; j++){

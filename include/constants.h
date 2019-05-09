@@ -46,6 +46,11 @@ static std::vector<double>   eta_range  =  {0, 0.261, 0.522, 0.783, 1.044, 1.305
 static std::vector<double>   eta_range_mikko  = {0, 0.783, 1.305, 1.93, 2.5, 2.964, 3.2, 5.191};
 static std::vector<double>   alpha_range= {0., 0.1, 0.125, 0.15, 0.175, 0.2, 0.225, 0.25};
 
+/* constexpr static int n_eta_RelVals = 14; */
+/* static std::vector<double>   eta_range_RelVals  =  {0, 0.522, 1.044, 1.305, 1.653, 1.93, 2.172, 2.322, 2.5, 2.65, 3.139, 3.489, 3.839, 5.191}; */
+constexpr static int n_eta_RelVals = 19;
+static std::vector<double>   eta_range_RelVals  =  {0, 0.261, 0.522, 0.783, 1.044, 1.305, 1.479, 1.653, 1.93, 2.172, 2.322, 2.5, 2.65, 2.853, 2.964, 3.139, 3.489, 3.839, 5.191};
+
 /** \brief Dijet event selection **/
 // barrel region (|eta| < 1.3)
 constexpr static float s_eta_barr = 1.3;
@@ -141,31 +146,37 @@ constexpr static float d_Pt_Ave160HF_cut_2018  = 210;
 constexpr static float d_Pt_Ave220HF_cut_2018  = 279;
 constexpr static float d_Pt_Ave300HF_cut_2018  = 379;
 
-// RunII rough bins, used in LumiHist only
-const int n_pt = 12;
+// RunII rough bins, used in LumiHist only and Reco-GEN matched plots for pt binning
+const int n_pt = 15;
 const double pt_bins[n_pt] = {
+  10,
+  15,
+  20,
+  25,
+  30,
+  40,
   50,
   70,
-  95,
   120,
-  190,
-  260,
-  330,
+  250,
   400,
-  480,
-  590,1000,2000};
+  650,
+  1000,1500,2000};
 
 const TString pt_range[n_pt]={
+  "10",
+  "15",
+  "20",
+  "25",
+  "30",
+  "40",
   "50",
   "70",
-  "95",
   "120",
-  "190",
-  "260",
-  "330",
+  "250",
   "400",
-  "480",
-  "590","1000","2000"};
+  "650",
+  "1000","1500","2000"};
 
 
 const int n_pt_HF = 8;

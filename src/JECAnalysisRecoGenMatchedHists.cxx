@@ -1,4 +1,4 @@
-#include "UHH2/BaconJets/include/JECAnalysisFinalStateHadronsHists.h"
+#include "UHH2/BaconJets/include/JECAnalysisRecoGenMatchedHists.h"
 #include "UHH2/BaconJets/include/constants.h"
 #include "UHH2/core/include/Event.h"
 #include "UHH2/core/include/Jet.h"
@@ -21,7 +21,7 @@ using namespace std;
 using namespace uhh2;
 //using namespace baconhep;
 //    uhh2::Event::Handle<TClonesArray> h_pv;
-JECAnalysisFinalStateHadronsHists::JECAnalysisFinalStateHadronsHists(Context & ctx, const string & dirname): Hists(ctx, dirname){
+JECAnalysisRecoGenMatchedHists::JECAnalysisRecoGenMatchedHists(Context & ctx, const string & dirname): Hists(ctx, dirname){
     // book all histograms here
     // jets
     TH1::SetDefaultSumw2();
@@ -44,8 +44,6 @@ JECAnalysisFinalStateHadronsHists::JECAnalysisFinalStateHadronsHists(Context & c
     ((TH2D*)hist("Hadrons_energy"))->GetXaxis()->SetBinLabel(7,"n");
     ((TH2D*)hist("Hadrons_energy"))->GetXaxis()->SetBinLabel(8,"other");
 
-    //    book<TH2D>("Hadrons_energy_rel", "Hadrons_energy_rel;;hadron energy/GEN jet energy", 8, 0, 8,100,1e-2,1.01);
-    //    book<TH2D>("Hadrons_energy_rel", "Hadrons_energy_rel;;hadron energy/GEN jet energy", 8, 0, 8,100,1e-6,1.01);
     book<TH2D>("Hadrons_energy_rel", "Hadrons_energy_rel;;hadron energy/GEN jet energy", 8, 0, 8,101,0,1.01);
     ((TH2D*)hist("Hadrons_energy_rel"))->GetXaxis()->SetBinLabel(1,"#gamma");
     ((TH2D*)hist("Hadrons_energy_rel"))->GetXaxis()->SetBinLabel(2,"#pi^{#pm}");
@@ -56,9 +54,9 @@ JECAnalysisFinalStateHadronsHists::JECAnalysisFinalStateHadronsHists(Context & c
     ((TH2D*)hist("Hadrons_energy_rel"))->GetXaxis()->SetBinLabel(7,"n");
     ((TH2D*)hist("Hadrons_energy_rel"))->GetXaxis()->SetBinLabel(8,"other");
 
-    double eta_bins[n_eta];                                                                                                                                           
-    for(int i=0; i<n_eta; i++) eta_bins[i] = eta_range[i];  
-    book<TH2D>("Hadrons_genjeteta", "Hadrons_genjeteta;;GEN jet #eta (matched to probe RECO jet)", 8,0,8,n_eta-1, eta_bins);
+    double eta_bins[n_eta_RelVals];                                                                                                                                           
+    for(int i=0; i<n_eta_RelVals; i++) eta_bins[i] = eta_range_RelVals[i];  
+    book<TH2D>("Hadrons_genjeteta", "Hadrons_genjeteta;;GEN jet #eta (matched to probe RECO jet)", 8,0,8,n_eta_RelVals-1, eta_bins);
     ((TH2D*)hist("Hadrons_genjeteta"))->GetXaxis()->SetBinLabel(1,"#gamma");
     //    ((TH2D*)hist("Hadrons_genjeteta"))->GetXaxis()->SetBinLabel(2,"#pi^{0}");
     ((TH2D*)hist("Hadrons_genjeteta"))->GetXaxis()->SetBinLabel(2,"#pi^{#pm}");
@@ -82,7 +80,7 @@ JECAnalysisFinalStateHadronsHists::JECAnalysisFinalStateHadronsHists(Context & c
     ((TH2D*)hist("Hadrons_energy_rel_event"))->GetXaxis()->SetBinLabel(7,"n");
     ((TH2D*)hist("Hadrons_energy_rel_event"))->GetXaxis()->SetBinLabel(8,"other");
 
-    const int fr_vec_nr_pf = 440;
+    const int fr_vec_nr_pf = 110;
     double frac_vec_pf[fr_vec_nr_pf];
     for(int i=0;i<fr_vec_nr_pf;i++){
       //      frac_vec_pf[i] = -0.01+i*1.09/fr_vec_nr_pf;
@@ -95,7 +93,7 @@ JECAnalysisFinalStateHadronsHists::JECAnalysisFinalStateHadronsHists(Context & c
     double hadron_label[hadron_label_nr];
     for(int i=0;i<hadron_label_nr;i++) hadron_label[i] = i;
 
-    book<TH3D>("Hadrons_energy_rel_event_eta", "Hadrons_energy_rel_event_eta;GEN jet #eta;#sum(hadron E)/GEN jet E;", n_eta-1, eta_bins, fr_vec_nr_pf-1, frac_vec_pf, hadron_label_nr-1, hadron_label);
+    book<TH3D>("Hadrons_energy_rel_event_eta", "Hadrons_energy_rel_event_eta;GEN jet #eta;#sum(hadron E)/GEN jet E;", n_eta_RelVals-1, eta_bins, fr_vec_nr_pf-1, frac_vec_pf, hadron_label_nr-1, hadron_label);
     ((TH3D*)hist("Hadrons_energy_rel_event_eta"))->GetZaxis()->SetBinLabel(1,"#gamma");
     ((TH3D*)hist("Hadrons_energy_rel_event_eta"))->GetZaxis()->SetBinLabel(2,"#pi^{#pm}");
     ((TH3D*)hist("Hadrons_energy_rel_event_eta"))->GetZaxis()->SetBinLabel(3,"K^{0}_{L}");
@@ -109,7 +107,7 @@ JECAnalysisFinalStateHadronsHists::JECAnalysisFinalStateHadronsHists(Context & c
     const int pf_label_nr = 6;
     double pf_label[pf_label_nr];
     for(int i=0;i<pf_label_nr;i++) pf_label[i] = i;
-    book<TH3D>("PF_frac_event_eta", "PF_frac_event_eta;RECO jet #eta;PF fraction;", n_eta-1, eta_bins, fr_vec_nr_pf-1, frac_vec_pf, pf_label_nr-1, pf_label);
+    book<TH3D>("PF_frac_event_eta", "PF_frac_event_eta;RECO jet #eta;PF fraction;", n_eta_RelVals-1, eta_bins, fr_vec_nr_pf-1, frac_vec_pf, pf_label_nr-1, pf_label);
     ((TH3D*)hist("PF_frac_event_eta"))->GetZaxis()->SetBinLabel(1,"Neut. Had");
     ((TH3D*)hist("PF_frac_event_eta"))->GetZaxis()->SetBinLabel(2,"Ch. Had");
     ((TH3D*)hist("PF_frac_event_eta"))->GetZaxis()->SetBinLabel(3,"Neut. EM");
@@ -125,26 +123,32 @@ JECAnalysisFinalStateHadronsHists::JECAnalysisFinalStateHadronsHists(Context & c
 
 
 
-    const int fr_vec_nr = 404;
+    const int fr_vec_nr = 202;
     //    const int fr_vec_nr = 109;
     double frac_vec[fr_vec_nr];
     for(int i=0;i<fr_vec_nr;i++){
-      //      frac_vec[i] = -0.01+i*4.04/fr_vec_nr;
-      //      frac_vec[i] = 1e-6+i*4.04/fr_vec_nr;
       frac_vec[i] = i*4.04/fr_vec_nr;
-      //      cout<<"frac_vec["<<i<<"] = "<<frac_vec[i]<<endl;
     }
+
     const int pf_label_nr_had = 3;
     double pf_label_had[pf_label_nr_had];
     for(int i=0;i<pf_label_nr_had;i++) pf_label_had[i] = i;   
-    book<TH3D>("PF_to_HAD_event_eta", "PF_to_HAD_event_eta;RECO jet #eta;PF jet fraction/Hadron jet fraction;", n_eta-1, eta_bins, fr_vec_nr-1, frac_vec, pf_label_nr_had-1,pf_label_had);
+    book<TH3D>("PF_to_HAD_event_eta", "PF_to_HAD_event_eta;RECO jet #eta;PF jet fraction/Hadron jet fraction;", n_eta_RelVals-1, eta_bins, fr_vec_nr-1, frac_vec, pf_label_nr_had-1,pf_label_had);
 
-    ((TH3D*)hist("PF_to_HAD_event_eta"))->GetZaxis()->SetBinLabel(1,"(chEM+chHAD)/(#pi^{#pm}+K^{#pm}+p+X^{#pm})");
-    ((TH3D*)hist("PF_to_HAD_event_eta"))->GetZaxis()->SetBinLabel(2,"(neutEM+neutHAD)/(#gamma+K^{0}_{L}+K^{0}_{S}+n+X^{0})");
+    //    ((TH3D*)hist("PF_to_HAD_event_eta"))->GetZaxis()->SetBinLabel(1,"(chEM+chHAD)/(#pi^{#pm}+K^{#pm}+p+X^{#pm})");
+    // ((TH3D*)hist("PF_to_HAD_event_eta"))->GetZaxis()->SetBinLabel(2,"(neutEM+neutHAD)/(#gamma+K^{0}_{L}+K^{0}_{S}+n+X^{0})");
 
-    book<TH3D>("N_PF_to_HAD_event_eta", "N_PF_to_HAD_event_eta;RECO jet #eta;N PF/N hadrons;", n_eta-1, eta_bins, fr_vec_nr-1, frac_vec, pf_label_nr_had-1,pf_label_had);
-    ((TH3D*)hist("N_PF_to_HAD_event_eta"))->GetZaxis()->SetBinLabel(1,"N^{PF}_{charged}/(N_{#pi^{#pm}}+N_{K^{#pm}}+N_{p}+N_{X^{#pm}})");
-    ((TH3D*)hist("N_PF_to_HAD_event_eta"))->GetZaxis()->SetBinLabel(2,"N^{PF}_{neutral}/(N_{#gamma}+N_{K^{0}_{L}}+N_{K^{0}_{S}}+N_{n}+N_{X^{0}})");
+    ((TH3D*)hist("PF_to_HAD_event_eta"))->GetZaxis()->SetBinLabel(1,"(chEM+chHAD)/(GEN charged)");
+    ((TH3D*)hist("PF_to_HAD_event_eta"))->GetZaxis()->SetBinLabel(2,"(neutEM+neutHAD)/(GEN neutral)");
+
+    const int fr_vec_nr_N = 40;
+    double frac_vec_N[fr_vec_nr_N];
+    for(int i=0;i<fr_vec_nr_N;i++){
+      frac_vec_N[i] = i*10.0/fr_vec_nr_N;
+    }
+    book<TH3D>("N_PF_to_HAD_event_eta", "N_PF_to_HAD_event_eta;RECO jet #eta;N PF/N hadrons;", n_eta_RelVals-1, eta_bins, fr_vec_nr_N-1, frac_vec_N, pf_label_nr_had-1,pf_label_had);
+    ((TH3D*)hist("N_PF_to_HAD_event_eta"))->GetZaxis()->SetBinLabel(1,"N^{PF}_{charged}/N^{GEN}_{charged}");
+    ((TH3D*)hist("N_PF_to_HAD_event_eta"))->GetZaxis()->SetBinLabel(2,"N^{PF}_{neutral}/N^{GEN}_{neutral}");
 
 
     book<TH2D>("Hadrons_count_event", "Hadrons_count_event;;number of hadrons (event) ", 8, 0, 8,40,0,40);
@@ -156,20 +160,9 @@ JECAnalysisFinalStateHadronsHists::JECAnalysisFinalStateHadronsHists(Context & c
     ((TH2D*)hist("Hadrons_count_event"))->GetXaxis()->SetBinLabel(6,"p");
     ((TH2D*)hist("Hadrons_count_event"))->GetXaxis()->SetBinLabel(7,"n");
     ((TH2D*)hist("Hadrons_count_event"))->GetXaxis()->SetBinLabel(8,"other");
-    //    ((TH2D*)hist("Hadrons_count_event"))->GetXaxis()->SetBinLabel(9,"total");
 
-    // book<TH1F>("HadronsFraction_genjeteta_gamma", "HadronsFraction_genjeteta_gamma;GEN jet #eta", n_eta-1, eta_bins);
-    // book<TH1F>("HadronsFraction_genjeteta_pipm", "HadronsFraction_genjeteta_pipm;GEN jet #eta", n_eta-1, eta_bins);
-    // book<TH1F>("HadronsFraction_genjeteta_K0L", "HadronsFraction_genjeteta_K0L;GEN jet #eta", n_eta-1, eta_bins);
-    // book<TH1F>("HadronsFraction_genjeteta_K0S", "HadronsFraction_genjeteta_K0S;GEN jet #eta", n_eta-1, eta_bins);
-    // book<TH1F>("HadronsFraction_genjeteta_Kpm", "HadronsFraction_genjeteta_Kpm;GEN jet #eta", n_eta-1, eta_bins);
-    // book<TH1F>("HadronsFraction_genjeteta_p", "HadronsFraction_genjeteta_p;GEN jet #eta", n_eta-1, eta_bins);
-    // book<TH1F>("HadronsFraction_genjeteta_n", "HadronsFraction_genjeteta_n;GEN jet #eta", n_eta-1, eta_bins);
-    // book<TH1F>("HadronsFraction_genjeteta_other", "HadronsFraction_genjeteta_other;GEN jet #eta", n_eta-1, eta_bins);
-
-
-    book<TH2D>("Jets_eta_GenVsReco", "Jets_eta_GenVsReco;GEN jet #eta;RECO jet #eta", n_eta-1, eta_bins, n_eta-1, eta_bins);
-    book<TH2D>("Jets_eta_diffGenVsReco", "Jets_eta_diffGenVsReco;GEN jet #eta;(GEN jet #eta-RECO jet #eta)/GEN jet #eta", n_eta-1, eta_bins, 120, 0, 1.2);
+    book<TH2D>("Jets_eta_GenVsReco", "Jets_eta_GenVsReco;GEN jet #eta;RECO jet #eta", n_eta_RelVals-1, eta_bins, n_eta_RelVals-1, eta_bins);
+    book<TH2D>("Jets_eta_diffGenVsReco", "Jets_eta_diffGenVsReco;GEN jet #eta;(GEN jet #eta-RECO jet #eta)/GEN jet #eta", n_eta_RelVals-1, eta_bins, 120, 0, 1.2);
     const int dR_vec_nr = 5*24;
     double dR_vec[dR_vec_nr];
     for(int i=0;i<dR_vec_nr;i++){
@@ -177,12 +170,17 @@ JECAnalysisFinalStateHadronsHists::JECAnalysisFinalStateHadronsHists(Context & c
     }
     book<TH2D>("Hadrons_energy_rel_dRmax", "Hadrons_energy_rel_dRmax;Max allowed #DeltaR(gen.particle,gen.jet);#sum (hadrons energy)/GEN jet energy", dR_vec_nr-1,dR_vec,100,1e-2,2.01);
     book<TH2D>("Hadron_energy_rel_dR", "Hadron_energy_rel_dR;#DeltaR(gen.particle,gen.jet);single hadron energy/GEN jet energy", dR_vec_nr-1,dR_vec,100,1e-2,2.01);
+
+    book<TH1D>("Response", "Response;pt^{RECO}/pt^{GEN}", 100, 0, 5.);
+    book<TH2D>("Response_eta", "Response; jet #eta; pt^{RECO}/pt^{GEN}", n_eta_RelVals-1, eta_bins,100,0,5.);
+
+
 }
 
-void JECAnalysisFinalStateHadronsHists::fill(const uhh2::Event & ev){
+void JECAnalysisRecoGenMatchedHists::fill(const uhh2::Event & ev){
   fill(ev, 0, 0);
 }
-void JECAnalysisFinalStateHadronsHists::fill(const uhh2::Event & ev, const int gen_jet_id, const int reco_jet_id){
+void JECAnalysisRecoGenMatchedHists::fill(const uhh2::Event & ev, const int gen_jet_id, const int reco_jet_id){
   // fill the histograms. Please note the comments in the header file:
   // 'hist' is used here a lot for simplicity, but it will be rather
   // slow when you have many histograms; therefore, better
@@ -193,8 +191,13 @@ void JECAnalysisFinalStateHadronsHists::fill(const uhh2::Event & ev, const int g
   Jet & probe_jet = ev.jets->at(reco_jet_id);// probe RECO jet
   double dR_GenReco = deltaR(ev.jets->at(reco_jet_id), ev.genjets->at(gen_jet_id));
   GenJet & genj = ev.genjets->at(gen_jet_id);
+  //  if(genj.genparticles_indices().size()<1) return;//FixME: make the code less dependent on constituents stored, because the most important vars are filled during ntuplization (e.g GEN fractions)
   double weight = ev.weight;
-  if(dR_GenReco>0.2)  cout<<"Attention., dR is "<<dR_GenReco<<endl;
+  ((TH2D*)hist("Response_eta"))->Fill(fabs(probe_jet.eta()),probe_jet.pt()/genj.pt(),weight);
+  ((TH1D*)hist("Response"))->Fill(probe_jet.pt()/genj.pt(),weight);
+
+
+  //  if(dR_GenReco>0.2)  cout<<"Attention., dR is "<<dR_GenReco<<endl;
   double genjet_eta=fabs(genj.eta());
   double dEta = fabs(genjet_eta-probe_jet.eta());
   //  if(dEta>1.0) cout<<"Attention., dETA is "<<dEta<<endl;
@@ -217,7 +220,7 @@ void JECAnalysisFinalStateHadronsHists::fill(const uhh2::Event & ev, const int g
 	genjet_energy_recalcTMP += genp.energy();
       }
     }
-    //    cout<<"dR = "<<dR_vec[i]<<" energy Response = "<<genjet_energy_recalcTMP/genjet_energy<<endl;
+    //cout<<"dR = "<<dR_vec[i]<<" energy Response = "<<genjet_energy_recalcTMP/genjet_energy<<endl;
     ((TH2D*)hist("Hadrons_energy_rel_dRmax"))->Fill(dR_vec[i],genjet_energy_recalcTMP/genjet_energy,weight);
   }
   //[END] to select max_dR ---
@@ -237,17 +240,21 @@ void JECAnalysisFinalStateHadronsHists::fill(const uhh2::Event & ev, const int g
   int K0S_count=0; int Kpm_count=0; int p_count=0; int n_count=0;
   int other_count=0;
   double genjet_energy_recalc=0;
-  sort_by_pt<GenParticle>(*ev.genparticles);
+  //  cout<<"genj.genparticles_indices().size() = "<<genj.genparticles_indices().size()<<endl;
+  //  sort_by_pt<GenParticle>(*ev.genparticles);
   for (const auto candInd : genj.genparticles_indices()) {
     GenParticle & genp = ev.genparticles->at(candInd);
     double dr = deltaR(genj,genp); 
+    //    cout<<"deltaR(genj,genp) = "<<deltaR(genj,genp)<<endl;
+    //    double dr=-1;
     if(dr<dr_max){
-      int energycl_id = genp.partonFlavour() ;
+      //      int energycl_id = genp.partonFlavour() ;
+      int energycl_id = genp.pdgId();
       double energycl_energy = genp.energy();
       ((TH2D*)hist("Hadron_energy_rel_dR"))->Fill(dr,energycl_energy/genjet_energy,weight);
     
       genjet_energy_recalc +=energycl_energy;
-      //      cout<<"charge="<<genp.charge()<<" energy="<<energycl_energy<<endl;
+      //      cout<<"charge="<<genp.charge()<<" energy="<<energycl_energy<<" energycl_id = "<<energycl_id<<endl;
       if(genp.charge()==0){
 	neut_energy+=energycl_energy;
 	neut_N++;
@@ -359,36 +366,18 @@ void JECAnalysisFinalStateHadronsHists::fill(const uhh2::Event & ev, const int g
   double chEnergyPF=probe_jet.chargedHadronEnergyFraction()+probe_jet.chargedEmEnergyFraction();
   double neutEnergyGEN=neut_energy/genjet_energy;
   double chEnergyGEN=ch_energy/genjet_energy;
-  ((TH3D*)hist("PF_to_HAD_event_eta"))->Fill(fabs(probe_jet.eta()),chEnergyPF/chEnergyGEN,"(chEM+chHAD)/(#pi^{#pm}+K^{#pm}+p+X^{#pm})",weight);
-  ((TH3D*)hist("PF_to_HAD_event_eta"))->Fill(fabs(probe_jet.eta()),neutEnergyPF/neutEnergyGEN,"(neutEM+neutHAD)/(#gamma+K^{0}_{L}+K^{0}_{S}+n+X^{0})",weight);
+  // ((TH3D*)hist("PF_to_HAD_event_eta"))->Fill(fabs(probe_jet.eta()),chEnergyPF/chEnergyGEN,"(chEM+chHAD)/(#pi^{#pm}+K^{#pm}+p+X^{#pm})",weight);
+  // ((TH3D*)hist("PF_to_HAD_event_eta"))->Fill(fabs(probe_jet.eta()),neutEnergyPF/neutEnergyGEN,"(neutEM+neutHAD)/(#gamma+K^{0}_{L}+K^{0}_{S}+n+X^{0})",weight);
 
-  ((TH3D*)hist("N_PF_to_HAD_event_eta"))->Fill(fabs(probe_jet.eta()),double(probe_jet.chargedMultiplicity())/ch_N,"N^{PF}_{charged}/(N_{#pi^{#pm}}+N_{K^{#pm}}+N_{p}+N_{X^{#pm}})",weight);
-  ((TH3D*)hist("N_PF_to_HAD_event_eta"))->Fill(fabs(probe_jet.eta()),double(probe_jet.neutralMultiplicity())/neut_N,"N^{PF}_{neutral}/(N_{#gamma}+N_{K^{0}_{L}}+N_{K^{0}_{S}}+N_{n}+N_{X^{0}})",weight);
+  ((TH3D*)hist("PF_to_HAD_event_eta"))->Fill(fabs(probe_jet.eta()),chEnergyPF/chEnergyGEN,"(chEM+chHAD)/(GEN charged)",weight);
+  ((TH3D*)hist("PF_to_HAD_event_eta"))->Fill(fabs(probe_jet.eta()),neutEnergyPF/neutEnergyGEN,"(neutEM+neutHAD)/(GEN neutral)",weight);
 
-  // cout<<"-- New Event --"<<endl;
-  // cout<<" PF charged ="<<probe_jet.chargedMultiplicity()<<" HAD ch = "<<ch_N<<" ch fr="<<double(probe_jet.chargedMultiplicity())/ch_N
-  //     <<" PF neutral ="<<probe_jet.neutralMultiplicity()<<" HAD neut = "<<neut_N<<" neut_fr="<<double(probe_jet.neutralMultiplicity())/neut_N<<endl;
-
+  // ((TH3D*)hist("N_PF_to_HAD_event_eta"))->Fill(fabs(probe_jet.eta()),double(probe_jet.chargedMultiplicity())/ch_N,"N^{PF}_{charged}/(N_{#pi^{#pm}}+N_{K^{#pm}}+N_{p}+N_{X^{#pm}})",weight);
+  // ((TH3D*)hist("N_PF_to_HAD_event_eta"))->Fill(fabs(probe_jet.eta()),double(probe_jet.neutralMultiplicity())/neut_N,"N^{PF}_{neutral}/(N_{#gamma}+N_{K^{0}_{L}}+N_{K^{0}_{S}}+N_{n}+N_{X^{0}})",weight);
+  //  cout<<"probe_jet.chargedMultiplicity() = "<<probe_jet.chargedMultiplicity()<<" ch_N = "<<ch_N<<" ratio = "<<double(probe_jet.chargedMultiplicity())/ch_N<<endl;
+  ((TH3D*)hist("N_PF_to_HAD_event_eta"))->Fill(fabs(probe_jet.eta()),double(probe_jet.chargedMultiplicity())/ch_N,"N^{PF}_{charged}/N^{GEN}_{charged}",weight);
+  ((TH3D*)hist("N_PF_to_HAD_event_eta"))->Fill(fabs(probe_jet.eta()),double(probe_jet.neutralMultiplicity())/neut_N,"N^{PF}_{neutral}/N^{GEN}_{neutral}",weight);
  
-  // cout<<"-- New Event --"<<endl;
-  // cout<<"neut.EM+neut.HAD+ch.EM+ch.HAD="<<probe_jet.neutralHadronEnergyFraction()+probe_jet.chargedHadronEnergyFraction()+probe_jet.chargedEmEnergyFraction()+probe_jet.neutralEmEnergyFraction()<<endl;
-  // cout<<"neut.EM+neut.HAD="<<probe_jet.neutralHadronEnergyFraction()+probe_jet.neutralEmEnergyFraction()<<endl;
-  // cout<<"ch.EM+ch.HAD="<<probe_jet.chargedHadronEnergyFraction()+probe_jet.chargedEmEnergyFraction()<<endl;
-  // cout<<"(neut.EM+neut.HAD)/(gamma+K0l+K0s+n)="<<(probe_jet.neutralHadronEnergyFraction()+probe_jet.neutralEmEnergyFraction())*genjet_energy/(gamma_energy+K0L_energy+K0S_energy+n_energy)<<endl;
-  // cout<<"(ch.EM+ch.HAD)/(pipm_energy+Kpm_energy+p_energy)="<<(probe_jet.chargedHadronEnergyFraction()+probe_jet.chargedEmEnergyFraction())*genjet_energy/(pipm_energy+Kpm_energy+p_energy)<<endl;
-
-  // cout<<"(neut.EM+neut.HAD)/(gamma+K0l+K0s+n+X)="<<(probe_jet.neutralHadronEnergyFraction()+probe_jet.neutralEmEnergyFraction())*genjet_energy/(neut_energy)<<endl;
-  // cout<<"(ch.EM+ch.HAD)/(pipm_energy+Kpm_energy+p_energy+X)="<<(probe_jet.chargedHadronEnergyFraction()+probe_jet.chargedEmEnergyFraction())*genjet_energy/(ch_energy)<<endl;
-  // cout<<"neut.EM+neut.HAD+ch.EM+ch.HAD+muon="<<probe_jet.neutralHadronEnergyFraction()+probe_jet.chargedHadronEnergyFraction()+probe_jet.chargedEmEnergyFraction()+probe_jet.neutralEmEnergyFraction()+probe_jet.muonEnergyFraction()<<endl;
-  // cout<<"gamma_count="<<gamma_count<<" pipm_count ="<<pipm_count<<" K0L_count="<<K0L_count<<" K0S_count="<<K0S_count<<" Kpm_count="<<Kpm_count<<" p_count="<<p_count
-  //     <<" n_count="<<n_count<<" other_count="<<other_count<<endl;
-  // cout<<"total="<<tot_hadron_energy/genjet_energy<<" gamma_energy="<<gamma_energy/genjet_energy<<" pipm_energy ="<<pipm_energy/genjet_energy<<" K0L_energy="<<K0L_energy/genjet_energy<<" K0S_energy="<<K0S_energy/genjet_energy<<" Kpm_energy="<<Kpm_energy/genjet_energy<<" p_energy="<<p_energy/genjet_energy<<" n_energy="<<n_energy/genjet_energy<<" other_energy="<<other_energy/genjet_energy<<endl;
-  // cout<<"ch_energy/(pipm_energy+Kpm_energy+p_energy)="<<ch_energy/(pipm_energy+Kpm_energy+p_energy)<<" neut_energy/(gamma+K0l+K0s+n)="
-  //     <<neut_energy/(gamma_energy+K0L_energy+K0S_energy+n_energy)<<endl;
-  // cout<<"Energy="<<genjet_energy<<" Response: recjet_energy/genjet_energy="<<recjet_energy/genjet_energy<<" genjet_energy_recalc/genjet_energy="<<genjet_energy_recalc/genjet_energy<<endl;
-  // cout<<""<<endl;
-
-  //  ((TH2D*)hist("Hadrons_energy_rel_event"))->Fill("total",tot_hadron_energy/genjet_energy,weight);
   ((TH2D*)hist("Hadrons_count_event"))->Fill("#gamma",gamma_count,weight);
   ((TH2D*)hist("Hadrons_count_event"))->Fill("#pi^{#pm}",pipm_count,weight);
   ((TH2D*)hist("Hadrons_count_event"))->Fill("K^{0}_{L}",K0L_count,weight);
@@ -397,7 +386,6 @@ void JECAnalysisFinalStateHadronsHists::fill(const uhh2::Event & ev, const int g
   ((TH2D*)hist("Hadrons_count_event"))->Fill("p",p_count,weight);
   ((TH2D*)hist("Hadrons_count_event"))->Fill("n",n_count,weight);
   ((TH2D*)hist("Hadrons_count_event"))->Fill("other",other_count,weight);
-  //  ((TH2D*)hist("Hadrons_count_event"))->Fill("total",tot_hadron_count,weight);
 
   hist("Hadrons_total_energy_rel_event")->Fill(tot_hadron_energy/genjet_energy,weight);
   hist("Hadrons_total_count_event")->Fill(tot_hadron_count,weight);
@@ -406,4 +394,4 @@ void JECAnalysisFinalStateHadronsHists::fill(const uhh2::Event & ev, const int g
   ((TH2D*)hist("Jets_eta_GenVsReco"))->Fill(genjet_eta,fabs(probe_jet.eta()),weight);
 }
 
-JECAnalysisFinalStateHadronsHists::~JECAnalysisFinalStateHadronsHists(){}
+JECAnalysisRecoGenMatchedHists::~JECAnalysisRecoGenMatchedHists(){}

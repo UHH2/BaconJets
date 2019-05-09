@@ -95,6 +95,7 @@ void CorrectionObject::kFSR_CorrectFormulae_eta(){
   cout << "starting to loop over DATA events." << endl;
 
   while (myReader_DATA.Next()) {
+    if(*alpha_data<0.05) continue; 
     for(int j=0; j<n_eta-1; j++){
       if(*probejet_eta_data>eta_bins[j+1] || *probejet_eta_data<eta_bins[j]) continue;
       for(int i=0; i<n_alpha; i++){
@@ -125,6 +126,7 @@ void CorrectionObject::kFSR_CorrectFormulae_eta(){
    idx = 0;
 
    while (myReader_MC.Next()) {
+     if(*alpha_mc<0.05) continue; 
      for(int j=0; j<n_eta-1; j++){
        if(*probejet_eta_mc>eta_bins[j+1] || *probejet_eta_mc<eta_bins[j]) continue;
        for(int i=0; i<n_alpha; i++){
