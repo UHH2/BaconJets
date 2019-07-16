@@ -83,9 +83,12 @@ CorrectionObject::CorrectionObject(const TString & runnr, const TString & genera
       // else if(_runnr == "CDEF") _lumitag      = "RunCDEF 36.5 fb^{-1}";
 
       if(_runnr == "A") _lumitag      = "Run2018A 13.48 fb^{-1}";   //2018!
+      else if(_runnr == "ABC") _lumitag    = "Run2018ABC  26.88 fb^{-1}";
       else if(_runnr == "B") _lumitag      = "Run2018B  6.79 fb^{-1}";
       else if(_runnr == "C") _lumitag      = "Run2018C  6.61 fb^{-1}";
       else if(_runnr == "D") _lumitag      = "Run2018D  31.95 fb^{-1}";
+      else if(_runnr == "F") _lumitag      = "Run2017F  XX fb^{-1}";//2017!
+
       else throw runtime_error("In constructor: Invalid RunNr. specified.");
     }
 

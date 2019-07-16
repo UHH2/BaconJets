@@ -4,17 +4,18 @@
 #path_Gl=/nfs/dust/cms/user/karavdia/JERC/RunII_102X_v1/2018/Autumn18V8_L1L2L3_NoRes_NoJERsmear_DiJet_FixCS_newSamples_RECO10GeV_dR02_addDATApuid_addMCpartonPUid/
 #path_Gl=/nfs/dust/cms/user/karavdia/JERC/RunII_102X_v1/2018/Autumn18V8_L1L2L3_NoRes_V4ABCJERsmear_DiJet_FixCS_newSamples_RECO10GeV_dR02_addDATApuid_addMCpartonPUid_fixPUidvsPFs
 #path_Gl=/nfs/dust/cms/user/karavdia/JERC/RunII_102X_v1/2018/Autumn18V8_L1L2L3_NoRes_NoJERsmear_DiJet_FixCS_newSamples_RECO10GeV_dR02_addDATApuid_addMCpartonPUid_fixPUidvsPFs/
-path_Gl=/nfs/dust/cms/user/karavdia/JERC/RunII_102X_v1/2018/Autumn18V8_L1L2L3_NoRes_V4ABCJERsmearNoBelow180PTEndcapsmear_DiJet_FixCS_newSamples_RECO10GeV_dR02_addDATApuid_addMCpartonPUid_fixPUidvsPFs/
+#path_Gl=/nfs/dust/cms/user/karavdia/JERC/RunII_102X_v1/2018/Autumn18V8_L1L2L3_NoRes_V4ABCJERsmearNoBelow180PTEndcapsmear_DiJet_FixCS_newSamples_RECO10GeV_dR02_addDATApuid_addMCpartonPUid_fixPUidvsPFs/
+path_Gl=/nfs/dust/cms/user/karavdia/JERC/RunII_102X_v1/2018/Autumn18V8_L1L2L3_NoRes_V4ABCJERsmearPTmodified_DiJet_FixCS_newSamples_RECO10GeV_dR02_addDATApuid_addMCpartonPUid_fixPUidvsPFs_2/
 
 cd ../src/
 
-./main --run A -F -FP --inputMC $path_Gl/uhh2.AnalysisModuleRunner.MC.QCD_HT_2018_AK4CHS.root --input $path_Gl/uhh2.AnalysisModuleRunner.DATA.DATA_RunA_2018_AK4CHS.root --outSuffix _V4JERsfB_noL2L3Res_MadGraph_alphaTEST --Generator madgraph
+./main --run A -F -FP --inputMC $path_Gl/uhh2.AnalysisModuleRunner.MC.QCD_HT_2018_AK4CHS.root --input $path_Gl/uhh2.AnalysisModuleRunner.DATA.DATA_RunA_2018_AK4CHS.root --outSuffix _V4JERsfC_noL2L3Res_MadGraph_alphaTEST --Generator madgraph
 
 #./main --run A -F -CPPUjets --inputMC $path_Gl/uhh2.AnalysisModuleRunner.MC.QCD_HT_2018_AK4CHS.root --input $path_Gl/uhh2.AnalysisModuleRunner.DATA.DATA_RunA_2018_AK4CHS.root --outSuffix _MadGraph_NoJERsf_noL2L3Res_PUhists  --Generator madgraph
 
 #./main --run A -F -FP --inputMC $path_Gl/uhh2.AnalysisModuleRunner.MC.QCD_HT_2018_AK4CHS.root --input $path_Gl/uhh2.AnalysisModuleRunner.DATA.DATA_RunA_2018_AK4CHS.root --outSuffix _NoJERsf_noL2L3Res_MadGraph --Generator madgraph
 
-./main --run A -F -aAP --inputMC $path_Gl/uhh2.AnalysisModuleRunner.MC.QCD_HT_2018_AK4CHS.root --input $path_Gl/uhh2.AnalysisModuleRunner.DATA.DATA_RunA_2018_AK4CHS.root --outSuffix _V4JERsfB_noL2L3Res_MadGraph --Generator madgraph
+#./main --run A -F -aAP --inputMC $path_Gl/uhh2.AnalysisModuleRunner.MC.QCD_HT_2018_AK4CHS.root --input $path_Gl/uhh2.AnalysisModuleRunner.DATA.DATA_RunA_2018_AK4CHS.root --outSuffix _V4JERsfC_noL2L3Res_MadGraph --Generator madgraph
 
 
 # ./main --run A -F -aAP --inputMC $path_Gl/uhh2.AnalysisModuleRunner.MC.QCD_HT_2018_AK4CHS.root --input $path_Gl/uhh2.AnalysisModuleRunner.MC.QCD_HT_2018_AK4CHS.root --outSuffix _noJERsf_Madgraph_Assym --Generator madgraph

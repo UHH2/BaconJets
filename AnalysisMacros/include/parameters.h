@@ -48,7 +48,7 @@ const int triggerValSi_HF[n_triggerSi_HF]  = {60,80,140,200,260,320,400,450,500}
 
 // const int n_pt = 11;
 
-const int n_pt = 14;
+//const int n_pt = 14;
 const int n_pt_Si = 15;
 
 
@@ -73,7 +73,7 @@ const int n_pt_Si = 15;
 // const double pt_bins[n_pt] = {51, 51, 74, 96, 148, 214, 285, 346, 426, 525, 1000, 2000};
 // const TString pt_range[n_pt]= {"51", "51", "74", "96", "148", "214", "285", "346", "426", "525", "1000", "2000"};
 
-
+/*
 //for Di derived triggers 94X 17Nov2017
 //DiJet triggers -------------
 const double pt_bins[n_pt] = {//TODO check which code assumed the "min Bias" bin
@@ -115,6 +115,53 @@ const double pt_bins_HF[n_pt_HF] = {
  239,
  318,
  370,
+ 1000,
+ 2000};
+
+const TString pt_range_HF[n_pt_HF]={"51","73","93","113","176","239","318","370","1000","2000"};
+*/
+
+//Dijet triggers 2018
+const int n_pt = 14;
+const double pt_bins[n_pt] = {//TODO check which code assumed the "min Bias" bin
+  66,
+  93,
+  118,
+  189,
+  257,
+  291,
+  325,
+  358,
+  391,
+  434,
+  478,
+  531,585,1000};
+
+const TString pt_range[n_pt]={
+  "66",
+  "93",
+  "118",
+  "189",
+  "257",
+  "291",
+  "325",
+  "358",
+  "391",
+  "434",
+  "478",
+  "531","585","1000"};
+// // // //for Di derived triggers 94X 17Nov2017
+
+const int n_pt_HF = 10;
+const double pt_bins_HF[n_pt_HF] = {
+ 66,
+ 73,
+ 93,
+ 116,
+ 142,
+ 210,
+ 279,
+ 379,
  1000,
  2000};
 

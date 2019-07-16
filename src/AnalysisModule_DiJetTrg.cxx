@@ -58,7 +58,8 @@ class AnalysisModule_DiJetTrg: public uhh2::AnalysisModule {
   // correctors
   std::unique_ptr<JetCorrector> jet_corrector_A,jet_corrector_B, jet_corrector_C, jet_corrector_D, jet_corrector_E, jet_corrector_F, 
     jet_corrector_G,jet_corrector_H, jet_corrector_MC;
-  std::unique_ptr<GenericJetResolutionSmearer> jetER_smearer; 
+  std::unique_ptr<GenericJetResolutionSmearer> jetER_smearer;
+
   //  std::unique_ptr<GenericJetResolutionSmearer>     JER_smearer;
     // std::unique_ptr<JetCorrector> jet_corrector;
     // std::unique_ptr<JetCorrector>   jet_corrector_B, jet_corrector_C, jet_corrector_D, jet_corrector_E, jet_corrector_F;
@@ -111,11 +112,15 @@ class AnalysisModule_DiJetTrg: public uhh2::AnalysisModule {
   
     Event::Handle<float> tt_jet1_ptGen;  Event::Handle<float> tt_jet2_ptGen;  Event::Handle<float> tt_jet3_ptGen;
     Event::Handle<float> tt_gen_pthat; Event::Handle<float> tt_gen_weight;  Event::Handle<float> tt_gen_PUpthat;
-
+    Event::Handle<bool> tt_JER_SM; //event should be used for StandardMethod JER SFs
  //Different energy fractions in jets
     Event::Handle<float> tt_probejet_neutEmEF; Event::Handle<float> tt_probejet_neutHadEF; 
     Event::Handle<float> tt_probejet_chEmEF; Event::Handle<float> tt_probejet_chHadEF; 
     Event::Handle<float> tt_probejet_photonEF; Event::Handle<float> tt_probejet_muonEF; 
+
+    Event::Handle<float> tt_barreljet_neutEmEF; Event::Handle<float> tt_barreljet_neutHadEF; 
+    Event::Handle<float> tt_barreljet_chEmEF; Event::Handle<float> tt_barreljet_chHadEF; 
+    Event::Handle<float> tt_barreljet_photonEF; Event::Handle<float> tt_barreljet_muonEF; 
 
     Event::Handle<float> tt_jet1_pt;     Event::Handle<float> tt_jet2_pt;     Event::Handle<float> tt_jet3_pt;
     Event::Handle<float> tt_jet3_eta;
@@ -126,16 +131,16 @@ class AnalysisModule_DiJetTrg: public uhh2::AnalysisModule {
     Event::Handle<float> tt_probejet_eta;  Event::Handle<float> tt_probejet_phi; Event::Handle<float> tt_probejet_pt; Event::Handle<float> tt_probejet_ptRaw;
     Event::Handle<float> tt_barreljet_eta;  Event::Handle<float> tt_barreljet_phi; Event::Handle<float> tt_barreljet_pt; Event::Handle<float> tt_barreljet_ptRaw;
     Event::Handle<float> tt_probejet_ptgen;         Event::Handle<float> tt_barreljet_ptgen;     
-  Event::Handle<float> tt_probejet_etagen;  Event::Handle<float> tt_probejet_phigen;
+    Event::Handle<float> tt_probejet_etagen;  Event::Handle<float> tt_probejet_phigen;
     Event::Handle<float> tt_probejet_ptptcl;         Event::Handle<float> tt_barreljet_ptptcl;   
     Event::Handle<int> tt_probejet_statusptcl;         Event::Handle<int> tt_barreljet_statusptcl;   Event::Handle<int> tt_jet3_statusptcl;   
     Event::Handle<int> tt_jet1_genID;     Event::Handle<int> tt_jet2_genID;     Event::Handle<int> tt_jet3_genID;
     Event::Handle<int> tt_jet4_genID;     Event::Handle<int> tt_jet5_genID;     Event::Handle<int> tt_jet6_genID;
     Event::Handle<float> tt_probejet_dRminParton;   Event::Handle<float> tt_barreljet_dRminParton;
-    Event::Handle<int> tt_parton1_genjetID;
-    Event::Handle<int> tt_parton2_genjetID;
-    Event::Handle<int> tt_parton1_jetID;
-    Event::Handle<int> tt_parton2_jetID;
+    // Event::Handle<int> tt_parton1_genjetID;
+    // Event::Handle<int> tt_parton2_genjetID;
+    // Event::Handle<int> tt_parton1_jetID;
+    // Event::Handle<int> tt_parton2_jetID;
 
     Event::Handle<float> tt_pt_ave;
     Event::Handle<float> tt_alpha;
@@ -186,21 +191,13 @@ class AnalysisModule_DiJetTrg: public uhh2::AnalysisModule {
     Event::Handle<int> tt_trigger300_HF;
 
     Event::Handle<int> tt_run; 
-    Event::Handle<int> tt_evID;
+    Event::Handle<long long> tt_evID;
     Event::Handle<int> tt_lumiSec;
   
     Event::Handle<int> tt_jet1_l1bx; 
     Event::Handle<int> tt_jet2_l1bx; 
     Event::Handle<int> tt_jet3_l1bx;  
  
-
-  // std::unique_ptr<JECAnalysisRecoGenMatchedHistsFractions> h_hadrons;
-  // std::unique_ptr<JECAnalysisRecoGenMatchedHistsFractions> h_hadrons_BB;   std::unique_ptr<JECAnalysisRecoGenMatchedHistsFractions> h_hadrons_EC1;
-  // std::unique_ptr<JECAnalysisRecoGenMatchedHistsFractions> h_hadrons_EC2;   std::unique_ptr<JECAnalysisRecoGenMatchedHistsFractions> h_hadrons_HF;
-  // std::unique_ptr<JECAnalysisRecoGenMatchedHistsFractions> h_hadrons_trg40, h_hadrons_trg60, h_hadrons_trg80, h_hadrons_trg140, h_hadrons_trg200,h_hadrons_trg260,h_hadrons_trg320,h_hadrons_trg400,h_hadrons_trg500;
-  // std::unique_ptr<JECAnalysisRecoGenMatchedHistsFractions> h_hadrons_trgHF60, h_hadrons_trgHF80,h_hadrons_trgHF100, h_hadrons_trgHF160,h_hadrons_trgHF220, h_hadrons_trgHF300;   
-
-  // std::unique_ptr<JECAnalysisRecoGenMatchedHistsFractions> h_hadrons_3rdjet;
 
   std::unique_ptr<JECAnalysisRecoGenMatchedHistsFractions> h_matched_all;//uses PF and GEN fractions only
   std::unique_ptr<JECAnalysisRecoGenMatchedHistsFractions> h_matched_pt[n_pt-1];//uses PF and GEN fractions only
@@ -279,8 +276,6 @@ class AnalysisModule_DiJetTrg: public uhh2::AnalysisModule {
 };
 
 void AnalysisModule_DiJetTrg::init_JEC(uhh2::Context& ctx){
-  //FixME: switch from AK4 to AK8, ClosureTest
-  // Jet energy corrections
   std::vector<std::string> JEC_AK4CHS_MC, JEC_AK8CHS_MC, JEC_AK4Puppi_MC, JEC_AK8Puppi_MC;
   std::vector<std::string> JEC_AK4CHS_A, JEC_AK4CHS_B, JEC_AK4CHS_C, JEC_AK4CHS_D, JEC_AK4CHS_E, JEC_AK4CHS_F, JEC_AK4CHS_G, JEC_AK4CHS_H;
   std::vector<std::string> JEC_AK4Puppi_A, JEC_AK4Puppi_B, JEC_AK4Puppi_C, JEC_AK4Puppi_D, JEC_AK4Puppi_E, JEC_AK4Puppi_F, JEC_AK4Puppi_G, JEC_AK4Puppi_H;
@@ -427,106 +422,106 @@ void AnalysisModule_DiJetTrg::init_JEC(uhh2::Context& ctx){
     JEC_AK8Puppi_F_L1RC = JERFiles::Fall17_17Nov2017_V32_F_L1RC_AK8PFPuppi_DATA;
     JEC_AK8Puppi_MC_L1RC = JERFiles::Fall17_17Nov2017_V32_L1RC_AK8PFPuppi_MC;
   }
-  if(is2018 && !ClosureTest){
-    cout<<"AnalysisModule_DiJetTrg uses JEC for 2018 data/MC"<<endl;
-    JEC_AK4CHS_A       = JERFiles::Autumn18_V8_A_L123_AK4PFchs_DATA;
-    JEC_AK4CHS_B       = JERFiles::Autumn18_V8_B_L123_AK4PFchs_DATA;
-    JEC_AK4CHS_C       = JERFiles::Autumn18_V8_C_L123_AK4PFchs_DATA;
-    JEC_AK4CHS_D       = JERFiles::Autumn18_V8_D_L123_AK4PFchs_DATA;
-    JEC_AK4CHS_MC       = JERFiles::Autumn18_V8_L123_AK4PFchs_MC;
+  if(is2018 && ClosureTest){
+    cout<<"AnalysisModule_DiJetTrg uses JEC for 2018 data/MC with L2L3Res"<<endl;
+    JEC_AK4CHS_A       = JERFiles::Autumn18_V13h_A_L123_AK4PFchs_DATA;
+    JEC_AK4CHS_B       = JERFiles::Autumn18_V13h_B_L123_AK4PFchs_DATA;
+    JEC_AK4CHS_C       = JERFiles::Autumn18_V13h_C_L123_AK4PFchs_DATA;
+    JEC_AK4CHS_D       = JERFiles::Autumn18_V13h_D_L123_AK4PFchs_DATA;
+    JEC_AK4CHS_MC       = JERFiles::Autumn18_V13h_L123_AK4PFchs_MC;
 
-    JEC_AK8CHS_A       = JERFiles::Autumn18_V8_A_L123_AK8PFchs_DATA;
-    JEC_AK8CHS_B       = JERFiles::Autumn18_V8_B_L123_AK8PFchs_DATA;
-    JEC_AK8CHS_C       = JERFiles::Autumn18_V8_C_L123_AK8PFchs_DATA;
-    JEC_AK8CHS_D       = JERFiles::Autumn18_V8_D_L123_AK8PFchs_DATA;
-    JEC_AK8CHS_MC      = JERFiles::Autumn18_V8_L123_AK8PFchs_MC;
+    JEC_AK8CHS_A       = JERFiles::Autumn18_V13h_A_L123_AK8PFchs_DATA;
+    JEC_AK8CHS_B       = JERFiles::Autumn18_V13h_B_L123_AK8PFchs_DATA;
+    JEC_AK8CHS_C       = JERFiles::Autumn18_V13h_C_L123_AK8PFchs_DATA;
+    JEC_AK8CHS_D       = JERFiles::Autumn18_V13h_D_L123_AK8PFchs_DATA;
+    JEC_AK8CHS_MC      = JERFiles::Autumn18_V13h_L123_AK8PFchs_MC;
 
-    JEC_AK4Puppi_A = JERFiles::Autumn18_V8_A_L123_AK4PFPuppi_DATA;
-    JEC_AK4Puppi_B = JERFiles::Autumn18_V8_B_L123_AK4PFPuppi_DATA;
-    JEC_AK4Puppi_C = JERFiles::Autumn18_V8_C_L123_AK4PFPuppi_DATA;
-    JEC_AK4Puppi_D = JERFiles::Autumn18_V8_D_L123_AK4PFPuppi_DATA;
-    JEC_AK4Puppi_MC = JERFiles::Autumn18_V8_L123_AK4PFPuppi_MC;
+    JEC_AK4Puppi_A = JERFiles::Autumn18_V13h_A_L123_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_B = JERFiles::Autumn18_V13h_B_L123_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_C = JERFiles::Autumn18_V13h_C_L123_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_D = JERFiles::Autumn18_V13h_D_L123_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_MC = JERFiles::Autumn18_V13h_L123_AK4PFPuppi_MC;
 
-    JEC_AK8Puppi_A = JERFiles::Autumn18_V8_A_L123_AK8PFPuppi_DATA;
-    JEC_AK8Puppi_B = JERFiles::Autumn18_V8_B_L123_AK8PFPuppi_DATA;
-    JEC_AK8Puppi_C = JERFiles::Autumn18_V8_C_L123_AK8PFPuppi_DATA;
-    JEC_AK8Puppi_D = JERFiles::Autumn18_V8_D_L123_AK8PFPuppi_DATA;
-    JEC_AK8Puppi_MC = JERFiles::Autumn18_V8_L123_AK8PFPuppi_MC;
+    JEC_AK8Puppi_A = JERFiles::Autumn18_V13h_A_L123_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_B = JERFiles::Autumn18_V13h_B_L123_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_C = JERFiles::Autumn18_V13h_C_L123_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_D = JERFiles::Autumn18_V13h_D_L123_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_MC = JERFiles::Autumn18_V13h_L123_AK8PFPuppi_MC;
 
-    JEC_AK4CHS_A_L1RC       = JERFiles::Autumn18_V8_A_L1RC_AK4PFchs_DATA;
-    JEC_AK4CHS_B_L1RC      = JERFiles::Autumn18_V8_B_L1RC_AK4PFchs_DATA;
-    JEC_AK4CHS_C_L1RC       = JERFiles::Autumn18_V8_C_L1RC_AK4PFchs_DATA;
-    JEC_AK4CHS_D_L1RC       = JERFiles::Autumn18_V8_D_L1RC_AK4PFchs_DATA;
-    JEC_AK4CHS_MC_L1RC       = JERFiles::Autumn18_V8_L1RC_AK4PFchs_MC;
+    JEC_AK4CHS_A_L1RC       = JERFiles::Autumn18_V13h_A_L1RC_AK4PFchs_DATA;
+    JEC_AK4CHS_B_L1RC      = JERFiles::Autumn18_V13h_B_L1RC_AK4PFchs_DATA;
+    JEC_AK4CHS_C_L1RC       = JERFiles::Autumn18_V13h_C_L1RC_AK4PFchs_DATA;
+    JEC_AK4CHS_D_L1RC       = JERFiles::Autumn18_V13h_D_L1RC_AK4PFchs_DATA;
+    JEC_AK4CHS_MC_L1RC       = JERFiles::Autumn18_V13h_L1RC_AK4PFchs_MC;
 
-    JEC_AK8CHS_A_L1RC       = JERFiles::Autumn18_V8_A_L1RC_AK8PFchs_DATA;
-    JEC_AK8CHS_B_L1RC       = JERFiles::Autumn18_V8_B_L1RC_AK8PFchs_DATA;
-    JEC_AK8CHS_C_L1RC       = JERFiles::Autumn18_V8_C_L1RC_AK8PFchs_DATA;
-    JEC_AK8CHS_D_L1RC       = JERFiles::Autumn18_V8_D_L1RC_AK8PFchs_DATA;
-    JEC_AK8CHS_MC_L1RC       = JERFiles::Autumn18_V8_L1RC_AK8PFchs_MC;
+    JEC_AK8CHS_A_L1RC       = JERFiles::Autumn18_V13h_A_L1RC_AK8PFchs_DATA;
+    JEC_AK8CHS_B_L1RC       = JERFiles::Autumn18_V13h_B_L1RC_AK8PFchs_DATA;
+    JEC_AK8CHS_C_L1RC       = JERFiles::Autumn18_V13h_C_L1RC_AK8PFchs_DATA;
+    JEC_AK8CHS_D_L1RC       = JERFiles::Autumn18_V13h_D_L1RC_AK8PFchs_DATA;
+    JEC_AK8CHS_MC_L1RC       = JERFiles::Autumn18_V13h_L1RC_AK8PFchs_MC;
 
-    JEC_AK4Puppi_A_L1RC = JERFiles::Autumn18_V8_A_L1RC_AK4PFPuppi_DATA;
-    JEC_AK4Puppi_B_L1RC = JERFiles::Autumn18_V8_B_L1RC_AK4PFPuppi_DATA;
-    JEC_AK4Puppi_C_L1RC = JERFiles::Autumn18_V8_C_L1RC_AK4PFPuppi_DATA;
-    JEC_AK4Puppi_D_L1RC = JERFiles::Autumn18_V8_D_L1RC_AK4PFPuppi_DATA;
-    JEC_AK4Puppi_MC_L1RC = JERFiles::Autumn18_V8_L1RC_AK4PFPuppi_MC;
+    JEC_AK4Puppi_A_L1RC = JERFiles::Autumn18_V13h_A_L1RC_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_B_L1RC = JERFiles::Autumn18_V13h_B_L1RC_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_C_L1RC = JERFiles::Autumn18_V13h_C_L1RC_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_D_L1RC = JERFiles::Autumn18_V13h_D_L1RC_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_MC_L1RC = JERFiles::Autumn18_V13h_L1RC_AK4PFPuppi_MC;
 
-    JEC_AK8Puppi_A_L1RC = JERFiles::Autumn18_V8_A_L1RC_AK8PFPuppi_DATA;
-    JEC_AK8Puppi_B_L1RC = JERFiles::Autumn18_V8_B_L1RC_AK8PFPuppi_DATA;
-    JEC_AK8Puppi_C_L1RC = JERFiles::Autumn18_V8_C_L1RC_AK8PFPuppi_DATA;
-    JEC_AK8Puppi_D_L1RC = JERFiles::Autumn18_V8_D_L1RC_AK8PFPuppi_DATA;
-    JEC_AK8Puppi_MC_L1RC = JERFiles::Autumn18_V8_L1RC_AK8PFPuppi_MC;
+    JEC_AK8Puppi_A_L1RC = JERFiles::Autumn18_V13h_A_L1RC_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_B_L1RC = JERFiles::Autumn18_V13h_B_L1RC_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_C_L1RC = JERFiles::Autumn18_V13h_C_L1RC_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_D_L1RC = JERFiles::Autumn18_V13h_D_L1RC_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_MC_L1RC = JERFiles::Autumn18_V13h_L1RC_AK8PFPuppi_MC;
   }
 
-  if(is2018 && ClosureTest){
+  if(is2018 && !ClosureTest){
     cout<<"AnalysisModule_DiJetTrg uses JEC for 2018 data/MC without L2L3Res"<<endl;
-    JEC_AK4CHS_A       = JERFiles::Autumn18_V8_A_L123_noRes_AK4PFchs_DATA;
-    JEC_AK4CHS_B       = JERFiles::Autumn18_V8_B_L123_noRes_AK4PFchs_DATA;
-    JEC_AK4CHS_C       = JERFiles::Autumn18_V8_C_L123_noRes_AK4PFchs_DATA;
-    JEC_AK4CHS_D       = JERFiles::Autumn18_V8_D_L123_noRes_AK4PFchs_DATA;
-    JEC_AK4CHS_MC       = JERFiles::Autumn18_V8_L123_AK4PFchs_MC;
+    JEC_AK4CHS_A       = JERFiles::Autumn18_V13h_A_L123_noRes_AK4PFchs_DATA;
+    JEC_AK4CHS_B       = JERFiles::Autumn18_V13h_B_L123_noRes_AK4PFchs_DATA;
+    JEC_AK4CHS_C       = JERFiles::Autumn18_V13h_C_L123_noRes_AK4PFchs_DATA;
+    JEC_AK4CHS_D       = JERFiles::Autumn18_V13h_D_L123_noRes_AK4PFchs_DATA;
+    JEC_AK4CHS_MC       = JERFiles::Autumn18_V13h_L123_AK4PFchs_MC;
 
-    JEC_AK8CHS_A       = JERFiles::Autumn18_V8_A_L123_noRes_AK8PFchs_DATA;
-    JEC_AK8CHS_B       = JERFiles::Autumn18_V8_B_L123_noRes_AK8PFchs_DATA;
-    JEC_AK8CHS_C       = JERFiles::Autumn18_V8_C_L123_noRes_AK8PFchs_DATA;
-    JEC_AK8CHS_D       = JERFiles::Autumn18_V8_D_L123_noRes_AK8PFchs_DATA;
-    JEC_AK8CHS_MC      = JERFiles::Autumn18_V8_L123_AK8PFchs_MC;
+    JEC_AK8CHS_A       = JERFiles::Autumn18_V13h_A_L123_noRes_AK8PFchs_DATA;
+    JEC_AK8CHS_B       = JERFiles::Autumn18_V13h_B_L123_noRes_AK8PFchs_DATA;
+    JEC_AK8CHS_C       = JERFiles::Autumn18_V13h_C_L123_noRes_AK8PFchs_DATA;
+    JEC_AK8CHS_D       = JERFiles::Autumn18_V13h_D_L123_noRes_AK8PFchs_DATA;
+    JEC_AK8CHS_MC      = JERFiles::Autumn18_V13h_L123_AK8PFchs_MC;
 
-    JEC_AK4Puppi_A = JERFiles::Autumn18_V8_A_L123_noRes_AK4PFPuppi_DATA;
-    JEC_AK4Puppi_B = JERFiles::Autumn18_V8_B_L123_noRes_AK4PFPuppi_DATA;
-    JEC_AK4Puppi_C = JERFiles::Autumn18_V8_C_L123_noRes_AK4PFPuppi_DATA;
-    JEC_AK4Puppi_D = JERFiles::Autumn18_V8_D_L123_noRes_AK4PFPuppi_DATA;
-    JEC_AK4Puppi_MC = JERFiles::Autumn18_V8_L123_AK4PFPuppi_MC;
+    JEC_AK4Puppi_A = JERFiles::Autumn18_V13h_A_L123_noRes_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_B = JERFiles::Autumn18_V13h_B_L123_noRes_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_C = JERFiles::Autumn18_V13h_C_L123_noRes_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_D = JERFiles::Autumn18_V13h_D_L123_noRes_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_MC = JERFiles::Autumn18_V13h_L123_AK4PFPuppi_MC;
 
-    JEC_AK8Puppi_A = JERFiles::Autumn18_V8_A_L123_noRes_AK8PFPuppi_DATA;
-    JEC_AK8Puppi_B = JERFiles::Autumn18_V8_B_L123_noRes_AK8PFPuppi_DATA;
-    JEC_AK8Puppi_C = JERFiles::Autumn18_V8_C_L123_noRes_AK8PFPuppi_DATA;
-    JEC_AK8Puppi_D = JERFiles::Autumn18_V8_D_L123_noRes_AK8PFPuppi_DATA;
-    JEC_AK8Puppi_MC = JERFiles::Autumn18_V8_L123_AK8PFPuppi_MC;
+    JEC_AK8Puppi_A = JERFiles::Autumn18_V13h_A_L123_noRes_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_B = JERFiles::Autumn18_V13h_B_L123_noRes_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_C = JERFiles::Autumn18_V13h_C_L123_noRes_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_D = JERFiles::Autumn18_V13h_D_L123_noRes_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_MC = JERFiles::Autumn18_V13h_L123_AK8PFPuppi_MC;
 
-    JEC_AK4CHS_A_L1RC       = JERFiles::Autumn18_V8_A_L1RC_AK4PFchs_DATA;
-    JEC_AK4CHS_B_L1RC      = JERFiles::Autumn18_V8_B_L1RC_AK4PFchs_DATA;
-    JEC_AK4CHS_C_L1RC       = JERFiles::Autumn18_V8_C_L1RC_AK4PFchs_DATA;
-    JEC_AK4CHS_D_L1RC       = JERFiles::Autumn18_V8_D_L1RC_AK4PFchs_DATA;
-    JEC_AK4CHS_MC_L1RC       = JERFiles::Autumn18_V8_L1RC_AK4PFchs_MC;
+    JEC_AK4CHS_A_L1RC       = JERFiles::Autumn18_V13h_A_L1RC_AK4PFchs_DATA;
+    JEC_AK4CHS_B_L1RC      = JERFiles::Autumn18_V13h_B_L1RC_AK4PFchs_DATA;
+    JEC_AK4CHS_C_L1RC       = JERFiles::Autumn18_V13h_C_L1RC_AK4PFchs_DATA;
+    JEC_AK4CHS_D_L1RC       = JERFiles::Autumn18_V13h_D_L1RC_AK4PFchs_DATA;
+    JEC_AK4CHS_MC_L1RC       = JERFiles::Autumn18_V13h_L1RC_AK4PFchs_MC;
 
-    JEC_AK8CHS_A_L1RC       = JERFiles::Autumn18_V8_A_L1RC_AK8PFchs_DATA;
-    JEC_AK8CHS_B_L1RC       = JERFiles::Autumn18_V8_B_L1RC_AK8PFchs_DATA;
-    JEC_AK8CHS_C_L1RC       = JERFiles::Autumn18_V8_C_L1RC_AK8PFchs_DATA;
-    JEC_AK8CHS_D_L1RC       = JERFiles::Autumn18_V8_D_L1RC_AK8PFchs_DATA;
-    JEC_AK8CHS_MC_L1RC       = JERFiles::Autumn18_V8_L1RC_AK8PFchs_MC;
+    JEC_AK8CHS_A_L1RC       = JERFiles::Autumn18_V13h_A_L1RC_AK8PFchs_DATA;
+    JEC_AK8CHS_B_L1RC       = JERFiles::Autumn18_V13h_B_L1RC_AK8PFchs_DATA;
+    JEC_AK8CHS_C_L1RC       = JERFiles::Autumn18_V13h_C_L1RC_AK8PFchs_DATA;
+    JEC_AK8CHS_D_L1RC       = JERFiles::Autumn18_V13h_D_L1RC_AK8PFchs_DATA;
+    JEC_AK8CHS_MC_L1RC       = JERFiles::Autumn18_V13h_L1RC_AK8PFchs_MC;
 
-    JEC_AK4Puppi_A_L1RC = JERFiles::Autumn18_V8_A_L1RC_AK4PFPuppi_DATA;
-    JEC_AK4Puppi_B_L1RC = JERFiles::Autumn18_V8_B_L1RC_AK4PFPuppi_DATA;
-    JEC_AK4Puppi_C_L1RC = JERFiles::Autumn18_V8_C_L1RC_AK4PFPuppi_DATA;
-    JEC_AK4Puppi_D_L1RC = JERFiles::Autumn18_V8_D_L1RC_AK4PFPuppi_DATA;
-    JEC_AK4Puppi_MC_L1RC = JERFiles::Autumn18_V8_L1RC_AK4PFPuppi_MC;
+    JEC_AK4Puppi_A_L1RC = JERFiles::Autumn18_V13h_A_L1RC_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_B_L1RC = JERFiles::Autumn18_V13h_B_L1RC_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_C_L1RC = JERFiles::Autumn18_V13h_C_L1RC_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_D_L1RC = JERFiles::Autumn18_V13h_D_L1RC_AK4PFPuppi_DATA;
+    JEC_AK4Puppi_MC_L1RC = JERFiles::Autumn18_V13h_L1RC_AK4PFPuppi_MC;
 
-    JEC_AK8Puppi_A_L1RC = JERFiles::Autumn18_V8_A_L1RC_AK8PFPuppi_DATA;
-    JEC_AK8Puppi_B_L1RC = JERFiles::Autumn18_V8_B_L1RC_AK8PFPuppi_DATA;
-    JEC_AK8Puppi_C_L1RC = JERFiles::Autumn18_V8_C_L1RC_AK8PFPuppi_DATA;
-    JEC_AK8Puppi_D_L1RC = JERFiles::Autumn18_V8_D_L1RC_AK8PFPuppi_DATA;
-    JEC_AK8Puppi_MC_L1RC = JERFiles::Autumn18_V8_L1RC_AK8PFPuppi_MC;
+    JEC_AK8Puppi_A_L1RC = JERFiles::Autumn18_V13h_A_L1RC_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_B_L1RC = JERFiles::Autumn18_V13h_B_L1RC_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_C_L1RC = JERFiles::Autumn18_V13h_C_L1RC_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_D_L1RC = JERFiles::Autumn18_V13h_D_L1RC_AK8PFPuppi_DATA;
+    JEC_AK8Puppi_MC_L1RC = JERFiles::Autumn18_V13h_L1RC_AK8PFPuppi_MC;
   }
 
   //jet_corrector_B.reset(new JetCorrector(ctx, JEC_corr_B, JEC_corr_B_L1RC));
@@ -565,6 +560,7 @@ void AnalysisModule_DiJetTrg::init_JEC(uhh2::Context& ctx){
 
 void AnalysisModule_DiJetTrg::declare_output(uhh2::Context& ctx){
  //Store only vars needed for the dijet analysis
+    tt_JER_SM = ctx.declare_event_output<bool>("is_JER_SM");
     tt_gen_pthat = ctx.declare_event_output<float>("gen_pthat");
     tt_gen_PUpthat = ctx.declare_event_output<float>("gen_PUpthat");
     tt_gen_weight = ctx.declare_event_output<float>("gen_weight");
@@ -588,6 +584,13 @@ void AnalysisModule_DiJetTrg::declare_output(uhh2::Context& ctx){
     tt_probejet_chHadEF = ctx.declare_event_output<float>("probejet_chHadEF");
     tt_probejet_photonEF = ctx.declare_event_output<float>("probejet_photonEF");
     tt_probejet_muonEF = ctx.declare_event_output<float>("probejet_muonEF");
+
+    tt_barreljet_neutEmEF = ctx.declare_event_output<float>("barreljet_neutEmEF");
+    tt_barreljet_neutHadEF = ctx.declare_event_output<float>("barreljet_neutHadEF");
+    tt_barreljet_chEmEF = ctx.declare_event_output<float>("barreljet_chEmEF");
+    tt_barreljet_chHadEF = ctx.declare_event_output<float>("barreljet_chHadEF");
+    tt_barreljet_photonEF = ctx.declare_event_output<float>("barreljet_photonEF");
+    tt_barreljet_muonEF = ctx.declare_event_output<float>("barreljet_muonEF");
 
     tt_nvertices = ctx.declare_event_output<int>("nvertices");
     tt_pv0Z = ctx.declare_event_output<float>("pv0Z");
@@ -664,7 +667,7 @@ void AnalysisModule_DiJetTrg::declare_output(uhh2::Context& ctx){
     // tt_parton2_jetID =  ctx.declare_event_output<int>("parton2_jetID");
 
     tt_run = ctx.declare_event_output<int>("run");
-    tt_evID = ctx.declare_event_output<int>("eventID");
+    tt_evID = ctx.declare_event_output<long long>("eventID");
     tt_lumiSec = ctx.declare_event_output<int>("lumi_sec");
 
     tt_jet1_l1bx = ctx.declare_event_output<int>("jet1_l1bx");
@@ -853,6 +856,14 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
       ispythia8 = false;
     }
 
+    //new
+    jetLabel = ctx.get("JetLabel");
+    dataset_version = ctx.get("dataset_version");
+    ClosureTest = (ctx.get("ClosureTest") == "true");
+    apply_METoverPt_cut = (ctx.get("METoverPt_cut") == "true");
+    apply_EtaPhi_cut = (ctx.get("EtaPhi_cut") == "true");
+    //    JEC_Version = ctx.get("JEC_Version");
+    apply_L1seed_from_bx1_filter =  (ctx.get("Apply_L1Seed_From_BX1_Filter") == "true" && !isMC);
     //    const bool ispuppi = (ctx.get("is_puppi") == "true");
     ispuppi = false; //TEST
     cout << "Is this running on puppi: " << ispuppi << endl;
@@ -984,15 +995,6 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
 	GET_RESET_TRIGGER(trigger300_HFJEC)
     }
 
-    //new
-    jetLabel = ctx.get("JetLabel");
-    dataset_version = ctx.get("dataset_version");
-    ClosureTest = (ctx.get("ClosureTest") == "true");
-    apply_METoverPt_cut = (ctx.get("METoverPt_cut") == "true");
-    apply_EtaPhi_cut = (ctx.get("EtaPhi_cut") == "true");
-    //    JEC_Version = ctx.get("JEC_Version");
-
-    apply_L1seed_from_bx1_filter =  (ctx.get("Apply_L1Seed_From_BX1_Filter") == "true" && !isMC);
 
     split_JEC_MC   = false; //Different MC corrections only existed for Spring16_25ns_V8* 
     split_JEC_DATA = true; //TODO check the JEC!!!
@@ -1206,11 +1208,22 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
     //JetID
     // if(jetLabel == "AK4CHS" // || jetLabel == "AK8CHS"
     //    ) 
+    int jet_n = event.jets->size();
+    if(jet_n<2) return false;
+
+    Jet jet1_b = event.jets->at(0);// leading jet   
+    Jet jet2_b = event.jets->at(1);// sub-leading jet  
+
     jetID->process(event);//FixME: make sure JetID works for AK8
     if(apply_PUid)
       jetPUid->process(event);
     int n_jets_afterCleaner = event.jets->size();
     if(debug) cout<<"#jets after clean "<<n_jets_afterCleaner<<endl;   
+    sort_by_pt<Jet>(*event.jets);
+    jet_n = event.jets->size();
+    if(jet_n<2) return false;
+
+
      //discard events if not all jets fulfill JetID instead of just discarding single jets
      //    if (n_jets_beforeCleaner != n_jets_afterCleaner) return false;
     if(!isMC) h_afterCleaner->fill(event); 
@@ -1232,8 +1245,6 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
 //####################  Select and Apply proper JEC-Versions for every Run ##################
 
 //    const int jet_n = event.jets->size();
-    int jet_n = event.jets->size();
-    if(jet_n<2) return false;
     h_2jets->fill(event); 
 
     bool apply_global = false;
@@ -1243,6 +1254,8 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
     bool apply_D = false;
     bool apply_E = false;
     bool apply_F = false;
+    bool apply_G = false;
+    bool apply_H = false;
 
     if(debug) cout<<"before run splitting\n";
     //residuals
@@ -1284,7 +1297,9 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
     std::cout<< std::flush;
     
     if(debug) std::cout <<" before jet corrector "<<std::endl;
-
+    if(apply_A){
+      jet_corrector_A->process(event);
+    }
     if(apply_B){
       jet_corrector_B->process(event);
     }
@@ -1300,6 +1315,12 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
     if(apply_F){
       jet_corrector_F->process(event);
     }     
+    if(apply_G){
+      jet_corrector_G->process(event);
+    }
+    if(apply_H){
+      jet_corrector_H->process(event);
+    }
     if(apply_global){
       jet_corrector_MC->process(event);
     }
@@ -1322,9 +1343,19 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
       }
     }
     jetcleaner->process(event); //remove low pt jets
+    sort_by_pt<Jet>(*event.jets);
     n_jets_afterCleaner = event.jets->size();
     if(debug) cout<<"#jets after cleanining low pt jets "<<n_jets_afterCleaner<<endl;   
     if(n_jets_afterCleaner<2) return false;
+    sort_by_pt<Jet>(*event.jets);
+    //FixME: do matching to trigger objects instead
+    // Jet jet1_a = event.jets->at(0);// leading jet   
+    // Jet jet2_a = event.jets->at(1);// sub-leading jet  
+    // if(jet1_a.eta()!=jet1_b.eta() || jet2_a.eta()!=jet2_b.eta() || jet1_a.phi()!=jet1_b.phi() || jet2_a.phi()!=jet2_b.phi()){
+    //   if(debug) cout<<"jet1_a.eta()="<<jet1_a.eta()<<", jet1_b.eta()="<<jet1_b.eta()<<" jet1_a.pt()="<<jet1_a.pt()<<", jet1_b.pt()="<<jet1_b.pt()<<endl;
+    //   if(debug) cout<<"jet2_a.eta()="<<jet2_a.eta()<<", jet2_b.eta()="<<jet2_b.eta()<<" jet2_a.pt()="<<jet2_a.pt()<<", jet2_b.pt()="<<jet2_b.pt()<<endl;
+    //   return false; //make sure 2 leading jets don't change after JetID, important because trigger selection is based on the first 2 jets
+    // }
     jet_n = n_jets_afterCleaner;
     if(hypot(event.met->rawCHS_px(),event.met->rawCHS_py())/event.met->uncorr_v4().Pt()>1e4) return false;//remove bad events in Herwig++ sample
     if(debug){   
@@ -1352,7 +1383,7 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
       eta_thresh_low=0.;
       eta_thresh_high=10.;
     }
-    if(debug){
+    if(debug && is2017){
       std::cout<<"jets with pt<"<<L1METptThresh<<" are excluded from MET correction if their eta ["<<eta_thresh_low<<", "<<eta_thresh_high<<"] "<<std::endl;
     }
     //correct MET only AFTER smearing the jets
@@ -1424,6 +1455,7 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
  
  //Calculate pt_ave
     if(debug) cout<<"calc pt_ave\n";
+    sort_by_pt<Jet>(*event.jets);//safety
     Jet* jet1 = &event.jets->at(0);// leading jet
     Jet* jet2 = &event.jets->at(1);// sub-leading jet
     float jet1_pt = jet1->pt(); float jet2_pt = jet2->pt();
@@ -1486,7 +1518,7 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
       trgHF_thresh[2] = d_Pt_Ave100HF_cut_2018; trgHF_thresh[3] = d_Pt_Ave160HF_cut_2018;
       trgHF_thresh[4] = d_Pt_Ave220HF_cut_2018; trgHF_thresh[5] =d_Pt_Ave300HF_cut_2018;
     }
-    
+    bool isJER_SM = false;
     Jet* jet_probe = jet1;
     Jet* jet_barrel = jet2;
     int ran = rand();
@@ -1517,6 +1549,24 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
 	jet_barrel = jet2;
       }
     }
+
+    //Store events in the same eta bin for SM method JER SFs
+    for (int i = 0; i < n_eta_full; i++){
+      if(jet_probe->eta()>=eta_bins_full[i] && jet_probe->eta()<eta_bins_full[i+1] && jet_barrel->eta()>=eta_bins_full[i] && jet_barrel->eta()<eta_bins_full[i+1]){
+	ran = rand();
+	numb = ran % 2;
+	if(numb==0){
+	  jet_probe = jet2;
+	  jet_barrel = jet1;
+	}
+	else{
+	  jet_probe = jet1;
+	  jet_barrel = jet2;	
+	}
+	isJER_SM = true;
+      } 
+    }
+
 
     if(debug) cout<<"before trigger pass checks\n";
     if(event.isRealData){
@@ -1660,7 +1710,7 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
     float  barreljet_pt = jet_barrel->pt(); 
     auto factor_raw_barrel = jet_barrel->JEC_factor_raw();
     float barreljet_ptRaw = barreljet_pt*factor_raw_barrel;
-
+    if(debug) cout<<"raw jet pt jet1: "<<jet1_ptRaw <<" jet2: "<<jet2_ptRaw<<endl;
 //##########################  Get third Jet for alpha, asymmetry calculation  ###################
   if(debug) cout<<"Get third Jet for alpha, asymmetry calculation\n";
     
@@ -1714,7 +1764,7 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
     if(debug) std::cout<<"pu_pthat = "<<pu_pthat<<" gen_pthat = "<<gen_pthat<<std::endl;
     event.set(tt_matchJetId_0,-10.);
     event.set(tt_matchJetId_1,-10.);
-    
+    event.set(tt_JER_SM,isJER_SM);
     event.set(tt_gen_pthat,gen_pthat);
     event.set(tt_gen_PUpthat,pu_pthat);
     event.set(tt_gen_weight,gen_weight);
@@ -1740,6 +1790,14 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
     event.set(tt_probejet_chHadEF,jet_probe->chargedHadronEnergyFraction());
     event.set(tt_probejet_photonEF,jet_probe->photonEnergyFraction());
     event.set(tt_probejet_muonEF,jet_probe->muonEnergyFraction());
+
+    event.set(tt_barreljet_neutEmEF,jet_barrel->neutralEmEnergyFraction());
+    event.set(tt_barreljet_neutHadEF,jet_barrel->neutralHadronEnergyFraction());
+    event.set(tt_barreljet_chEmEF,jet_barrel->chargedEmEnergyFraction());
+    event.set(tt_barreljet_chHadEF,jet_barrel->chargedHadronEnergyFraction());
+    event.set(tt_barreljet_photonEF,jet_barrel->photonEnergyFraction());
+    event.set(tt_barreljet_muonEF,jet_barrel->muonEnergyFraction());
+
     if(debug){
       if(fabs(probejet_eta)>3.5 && jet_probe->chargedHadronEnergyFraction()>0) cout<<"Probe jet with Neut.EM = "<<jet_probe->neutralEmEnergyFraction()<<" Ch.EM = "<<jet_probe->chargedEmEnergyFraction()<<" Neut.HAD = "<<jet_probe->neutralHadronEnergyFraction()<<" Ch.HAD = "<<jet_probe->chargedHadronEnergyFraction()<<endl;//TEST
     }
@@ -2723,7 +2781,7 @@ void AnalysisModule_DiJetTrg::init_hists(uhh2::Context& ctx){
     
    
     if(debug) {
-      cout<<"After full Selection!!"<<endl;
+      cout<<"After full Selection!! Njet="<<jet_n<<endl;
       cout << " Evt# "<<event.event<<" Run: "<<event.run<<" " << endl<<endl;
     }
  

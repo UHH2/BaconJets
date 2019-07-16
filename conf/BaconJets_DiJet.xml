@@ -12,10 +12,11 @@
 
 <!-- <!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JERC/RunII_102X_v1/2018/Autumn18V8_L1L2L3_NoRes_NoJERsmear_PUidLOOSE3rd_DiJet_FixCS_newSamples_RECO10GeV_dR02_addDATApuid_addMCpartonPUid/"> -->
 
-<!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JERC/RunII_102X_v1/2018/Autumn18V8_L1L2L3_NoRes_NoJERsmear_DiJet_FixCS_newSamples_RECO10GeV_dR02_addDATApuid_addMCpartonPUid_fixPUidvsPFs/"> 
+<!-- <!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JERC/RunII_102X_v1/2018/Autumn18V13h_L1L2L3_L2L3Res_NoJERsmear_NoPUid_Lead2jetsPassJetID/"> -->
+<!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JERC/RunII_102X_v1/2018/Autumn18V13h_L1L2L3_L2L3Res_NoJERsmear_barrelPF/"> 
 
 
-<!ENTITY b_closuretest       "false">
+<!ENTITY b_closuretest       "true">
 <!-- <!ENTITY jec_version         "Fall17_17Nov2017_V32"> --> <!-- FixME -->
 <!ENTITY APPLY_WEIGHTS       "false">
 <!ENTITY WEIGHT_PATH         "/nfs/dust/cms/user/garbersc/JEC_Fall17_ForWeights/"> 
@@ -32,6 +33,8 @@
 <!ENTITY USE_SINGLE_TRIGGER "false" > <!-- if true use the single jet trigger, else the dijet trigger -->
 
 <!ENTITY APPLY_MC_SMEAR  "false">
+<!ENTITY APPLY_PUid_3rdjet "false">
+
 <!ENTITY APPLY_L1SEED_FROM_BX1_FILTER  "false">
 
 <!ENTITY QCD_Flat2018_pythia8   SYSTEM "/nfs/dust/cms/user/karavdia/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2018/MC_QCD_Flat2018_TMP.xml">
@@ -59,8 +62,8 @@
 
 
 <!--
-<ConfigParse NEventsBreak="0" FileSplit="20" AutoResubmit="5"/>
-<ConfigSGE RAM ="2" DISK ="3" Mail="xxx@desy.de" Notification="as" Workdir="workdir_DiJet_RunABCD_2_PUidLOOSE3rd"/>
+<ConfigParse NEventsBreak="0" FileSplit="10" AutoResubmit="5"/>
+<ConfigSGE RAM ="2" DISK ="3" Mail="xxx@desy.de" Notification="as" Workdir="workdir_DiJet_BaconJet"/>
 -->
 
 <!-- OutputLevel controls which messages are printed; set to VERBOSE or DEBUG for more verbosity, to WARNING or ERROR or INFO for less -->
@@ -225,7 +228,8 @@
 
 	<Item Name="Apply_MC_Smear" Value="&APPLY_MC_SMEAR;"/>
 	<Item Name="Apply_L1Seed_From_BX1_Filter" Value="&APPLY_L1SEED_FROM_BX1_FILTER;"/>
-	
+	<Item Name="Apply_PUid_3rdjet" Value="&APPLY_PUid_3rdjet;"/>
+
 	<!-- always apply MET smearing -->
 
             <!-- tell AnalysisModuleRunner that we use a completely user-defined event format -->
@@ -235,8 +239,8 @@
             <Item Name="AnalysisModule" Value="AnalysisModule_DiJetTrg" /> 
 	    <!--    <Item Name="MCreweight" Value="false" /> -->
 	    
-         <Item Name="L1METptThresh" Value="50" />
-         <Item Name="eta_thresh_low" Value="2.650" />
+         <Item Name="L1METptThresh" Value="15" />
+         <Item Name="eta_thresh_low" Value="6." />
          <!-- <Item Name="L1METptThresh" Value="15" /> -->
          <!-- <Item Name="eta_thresh_low" Value="0." /> -->
 	 <Item Name="minJetPt" Value="10" />

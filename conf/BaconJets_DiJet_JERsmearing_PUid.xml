@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd"[
+
+
+<!ENTITY PROOFdir            "/nfs/dust/cms/user/karavdia/PROOF/"> 
+<!ENTITY NEVT                "-1">
+
+<!ENTITY CACHEABLE           "False">
+
+<!-- <!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JERC/17Nov2017/Residuals/Run17DEF_Data_JEC_V32_noClosure_noJER_slimmedMETs_CHSPFMETjetRaw50GeV_dR04_addLowPtHF_qScale12_minGenJetPt15_minJetPt15_EnergyEtaCut_fixedFlavorMatching/"> -->
+
+
+<!-- <!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JERC/RunII_102X_v1/2018/Autumn18V8_L1L2L3_NoRes_NoJERsmear_PUidLOOSE3rd_DiJet_FixCS_newSamples_RECO10GeV_dR02_addDATApuid_addMCpartonPUid/"> -->
+
+<!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JERC/RunII_102X_v1/2018/Autumn18V8_L1L2L3_NoRes_V4ABCJERsmear_PUidTightALL_DiJet_FixCS_newSamples_RECO10GeV_dR02_addDATApuid_addMCpartonPUid_fixPUidvsPFs/"> 
+
+
+<!ENTITY b_closuretest       "false">
+<!-- <!ENTITY jec_version         "Fall17_17Nov2017_V32"> --> <!-- FixME -->
+<!ENTITY APPLY_WEIGHTS       "false">
+<!ENTITY WEIGHT_PATH         "/nfs/dust/cms/user/garbersc/JEC_Fall17_ForWeights/"> 
+<!ENTITY Cut_PATH            "/nfs/dust/cms/user/garbersc/UHH2_17_clean300118/CMSSW_9_4_1/src/UHH2/BaconJets/data/hotjets/17-17Nov17ReReco/">
+
+<!ENTITY APPLY_METoverPTcut  "false">  <!--Apply MET Cut-->
+<!ENTITY APPLY_EtaPhi_cut    "false">   <!--Apply Eta Phi cleaning during ECAL problems -->
+<!ENTITY APPLY_LUMIWEIGHTS   "false"> 
+<!ENTITY APPLY_UNFLATTENING  "false">
+<!ENTITY TRIGGER_CENTRAL     "true">  <!--Trigger Flag -->
+<!ENTITY TRIGGER_FWD         "true"> <!--Trigger Flag -->
+
+<!ENTITY ONLY_BACK_TO_BACK "false" >
+<!ENTITY USE_SINGLE_TRIGGER "false" > <!-- if true use the single jet trigger, else the dijet trigger -->
+
+<!ENTITY APPLY_MC_SMEAR  "true">
+<!ENTITY APPLY_PUid_3rdjet "true">
+<!-- <!ENTITY APPLY_PUid_3rdjet "false"> -->
+<!ENTITY APPLY_L1SEED_FROM_BX1_FILTER  "false">
+
+<!ENTITY QCD_Flat2018_pythia8   SYSTEM "/nfs/dust/cms/user/karavdia/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2018/MC_QCD_Flat2018_TMP.xml">
+
+<!ENTITY QCD_Flat_pythia8   SYSTEM "/nfs/dust/cms/user/karavdia/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2018/MC_QCD_Flat.xml">
+<!ENTITY DATA_RunA_2018 SYSTEM "/nfs/dust/cms/user/karavdia/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2018/DATA_JetHT2018A.xml">
+<!ENTITY DATA_RunB_2018 SYSTEM "/nfs/dust/cms/user/karavdia/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2018/DATA_JetHT2018B.xml">
+<!ENTITY DATA_RunC_2018 SYSTEM "/nfs/dust/cms/user/karavdia/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2018/DATA_JetHT2018C.xml">
+<!ENTITY DATA_RunD_2018 SYSTEM "/nfs/dust/cms/user/karavdia/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2018/DATA_JetHT2018D.xml">
+
+<!ENTITY QCD_HT50to100   SYSTEM "/nfs/dust/cms/user/karavdia/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2018/MC_QCD_HT50to100_madgraph.xml">
+<!ENTITY QCD_HT100to200   SYSTEM "/nfs/dust/cms/user/karavdia/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2018/MC_QCD_HT100to200_madgraph.xml">
+<!ENTITY QCD_HT200to300   SYSTEM "/nfs/dust/cms/user/karavdia/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2018/MC_QCD_HT200to300_madgraph.xml">
+<!ENTITY QCD_HT300to500   SYSTEM "/nfs/dust/cms/user/karavdia/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2018/MC_QCD_HT300to500_madgraph.xml">
+<!ENTITY QCD_HT500to700   SYSTEM "/nfs/dust/cms/user/karavdia/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2018/MC_QCD_HT500to700_madgraph.xml">
+<!ENTITY QCD_HT700to1000   SYSTEM "/nfs/dust/cms/user/karavdia/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2018/MC_QCD_HT700to1000_madgraph.xml">
+<!ENTITY QCD_HT1000to1500   SYSTEM "/nfs/dust/cms/user/karavdia/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2018/MC_QCD_HT1000to1500_madgraph.xml">
+<!ENTITY QCD_HT1500to2000   SYSTEM "/nfs/dust/cms/user/karavdia/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2018/MC_QCD_HT1500to2000_madgraph.xml">
+<!ENTITY QCD_HT2000toInf   SYSTEM "/nfs/dust/cms/user/karavdia/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2018/MC_QCD_HT2000toInf_madgraph.xml">
+
+
+
+
+]>
+
+
+<!--
+<ConfigParse NEventsBreak="0" FileSplit="20" AutoResubmit="5"/>
+<ConfigSGE RAM ="2" DISK ="3" Mail="xxx@desy.de" Notification="as" Workdir="workdir_DiJet_RunABCD_2_V4ABCJERsmear_PUid"/>
+-->
+
+<!-- OutputLevel controls which messages are printed; set to VERBOSE or DEBUG for more verbosity, to WARNING or ERROR or INFO for less -->
+ <JobConfiguration JobName="ExampleCycleJob" OutputLevel="INFO"> 
+    <Library Name="libSUHH2BaconJets"/>
+    <Package Name="SUHH2BaconJets.par" />
+
+ <Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&OUTdir;/" PostFix="" TargetLumi="58827" > 
+<!-- <Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&OUTdir;/" PostFix="" TargetLumi="4553" RunMode="PROOF" ProofServer="lite://" ProofWorkDir="&PROOFdir;/" ProofNodes="15" > -->
+
+
+<InputData Lumi="0.2291325801" NEventsMax="&NEVT;" Type="MC" Version="QCD_HT50to100_2018_AK4CHS" Cacheable="&CACHEABLE;">
+          &QCD_HT50to100;
+          <InputTree Name="AnalysisTree"/>
+          <OutputTree Name="AnalysisTree"/>
+     </InputData>
+<InputData Lumi="3.663204922" NEventsMax="&NEVT;" Type="MC" Version="QCD_HT100to200_2018_AK4CHS" Cacheable="&CACHEABLE;">
+          &QCD_HT100to200;
+          <InputTree Name="AnalysisTree"/>
+          <OutputTree Name="AnalysisTree"/>
+     </InputData>
+<InputData Lumi="37.15909788" NEventsMax="&NEVT;" Type="MC" Version="QCD_HT200to300_2018_AK4CHS" Cacheable="&CACHEABLE;">
+          &QCD_HT200to300;
+          <InputTree Name="AnalysisTree"/>
+          <OutputTree Name="AnalysisTree"/>
+     </InputData>
+<InputData Lumi="174.7762231" NEventsMax="&NEVT;" Type="MC" Version="QCD_HT300to500_2018_AK4CHS" Cacheable="&CACHEABLE;">
+          &QCD_HT300to500;
+          <InputTree Name="AnalysisTree"/>
+          <OutputTree Name="AnalysisTree"/>
+     </InputData>
+<InputData Lumi="1854.82666" NEventsMax="&NEVT;" Type="MC" Version="QCD_HT500to700_2018_AK4CHS" Cacheable="&CACHEABLE;">
+          &QCD_HT500to700;
+          <InputTree Name="AnalysisTree"/>
+          <OutputTree Name="AnalysisTree"/>
+     </InputData>
+<InputData Lumi="8077.614559" NEventsMax="&NEVT;" Type="MC" Version="QCD_HT700to1000_2018_AK4CHS" Cacheable="&CACHEABLE;">
+          &QCD_HT700to1000;
+          <InputTree Name="AnalysisTree"/>
+          <OutputTree Name="AnalysisTree"/>
+     </InputData>
+<InputData Lumi="14871.46169" NEventsMax="&NEVT;" Type="MC" Version="QCD_HT1000to1500_2018_AK4CHS" Cacheable="&CACHEABLE;">
+          &QCD_HT1000to1500;
+          <InputTree Name="AnalysisTree"/>
+          <OutputTree Name="AnalysisTree"/>
+     </InputData>
+<InputData Lumi="105185.1375" NEventsMax="&NEVT;" Type="MC" Version="QCD_HT1500to2000_2018_AK4CHS" Cacheable="&CACHEABLE;">
+          &QCD_HT1500to2000;
+          <InputTree Name="AnalysisTree"/>
+          <OutputTree Name="AnalysisTree"/>
+     </InputData>
+<InputData Lumi="259451.9961" NEventsMax="&NEVT;" Type="MC" Version="QCD_HT2000toInf_2018_AK4CHS" Cacheable="&CACHEABLE;">
+          &QCD_HT2000toInf;
+          <InputTree Name="AnalysisTree"/>
+          <OutputTree Name="AnalysisTree"/>
+     </InputData>
+
+<InputData Lumi="58827" NEventsMax="&NEVT;" Type="MC" Version="QCD_Flat2018_pythia8_2018_AK4CHS" Cacheable="&CACHEABLE;">
+          &QCD_Flat2018_pythia8;
+          <InputTree Name="AnalysisTree"/>
+          <OutputTree Name="AnalysisTree"/>
+     </InputData>
+
+<InputData Lumi="13480" NEventsMax="&NEVT;" Type="DATA" Version="DATA_RunA_2018_AK4CHS" Cacheable="&CACHEABLE;">
+          &DATA_RunA_2018;
+          <InputTree Name="AnalysisTree"/>
+          <OutputTree Name="AnalysisTree"/>
+     </InputData>
+
+<InputData Lumi="6785" NEventsMax="&NEVT;" Type="DATA" Version="DATA_RunB_2018_AK4CHS" Cacheable="&CACHEABLE;">
+          &DATA_RunB_2018;
+          <InputTree Name="AnalysisTree"/>
+          <OutputTree Name="AnalysisTree"/>
+     </InputData>
+<InputData Lumi="6612" NEventsMax="&NEVT;" Type="DATA" Version="DATA_RunC_2018_AK4CHS" Cacheable="&CACHEABLE;">
+          &DATA_RunC_2018;
+          <InputTree Name="AnalysisTree"/>
+          <OutputTree Name="AnalysisTree"/>
+     </InputData>
+
+<InputData Lumi="31950" NEventsMax="&NEVT;" Type="DATA" Version="DATA_RunD_2018_AK4CHS" Cacheable="&CACHEABLE;">
+          &DATA_RunD_2018;
+          <InputTree Name="AnalysisTree"/>
+          <OutputTree Name="AnalysisTree"/>
+     </InputData>
+
+
+    <UserConfig>
+      <Item Name="PrimaryVertexCollection" Value="offlineSlimmedPrimaryVertices"/>
+      <Item Name="GenParticleCollection"   Value="GenParticles"/>
+<!--      <Item Name="GenParticleCollection"   Value="slimmedJets"/> --> <!-- bullshit for MC with missing GenParticles -->
+      <Item Name="ElectronCollection"      Value="slimmedElectronsUSER"/> <!-- change depending on 2016 MC or 17 data!!! -->
+      <Item Name="MuonCollection"          Value="slimmedMuonsUSER"/>
+      <!-- AK4CHS -->
+      <Item Name="JetCollection"           Value="jetsAk4CHS"/>
+      <Item Name="JetLabel"                Value="AK4CHS"/> 
+      <Item Name="GenJetCollection"        Value="slimmedGenJets"/>    
+      <Item Name="METName"                 Value="slimmedMETs"/>
+      <Item Name="genMETName"              Value="slimmedMETs_GenMET"/>
+<!--      <Item Name="METName"                 Value="slimmedMETsModifiedMET"/> -->
+
+
+      <Item Name="lumi_file" Value="/nfs/dust/cms/user/karavdia/CMSSW_10_2_10/src/UHH2/common/data/2018/Cert_314472-325175_13TeV_PromptReco_Collisions18_JSON.root"/>
+
+     
+      <!--
+      	 <Item Name="pileup_directory"           Value="/afs/desy.de/user/k/karavdia/CMSSW_8_0_20/src/UHH2/BaconJets/data/PileUp/80X/PileUP_MC_pythia8_PUFlat.root"/>
+	 <Item Name="pileup_directory_data"      Value="/afs/desy.de/user/k/karavdia/CMSSW_8_0_20/src/UHH2/BaconJets/data/PileUp/80X/PileUP_MC_pythia8_PUFlat.root"/>
+	 <Item Name="pileup_directory_data_up"   Value="/afs/desy.de/user/k/karavdia/CMSSW_8_0_20/src/UHH2/BaconJets/data/PileUp/80X/PileUP_MC_pythia8_PUFlat.root"/>
+	 <Item Name="pileup_directory_data_down" Value="/afs/desy.de/user/k/karavdia/CMSSW_8_0_20/src/UHH2/BaconJets/data/PileUp/80X/PileUP_MC_pythia8_PUFlat.root"/> 
+	 <Item Name="pileup_directory_data"      Value="/afs/desy.de/user/k/karavdia/CMSSW_8_0_20/src/UHH2/BaconJets/data/PileUp/80X/800pb/nPU_minBiasXsec71300.root"/>
+	 <Item Name="pileup_directory_data_up"   Value="/afs/desy.de/user/k/karavdia/CMSSW_8_0_20/src/UHH2/BaconJets/data/PileUp/80X/800pb/nPU_minBiasXsec80000.root"/>
+	 <Item Name="pileup_directory_data_down" Value="/afs/desy.de/user/k/karavdia/CMSSW_8_0_20/src/UHH2/BaconJets/data/PileUp/80X/800pb/nPU_minBiasXsec58000.root"/> -->
+
+
+      <Item Name="lumihists_lumi_per_bin" Value="250."/>
+
+
+<!--      <Item Name="use_sframe_weight" Value="true"/> -->  <!--false-->
+      <Item Name="use_sframe_weight" Value="false"/>
+
+      <Item Name="trigger40" Value="HLT_DiPFJetAve40_v*"/>
+      <Item Name="trigger60" Value="HLT_DiPFJetAve60_v*"/>
+      <Item Name="trigger80" Value="HLT_DiPFJetAve80_v*"/>
+      <Item Name="trigger140" Value="HLT_DiPFJetAve140_v*"/>
+      <Item Name="trigger200" Value="HLT_DiPFJetAve200_v*"/>
+      <Item Name="trigger260" Value="HLT_DiPFJetAve260_v*"/>
+      <Item Name="trigger320" Value="HLT_DiPFJetAve320_v*"/>
+      <Item Name="trigger400" Value="HLT_DiPFJetAve400_v*"/>
+      <Item Name="trigger500" Value="HLT_DiPFJetAve500_v*"/>
+
+      <Item Name="trigger60_HFJEC" Value="HLT_DiPFJetAve60_HFJEC_v*"/>
+      <Item Name="trigger80_HFJEC" Value="HLT_DiPFJetAve80_HFJEC_v*"/>
+      <Item Name="trigger100_HFJEC" Value="HLT_DiPFJetAve100_HFJEC_v*"/>
+      <Item Name="trigger160_HFJEC" Value="HLT_DiPFJetAve160_HFJEC_v*"/>
+      <Item Name="trigger220_HFJEC" Value="HLT_DiPFJetAve220_HFJEC_v*"/>
+      <Item Name="trigger300_HFJEC" Value="HLT_DiPFJetAve300_HFJEC_v*"/>      
+
+	<!-- Closure test? -->
+	<Item Name="ClosureTest" Value="&b_closuretest;"/>
+	<!--<Item Name="Split_JEC_DATA" Value="&b_splitjec_data;"/>
+	<Item Name="Split_JEC_MC" Value="&b_splitjec_mc;"/>-->
+<!--	<Item Name="JEC_Version" Value="&jec_version;"/> -->
+
+	<!-- Systematic uncertainties -->
+	<Item Name="jersmear_direction" Value="nominal"/> <!--nominal/down/up -->
+
+
+	<Item Name="Apply_Lumiweights"  Value="&APPLY_LUMIWEIGHTS;"/>
+	<Item Name="Apply_Unflattening" Value="&APPLY_UNFLATTENING;"/>
+	<Item Name="Apply_Weights" Value="&APPLY_WEIGHTS;"/>
+	<Item Name="MC_Weights_Path" Value="&WEIGHT_PATH;"/>
+	<Item Name="METoverPt_cut" Value="&APPLY_METoverPTcut;"/>
+	<Item Name="EtaPhi_cut" Value="&APPLY_EtaPhi_cut;"/>
+	<Item Name="Cut_dir"  Value="&Cut_PATH;"/>
+
+	<Item Name="Trigger_Central"    Value="&TRIGGER_CENTRAL;"/>
+	<Item Name="Trigger_FWD"        Value="&TRIGGER_FWD;"/>
+	
+	<Item Name="Trigger_Single"        Value="&USE_SINGLE_TRIGGER;"/>	
+	<Item Name="Only_BtB"               Value="&ONLY_BACK_TO_BACK;"/>
+
+	<Item Name="Apply_MC_Smear" Value="&APPLY_MC_SMEAR;"/>
+	<Item Name="Apply_PUid_3rdjet" Value="&APPLY_PUid_3rdjet;"/>
+
+	<Item Name="Apply_L1Seed_From_BX1_Filter" Value="&APPLY_L1SEED_FROM_BX1_FILTER;"/>
+	
+	<!-- always apply MET smearing -->
+
+            <!-- tell AnalysisModuleRunner that we use a completely user-defined event format -->
+       <!--     <Item Name="userEventFormat" Value="true" /> -->
+	  <!-- <Item Name="userEventFormat" Value="false" /> -->
+            <!-- the class name of the AnalysisModule subclasses to run: -->
+            <Item Name="AnalysisModule" Value="AnalysisModule_DiJetTrg" /> 
+	    <!--    <Item Name="MCreweight" Value="false" /> -->
+	    
+         <Item Name="L1METptThresh" Value="50" />
+         <Item Name="eta_thresh_low" Value="2.650" />
+         <!-- <Item Name="L1METptThresh" Value="15" /> -->
+         <!-- <Item Name="eta_thresh_low" Value="0." /> -->
+	 <Item Name="minJetPt" Value="10" />
+	 <Item Name="minGenJetPt" Value="15" />
+	 <Item Name="qScale" Value="1.5" />
+         <Item Name="MCgenerator" Value="Pythia8" />
+<!--         <Item Name="MCgenerator" Value="Herwig" /> -->	    
+         <Item Name="Debug" Value="false" />	    
+
+        </UserConfig>
+    </Cycle>
+</JobConfiguration>

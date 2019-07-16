@@ -87,19 +87,19 @@ void CorrectionObject::AdditionalAsymmetryPlots(bool eta_abs, bool si_trg){
       TString pt_name = "pt_"+(eta_cut_bool?pt_range_HF:pt_range)[k]+"_"+(eta_cut_bool?pt_range_HF:pt_range)[k+1];
 
       TString name = name1 + eta_name + "_" + pt_name; 
-      hdata_asymmetry[k][j] = new TH1D(name,"",nResponseBins, -1.2, 1.2);
+      hdata_asymmetry[k][j] = new TH1D(name,"",nResponseBins, -0.8, 0.8);
       name = name3 + eta_name + "_" + pt_name; 
-      hdata_bsymmetry[k][j] = new TH1D(name,"",nResponseBins, -1.2, 1.2);
+      hdata_bsymmetry[k][j] = new TH1D(name,"",nResponseBins, -0.8, 0.8);
 
       name = name1mc + eta_name + "_" + pt_name; 
-      hmc_asymmetry[k][j] = new TH1D(name,"",nResponseBins, -1.2, 1.2);
+      hmc_asymmetry[k][j] = new TH1D(name,"",nResponseBins, -0.8, 0.8);
       name = name3mc + eta_name + "_" + pt_name; 
-      hmc_bsymmetry[k][j] = new TH1D(name,"",nResponseBins, -1.2, 1.2);
+      hmc_bsymmetry[k][j] = new TH1D(name,"",nResponseBins, -0.8, 0.8);
 
       // name = name1+"nvert_" + eta_name + "_" + pt_name;      
-      // hdata_asymmetry_nvert[k][j] = new TH2D(name,"",nResponseBins/2, -1.2, 1.2,nResponseBins/10 ,0,60);
+      // hdata_asymmetry_nvert[k][j] = new TH2D(name,"",nResponseBins/2, -0.8, 0.8,nResponseBins/10 ,0,60);
       // name = name1+"rho_" + eta_name + "_" + pt_name;    
-      // hdata_asymmetry_rho[k][j] = new TH2D(name,"",nResponseBins/2, -1.2, 1.2,nResponseBins/10 ,0,60);
+      // hdata_asymmetry_rho[k][j] = new TH2D(name,"",nResponseBins/2, -0.8, 0.8,nResponseBins/10 ,0,60);
 
       // name = "hist_data_MET_" + eta_name + "_" + pt_name;
       // hdata_met[k][j] = new TH1D(name,"",nResponseBins/8, 0, 300);
@@ -331,7 +331,7 @@ void CorrectionObject::AdditionalAsymmetryPlots(bool eta_abs, bool si_trg){
 
   //dummy for tdrCanvas
   TH1D *h = new TH1D("h",";dummy;",41,0,5.191);
-  h->SetMaximum(1.2);
+  h->SetMaximum(0.8);
   h->SetMinimum(0.8);
 
   TH1D *hEF = new TH1D("hEF",";dummy;",1000,0,5.191);
@@ -366,450 +366,6 @@ void CorrectionObject::AdditionalAsymmetryPlots(bool eta_abs, bool si_trg){
   }
 
 
-  //********************************************************************  Plot all Control Hists ********************************************************************************
-
-  // // cout<<"before f_mpf file load"<<endl;
-
-//   //Get histo files
-//   TFile* f_mpf_mc = new TFile(CorrectionObject::_outpath+"plots/control/B_1d_mc" +".root","READ");
-//   TFile* f_mpf_data = new TFile(CorrectionObject::_outpath+"plots/control/B_1d_data"+".root","READ");
-  
-//     for(int i=0; i<n_eta-1; i++){
-//       TString eta_name = "eta_"+eta_range2[i]+"_"+eta_range2[i+1];
-//     bool eta_cut_bool = fabs(eta_bins[i])>=eta_cut; 
-//     TLatex *tex = new TLatex();
-//     tex->SetNDC();
-//     tex->SetTextSize(0.045); 
-//     TString text;
-//     if(eta_abs) text = eta_range[i] + " < |#eta| < " + eta_range[i+1];
-//     else text = eta_range_full[i] + " < #eta < " + eta_range_full[i+1];
-
-//     TLatex *tex_lumi = new TLatex();
-//     tex_lumi->SetNDC();
-//     tex_lumi->SetTextSize(0.045);
-      
-//     TH1D* htemp_met_mc;
-    
-//     for(int j=0; j<( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ); j++){
-      
-//      TCanvas* c5 = new TCanvas();
-//     tdrCanvas(c5,"c5",h,4,10,kSquare,"MC");
-//     // cout<<"after tdrCanvas"<<endl;
-    
-//     TString pt_name = "pt_"+(eta_cut_bool?pt_range_HF:pt_range)[j]+"_"+(eta_cut_bool?pt_range_HF:pt_range)[j+1];
-//     TString legname = "p_{T} #in [" + (eta_cut_bool?pt_range_HF:pt_range)[j] + "," + (eta_cut_bool?pt_range_HF:pt_range)[j+1] + "]";
-//     TString name_met_mc = "hist_mc_METoverJetsPt_"+eta_name+"_"+pt_name;
-    
-//     htemp_met_mc = (TH1D*)f_mpf_mc->Get(name_met_mc);
-
-//     cout<<"after getting hist "<<name_met_mc<<endl;
-    
-//     int n_ev =  htemp_met_mc->GetEntries();
-//     cout<<"hist has "<<n_ev<<" entries"<<endl;
-
-//     if(htemp_met_mc->Integral() > 0) htemp_met_mc->Scale(1/htemp_met_mc->Integral());
-
-//     TString textPt;
-//     textPt = text + ", "+legname;
-    
-//     htemp_met_mc->GetXaxis()->SetTitle("MET/#sum p_{T}");
-//     htemp_met_mc->GetYaxis()->SetTitle("Norm. Entries");
-//     htemp_met_mc->GetYaxis()->SetTitleOffset(1.5);
-//     // h->SetMaximum(0.3);
-//     h->GetXaxis()->SetLimits(0,1.2);
-//     //      h->GetYaxis()->SetLimits(0,0.8);
-//     // htemp_met_mc->SetMaximum(0.3);
-//     htemp_met_mc->SetLineWidth(3);
-
-//     // TF1 *tempFunc = new TF1("tempFunc","gaus");
-//     // htemp_met_mc->Fit(tempFunc);
-//     // TString textChi2NDF ="Chi2/NDF=";
-//     // textChi2NDF = textChi2NDF+Form("%d",tempFunc->GetChisquare());
-//     // textChi2NDF = textChi2NDF+"/";
-//     // textChi2NDF = textChi2NDF+Form("%d",tempFunc->GetNDF());    
-      
-//     htemp_met_mc->Draw("HIST");
-
-//     tex->DrawLatex(0.2,0.85,"MC, " + textPt);
-//     tex->DrawLatex(0.15,0.95,txttag);
-//     // tex->DrawLatex(0.2,0.4,textChi2NDF);
-//     //tex_lumi->DrawLatex(0.6,0.91,"MC");
-//     c5->SaveAs(CorrectionObject::_outpath+"plots/control/fullAsym/METoverPt_MC_" + CorrectionObject::_generator_tag + "_eta_" + eta_range2[i] + "_" + eta_range2[i+1] + "_" + pt_name + ".pdf");
-    
-//     }
-//   }
-
-//    for(int i=0; i<n_eta-1; i++){
-//       TString eta_name = "eta_"+eta_range2[i]+"_"+eta_range2[i+1];
-//     bool eta_cut_bool = fabs(eta_bins[i])>=eta_cut; 
-//     TLatex *tex = new TLatex();
-//     tex->SetNDC();
-//     tex->SetTextSize(0.045); 
-//     TString text;
-//     if(eta_abs) text = eta_range[i] + " < |#eta| < " + eta_range[i+1];
-//     else text = eta_range_full[i] + " < #eta < " + eta_range_full[i+1];
-
-//     TLatex *tex_lumi = new TLatex();
-//     tex_lumi->SetNDC();
-//     tex_lumi->SetTextSize(0.045);
-      
-//     TCanvas* c5 = new TCanvas();
-//     tdrCanvas(c5,"c5",h,4,10,kSquare,"DATA");
-//     TH1D* htemp_met_data;
-//     for(int j=0; j<( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ); j++){
-//     TString pt_name = "pt_"+(eta_cut_bool?pt_range_HF:pt_range)[j]+"_"+(eta_cut_bool?pt_range_HF:pt_range)[j+1];
-//     TString legname = "p_{T} #in [" + (eta_cut_bool?pt_range_HF:pt_range)[j] + "," + (eta_cut_bool?pt_range_HF:pt_range)[j+1] + "]";
-//     TString name_met_data = "hist_data_METoverJetsPt_"+eta_name+"_"+pt_name;
-//     htemp_met_data = (TH1D*)f_mpf_data->Get(name_met_data);
-
-//     TString textPt;
-//     textPt = text + ", "+legname;
-       
-//     int n_ev =  htemp_met_data->GetEntries();
-//     if(htemp_met_data->Integral() > 0)htemp_met_data->Scale(1/htemp_met_data->Integral());
-//     htemp_met_data->GetXaxis()->SetTitle("MET/#sum p_{T}");
-//     htemp_met_data->GetYaxis()->SetTitle("Norm. Entries");
-//     htemp_met_data->GetYaxis()->SetTitleOffset(1.5);
-//     // h->SetMaximum(0.3);
-//     htemp_met_data->GetXaxis()->SetLimits(0,1.2);
-//     //      h->GetYaxis()->SetLimits(0,0.8);
-//     // htemp_met_data->SetMaximum(0.3);
-//     htemp_met_data->SetLineWidth(3);
-
-
-//     // TF1 *tempFunc = new TF1("tempFunc","gaus");
-//     // htemp_met_data->Fit(tempFunc);
-//     // TString textChi2NDF ="Chi2/NDF=";
-//     // textChi2NDF = textChi2NDF+Form("%d",tempFunc->GetChisquare());
-//     // textChi2NDF = textChi2NDF+"/";
-//     // textChi2NDF = textChi2NDF+Form("%d",tempFunc->GetNDF());    
-    
-//     htemp_met_data->Draw("HIST");
-//     tex->DrawLatex(0.2,0.85,"DATA, " + textPt);
-//     // tex->DrawLatex(0.2,0.4,textChi2NDF);
-//     //tex_lumi->DrawLatex(0.6,0.91,"DATA");
-//     c5->SaveAs(CorrectionObject::_outpath+"plots/control/fullAsym/METoverPt_DATA_" + CorrectionObject::_generator_tag + "_eta_" + eta_range2[i] + "_" + eta_range2[i+1] + "_" + pt_name + ".pdf");
-    
-//     }
-//   }
-
-
-  
-//     for(int i=0; i<n_eta-1; i++){
-//       TString eta_name = "eta_"+eta_range2[i]+"_"+eta_range2[i+1];
-//     bool eta_cut_bool = fabs(eta_bins[i])>=eta_cut; 
-//     TLatex *tex = new TLatex();
-//     tex->SetNDC();
-//     tex->SetTextSize(0.045); 
-//     TString text;
-//     if(eta_abs) text = eta_range[i] + " < |#eta| < " + eta_range[i+1];
-//     else text = eta_range_full[i] + " < #eta < " + eta_range_full[i+1];
-
-//     TLatex *tex_lumi = new TLatex();
-//     tex_lumi->SetNDC();
-//     tex_lumi->SetTextSize(0.045);
-      
-//     TH1D* htemp_met_mc2;
-//     TH1D* htemp_met_data2;
-//     TH1D* htemp_met_datamc;
-    
-//     for(int j=0; j<( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ); j++){
-      
-//      TCanvas* c52 = new TCanvas();
-//     tdrCanvas(c52,"c52",h,4,10,kSquare,"DATA/MC");
-//     // cout<<"after tdrCanvas"<<endl;
-    
-//     TString pt_name = "pt_"+(eta_cut_bool?pt_range_HF:pt_range)[j]+"_"+(eta_cut_bool?pt_range_HF:pt_range)[j+1];
-//     TString legname = "p_{T} #in [" + (eta_cut_bool?pt_range_HF:pt_range)[j] + "," + (eta_cut_bool?pt_range_HF:pt_range)[j+1] + "]";
-//     TString name_met_mc = "hist_mc_METoverJetsPt_"+eta_name+"_"+pt_name;
-//     TString name_met_data = "hist_data_METoverJetsPt_"+eta_name+"_"+pt_name;
-    
-//     htemp_met_mc2 = (TH1D*)f_mpf_mc->Get(name_met_mc);
-//     htemp_met_data2 = (TH1D*)f_mpf_data->Get(name_met_data);
-    
-//     cout<<"after getting hist "<<name_met_mc<<endl;
-//     cout<<"and "<<name_met_data<<endl;
-    
-//     int n_ev =  htemp_met_mc2->GetEntries();
-//     cout<<"hist has "<<n_ev<<" entries"<<endl;
-
-//     if(htemp_met_mc2->Integral() > 0) htemp_met_mc2->Scale(1/htemp_met_mc2->Integral());
-
-//     n_ev =  htemp_met_data2->GetEntries();
-//     cout<<"hist has "<<n_ev<<" entries"<<endl;
-
-//     if(htemp_met_data2->Integral() > 0) htemp_met_data2->Scale(1/htemp_met_data2->Integral());   
-
-//     htemp_met_datamc = (TH1D*)htemp_met_data2->Clone();
-//     htemp_met_datamc->Divide(htemp_met_mc2);
-    
-//     TString textPt;
-//     textPt = text + ", "+legname;
-    
-//     htemp_met_mc2->GetXaxis()->SetTitle("MET/#sum p_{T}");
-//     htemp_met_mc2->GetYaxis()->SetTitle("Norm. Entries");
-//     htemp_met_mc2->GetYaxis()->SetTitleOffset(1.5);
-//     htemp_met_data2->GetXaxis()->SetTitle("MET/#sum p_{T}");
-//     htemp_met_data2->GetYaxis()->SetTitle("Norm. Entries");
-//     htemp_met_data2->GetYaxis()->SetTitleOffset(1.5);
-
-    
-//     // h->SetMaximum(0.3);
-//     h->GetXaxis()->SetLimits(0,1.2);
-//     //      h->GetYaxis()->SetLimits(0,0.8);
-//     // htemp_met_mc->SetMaximum(0.3);
-
-
-//     TPad *pad1 = new TPad("pad1", "pad1", 0, 0.3, 1, 1.0);
-//     pad1->SetBottomMargin(0); // Upper and lower plot are joined
-//     pad1->SetGridx();         // Vertical grid
-//     pad1->Draw();             // Draw the upper pad: pad1
-//     pad1->cd();               // pad1 becomes the current pad
-      
-//     htemp_met_mc2->SetLineWidth(3);
-//     htemp_met_mc2->Draw("HIST");
-//     htemp_met_data2->SetLineWidth(3);
-//     htemp_met_data2->Draw("* same");
-    
-//     tex->DrawLatex(0.2,0.85,textPt);
-
-//     c52->cd();          // Go back to the main canvas before defining pad2
-//     TPad *pad2 = new TPad("pad2", "pad2", 0, 0.05, 1, 0.3);
-//     pad2->SetTopMargin(0);
-//     pad2->SetBottomMargin(0.2);
-//     pad2->SetGridx(); // vertical grid
-//     pad2->Draw();
-//     pad2->cd();
-    
-//     htemp_met_datamc->Draw();
-        
-//     c52->SaveAs(CorrectionObject::_outpath+"plots/control/fullAsym/METoverPt_DataMC_" + CorrectionObject::_generator_tag + "_eta_" + eta_range2[i] + "_" + eta_range2[i+1] + "_" + pt_name + ".pdf");
-    
-//     }
-//   }
-
-
-
-   
-
-   
-//   TFile* f_jet_pt = new TFile(CorrectionObject::_outpath+"plots/control/jet_pt_data.root","READ");
-//   for(int i=0; i<(eta_abs ? n_eta : n_eta_full)-1; i++){
-//     TString eta_name = "eta_"+(eta_abs ? eta_range2 : eta_range2_full)[i]+"_"+(eta_abs ? eta_range2 : eta_range2_full)[i+1];
-    
-//     TLatex *tex = new TLatex();
-//     tex->SetNDC();
-//     tex->SetTextSize(0.045); 
-//     TString text;
-//     if(eta_abs) text = eta_range[i] + " < |#eta| < " + eta_range[i+1];
-//     else text = eta_range_full[i] + " < #eta < " + eta_range_full[i+1];
-
-//     TLatex *tex_lumi = new TLatex();
-//     tex_lumi->SetNDC();
-//     tex_lumi->SetTextSize(0.045); 
-    
-//       TCanvas* cFull_pt1 = new TCanvas();
-//       tdrCanvas(cFull_pt1,"cFull_pt1",h,4,10,kSquare,CorrectionObject::_lumitag);
-//       TH1D* htemp_rel_data;
-//       TString name_rel_data = "hist_data_jet1_pt_"+eta_name;
-//       htemp_rel_data = (TH1D*)f_jet_pt->Get(name_rel_data);
-//       htemp_rel_data->Draw();
-//       htemp_rel_data->GetXaxis()->SetTitle("pt jet1");
-//       htemp_rel_data->GetYaxis()->SetTitle("Entries per Bin");      
-//       // htemp_rel_data->GetXaxis()->SetLimits(-1.2,1.2);
-
-
-//     TF1 *tempFunc = new TF1("tempFunc","gaus");
-//     htemp_rel_data->Fit(tempFunc);
-//     TString textChi2NDF ="Chi2/NDF=";
-//     textChi2NDF = textChi2NDF+Form("%d",tempFunc->GetChisquare());
-//     textChi2NDF = textChi2NDF+"/";
-//     textChi2NDF = textChi2NDF+Form("%d",tempFunc->GetNDF());    
-
-//       htemp_rel_data->Draw("EP");		
-//       tex->DrawLatex(0.47,0.85,"Data, " + text);
-//     tex->DrawLatex(0.2,0.4,textChi2NDF);
-//       cFull_pt1->SaveAs(CorrectionObject::_outpath+"plots/control/fullAsym/jet1_pt_DATA_" + CorrectionObject::_generator_tag + "_eta_" + (eta_abs ? eta_range2 : eta_range2_full)[i] + "_" + (eta_abs ? eta_range2 : eta_range2_full)[i+1]+ ".pdf");
-//       delete cFull_pt1;
-//       delete htemp_rel_data;
-    
-//   }
-
-//   for(int i=0; i<(eta_abs ? n_eta : n_eta_full)-1; i++){
-//     TString eta_name = "eta_"+(eta_abs ? eta_range2 : eta_range2_full)[i]+"_"+(eta_abs ? eta_range2 : eta_range2_full)[i+1];
-    
-//     TLatex *tex = new TLatex();
-//     tex->SetNDC();
-//     tex->SetTextSize(0.045); 
-//     //TString text = eta_range[i] + " < |#eta| < " + eta_range[i+1];
-
-//     TString text;
-//     if(eta_abs) text = eta_range[i] + " < |#eta| < " + eta_range[i+1];
-//     else text = eta_range_full[i] + " < #eta < " + eta_range_full[i+1];
-
-//     TLatex *tex_lumi = new TLatex();
-//     tex_lumi->SetNDC();
-//     tex_lumi->SetTextSize(0.045); 
-    
-//       TCanvas* cFull_pt2 = new TCanvas();
-//       tdrCanvas(cFull_pt2,"cFull_pt2",h,4,10,kSquare,CorrectionObject::_lumitag);
-//       TH1D* htemp_rel_data;
-//       TString name_rel_data = "hist_data_jet2_pt_"+eta_name;
-//       htemp_rel_data = (TH1D*)f_jet_pt->Get(name_rel_data);
-//       htemp_rel_data->Draw();
-//       htemp_rel_data->GetXaxis()->SetTitle("pt jet2");
-//       htemp_rel_data->GetYaxis()->SetTitle("Entries per Bin");      
-//       // htemp_rel_data->GetXaxis()->SetLimits(-1.2,1.2);
-//       htemp_rel_data->Draw("EP");		
-//       tex->DrawLatex(0.47,0.85,"Data, " + text);
-//       cFull_pt2->SaveAs(CorrectionObject::_outpath+"plots/control/fullAsym/jet2_pt_DATA_" + CorrectionObject::_generator_tag + "_eta_" + (eta_abs ? eta_range2 : eta_range2_full)[i] + "_" + (eta_abs ? eta_range2 : eta_range2_full)[i+1]+ ".pdf");
-//       delete cFull_pt2;
-//       delete htemp_rel_data;
-    
-//   }
-
-//   for(int i=0; i<(eta_abs ? n_eta : n_eta_full)-1; i++){
-//     TString eta_name = "eta_"+(eta_abs ? eta_range2 : eta_range2_full)[i]+"_"+(eta_abs ? eta_range2 : eta_range2_full)[i+1];
-    
-//     TLatex *tex = new TLatex();
-//     tex->SetNDC();
-//     tex->SetTextSize(0.045); 
-
-//     //TString text = eta_range[i] + " < |#eta| < " + eta_range[i+1];
-//     TString text;
-//     if(eta_abs) text = eta_range[i] + " < |#eta| < " + eta_range[i+1];
-//     else text = eta_range_full[i] + " < #eta < " + eta_range_full[i+1];
-
-//     TLatex *tex_lumi = new TLatex();
-//     tex_lumi->SetNDC();
-//     tex_lumi->SetTextSize(0.045); 
-    
-//       TCanvas* cFull_pt3 = new TCanvas();
-//       tdrCanvas(cFull_pt3,"cFull_pt3",h,4,10,kSquare,CorrectionObject::_lumitag);
-//       TH1D* htemp_rel_data;
-//       TString name_rel_data = "hist_data_jet3_pt_"+eta_name;
-//       htemp_rel_data = (TH1D*)f_jet_pt->Get(name_rel_data);
-//       htemp_rel_data->Draw();
-//       htemp_rel_data->GetXaxis()->SetTitle("pt jet3");
-//       htemp_rel_data->GetYaxis()->SetTitle("Entries per Bin");      
-//       // htemp_rel_data->GetXaxis()->SetLimits(-1.2,1.2);
-//       htemp_rel_data->Draw("EP");		
-//       tex->DrawLatex(0.47,0.85,"Data, " + text);
-//       cFull_pt3->SaveAs(CorrectionObject::_outpath+"plots/control/fullAsym/jet3_pt_DATA_" + CorrectionObject::_generator_tag + "_eta_" + (eta_abs ? eta_range2 : eta_range2_full)[i] + "_" + (eta_abs ? eta_range2 : eta_range2_full)[i+1]+ ".pdf");
-//       delete cFull_pt3;
-//       delete htemp_rel_data;
-    
-//   }  
-
-
-//   for(int i=0; i<(eta_abs ? n_eta : n_eta_full)-1; i++){
-//     TString eta_name = "eta_"+(eta_abs ? eta_range2 : eta_range2_full)[i]+"_"+(eta_abs ? eta_range2 : eta_range2_full)[i+1];
-    
-//     TLatex *tex = new TLatex();
-//     tex->SetNDC();
-//     tex->SetTextSize(0.045); 
-//     //    TString text = eta_range[i] + " < |#eta| < " + eta_range[i+1];
-//     TString text;
-//     if(eta_abs) text = eta_range[i] + " < |#eta| < " + eta_range[i+1];
-//     else text = eta_range_full[i] + " < #eta < " + eta_range_full[i+1];
-
-//     TLatex *tex_lumi = new TLatex();
-//     tex_lumi->SetNDC();
-//     tex_lumi->SetTextSize(0.045); 
-    
-//       TCanvas* cFull_eta3 = new TCanvas();
-//       tdrCanvas(cFull_eta3,"cFull_eta3",h,4,10,kSquare,CorrectionObject::_lumitag);
-//       TH1D* htemp_rel_data;
-//       TString name_rel_data = "hist_data_jet3_eta_"+eta_name;
-//       htemp_rel_data = (TH1D*)f_jet_pt->Get(name_rel_data);
-//       htemp_rel_data->Draw();
-//       htemp_rel_data->GetXaxis()->SetTitle("eta jet3");
-//       htemp_rel_data->GetYaxis()->SetTitle("Entries per Bin");      
-//       // htemp_rel_data->GetXaxis()->SetLimits(-1.2,1.2);
-//       htemp_rel_data->SetMarkerStyle(20);
-//       htemp_rel_data->SetMarkerColor(kBlack);
-//       htemp_rel_data->SetLineColor(kBlack);
-//       htemp_rel_data->Draw("EP");		
-//       tex->DrawLatex(0.47,0.85,"Data, " + text);
-//       cFull_eta3->SaveAs(CorrectionObject::_outpath+"plots/control/fullAsym/jet3_eta_DATA_" + CorrectionObject::_generator_tag + "_eta_" + (eta_abs ? eta_range2 : eta_range2_full)[i] + "_" + (eta_abs ? eta_range2 : eta_range2_full)[i+1]+ ".pdf");
-//       delete cFull_eta3;
-//       delete htemp_rel_data;
-    
-//   }  
-
-// for(int i=0; i<(eta_abs ? n_eta : n_eta_full)-1; i++){
-//     TString eta_name = "eta_"+(eta_abs ? eta_range2 : eta_range2_full)[i]+"_"+(eta_abs ? eta_range2 : eta_range2_full)[i+1];
-    
-//     TLatex *tex = new TLatex();
-//     tex->SetNDC();
-//     tex->SetTextSize(0.045); 
-//     //    TString text = eta_range[i] + " < |#eta| < " + eta_range[i+1];
-//     TString text;
-//     if(eta_abs) text = eta_range[i] + " < |#eta| < " + eta_range[i+1];
-//     else text = eta_range_full[i] + " < #eta < " + eta_range_full[i+1];
-
-//     TLatex *tex_lumi = new TLatex();
-//     tex_lumi->SetNDC();
-//     tex_lumi->SetTextSize(0.045); 
-    
-//       TCanvas* cFull_dRmin3 = new TCanvas();
-//       tdrCanvas(cFull_dRmin3,"cFull_dRmin3",h,4,10,kSquare,CorrectionObject::_lumitag);
-//       TH1D* htemp_rel_data;
-//       TString name_rel_data = "hist_data_jet3_dRmin_"+eta_name;
-//       htemp_rel_data = (TH1D*)f_jet_pt->Get(name_rel_data);
-//       htemp_rel_data->Draw();
-//       htemp_rel_data->GetXaxis()->SetTitle("min (dR(jet3,tag), dR(jet3,probe))");
-//       htemp_rel_data->GetYaxis()->SetTitle("Entries per Bin");      
-//       // htemp_rel_data->GetXaxis()->SetLimits(-1.2,1.2);
-//       htemp_rel_data->SetMarkerStyle(20);
-//       htemp_rel_data->SetMarkerColor(kBlack);
-//       htemp_rel_data->SetLineColor(kBlack);
-//       htemp_rel_data->Draw("EP");		
-//       tex->DrawLatex(0.47,0.85,"Data, " + text);
-//       cFull_dRmin3->SaveAs(CorrectionObject::_outpath+"plots/control/fullAsym/jet3_dRmin_DATA_" + CorrectionObject::_generator_tag + "_eta_" + (eta_abs ? eta_range2 : eta_range2_full)[i] + "_" + (eta_abs ? eta_range2 : eta_range2_full)[i+1]+ ".pdf");
-//       delete cFull_dRmin3;
-//       delete htemp_rel_data;
-    
-//   }  
-
-//    TFile* f_rel_data_nvert = new TFile(CorrectionObject::_outpath+"plots/control/A_nvert_2d_data.root","READ");
-//   for(int i=0; i<(eta_abs ? n_eta : n_eta_full)-1; i++){
-//     TString eta_name = "eta_"+(eta_abs ? eta_range2 : eta_range2_full)[i]+"_"+(eta_abs ? eta_range2 : eta_range2_full)[i+1];
-    
-//     TLatex *tex = new TLatex();
-//     tex->SetNDC();
-//     tex->SetTextSize(0.045); 
-//     //    TString text = eta_range[i] + " < |#eta| < " + eta_range[i+1];
-//     TString text;
-//     if(eta_abs) text = eta_range[i] + " < |#eta| < " + eta_range[i+1];
-//     else text = eta_range_full[i] + " < #eta < " + eta_range_full[i+1];
-
-//     TLatex *tex_lumi = new TLatex();
-//     tex_lumi->SetNDC();
-//     tex_lumi->SetTextSize(0.045); 
-    
-//     eta_cut_bool = fabs((eta_abs ? eta_bins : eta_bins_full)[i])>=eta_cut;
-//     for(int j=0; j<( eta_cut_bool ?  n_pt_HF-1 : n_pt-1 ); j++){
-//       TCanvas* cFullA_nvert = new TCanvas();
-//       // tdrCanvas(cFullA_nvert,"cFullA_nvert",h,4,10,kSquare,CorrectionObject::_lumitag);
-//       TH2D* htemp_rel_data_nvert;
-//       TString pt_name = "pt_"+(eta_cut_bool?pt_range_HF:pt_range)[j]+"_"+(eta_cut_bool?pt_range_HF:pt_range)[j+1];
-//       TString legname = "p_{T} #in [" + (eta_cut_bool?pt_range_HF:pt_range)[j] + "," + (eta_cut_bool?pt_range_HF:pt_range)[j+1] + "]";
-//       TString name_rel_data = "hist_data_A_nvert_"+eta_name+"_"+pt_name;
-//       htemp_rel_data_nvert = (TH2D*)f_rel_data_nvert->Get(name_rel_data);
-//       htemp_rel_data_nvert->Draw("E");
-//       htemp_rel_data_nvert->GetXaxis()->SetTitle("A");
-//       htemp_rel_data_nvert->GetYaxis()->SetTitle("n vertices");
-//       htemp_rel_data_nvert->GetZaxis()->SetTitle("Entries per Bin");      
-//       htemp_rel_data_nvert->GetXaxis()->SetLimits(-1.2,1.2);
-//       htemp_rel_data_nvert->Draw("COLZ");		
-//       tex->DrawLatex(0.47,0.85,"Data, " + text);
-//       tex->DrawLatex(0.54,0.8,legname);		
-//       cFullA_nvert->SaveAs(CorrectionObject::_outpath+"plots/control/fullAsym/A_nvert_DATA_" + CorrectionObject::_generator_tag + "_eta_" + (eta_abs ? eta_range2 : eta_range2_full)[i] + "_" + (eta_abs ? eta_range2 : eta_range2_full)[i+1]+"_pt_"+ (eta_cut_bool?pt_range_HF:pt_range)[j] + "_" + (eta_cut_bool?pt_range_HF:pt_range)[j+1] + ".pdf");
-//       delete cFullA_nvert;
-//       delete htemp_rel_data_nvert;
-//     }
-//   }
  
   TFile* f_rel_data = new TFile(CorrectionObject::_outpath+"plots/control/A_1d_data_smaller_split"+".root","READ");
   f_rel_data->Print();
@@ -850,9 +406,12 @@ void CorrectionObject::AdditionalAsymmetryPlots(bool eta_abs, bool si_trg){
       htemp_rel_mc = (TH1D*)f_rel_data->Get(name_rel_mc);
 
       evname += htemp_rel_data->GetEntries();
+      if(htemp_rel_data->GetEntries()>0) htemp_rel_data->Scale(1./htemp_rel_data->Integral());
+      htemp_rel_data->GetYaxis()->SetRangeUser(1e-5,1e2);
       htemp_rel_data->Draw("E");
       TString textChi2NDF ="Chi2/NDF=";
       TString textMean ="Arithm. Mean=";
+      TString textRMS ="Arithm. RMS=";
       TString textMeanGaus ="Gauss. Mean=";
       TString textRMSGaus ="Gauss. RMS=";
       if(htemp_rel_data->GetEntries()){
@@ -862,6 +421,7 @@ void CorrectionObject::AdditionalAsymmetryPlots(bool eta_abs, bool si_trg){
 	textChi2NDF = textChi2NDF+Form("%d",tempFunc->GetNDF());
 	textMean+=Form("%.3f",htemp_rel_data->GetMean());
 	textMean+=", R=";
+	textRMS+=Form("%.3f",htemp_rel_data->GetRMS());
 	double response = 1+htemp_rel_data->GetMean()/(1-htemp_rel_data->GetMean());
 	textMean+=Form("%.3f",response);
 	textMeanGaus+=Form("%.3f",tempFunc->GetParameter(1));
@@ -877,7 +437,8 @@ void CorrectionObject::AdditionalAsymmetryPlots(bool eta_abs, bool si_trg){
       //      htemp_rel_data->GetYaxis()->SetTitle("Entries per Bin");
       htemp_rel_data->GetYaxis()->SetTitle("Entries");
       htemp_rel_data->GetYaxis()->SetTitleOffset(1.5);
-      htemp_rel_data->GetXaxis()->SetLimits(-1.2,1.2);
+      htemp_rel_data->GetXaxis()->SetLimits(-0.8,0.8);
+
       htemp_rel_data->SetMarkerStyle(20);
       htemp_rel_data->SetMarkerColor(kBlack);
       htemp_rel_data->Draw("EP");		
@@ -891,12 +452,14 @@ void CorrectionObject::AdditionalAsymmetryPlots(bool eta_abs, bool si_trg){
       if(htemp_rel_data->GetEntries()) tex->DrawLatex(0.17,0.65,textMeanGaus);
       if(htemp_rel_data->GetEntries()) tex->DrawLatex(0.17,0.60,textRMSGaus);
       if(htemp_rel_data->GetEntries()) tex->DrawLatex(0.17,0.54,textMean);
+      if(htemp_rel_data->GetEntries()) tex->DrawLatex(0.17,0.49,textRMS);
       // htemp_rel_mc->SetMarkerStyle(24);
       // htemp_rel_mc->SetMarkerColor(kRed-7);
       // htemp_rel_mc->Draw("same");
       //      htemp_rel_data->Print();
       // htemp_rel_mc->Print();
 
+      cFullA->SetLogy();//TEST FOR LOG on Y axis, as for JER plots
       cFullA->SaveAs(CorrectionObject::_outpath+"plots/control/fullAsym/A_DATA_" + CorrectionObject::_generator_tag + "_eta_" + (eta_abs ? eta_range2 : eta_range2_full)[i] + "_" + (eta_abs ? eta_range2 : eta_range2_full)[i+1]+"_pt_"+ (eta_cut_bool?pt_range_HF:pt_range)[j] + "_" + (eta_cut_bool?pt_range_HF:pt_range)[j+1] + ".pdf");
      
       TCanvas* cFullAmc = new TCanvas();
@@ -904,9 +467,12 @@ void CorrectionObject::AdditionalAsymmetryPlots(bool eta_abs, bool si_trg){
       evname = "Tot.Events = ";
 
       evname += htemp_rel_mc->GetEntries();
+      if(htemp_rel_mc->GetEntries()>0) htemp_rel_mc->Scale(1./htemp_rel_mc->Integral());
+      htemp_rel_mc->GetYaxis()->SetRangeUser(1e-5,1e2);
       htemp_rel_mc->Draw("E");
       textChi2NDF ="Chi2/NDF=";
       textMean ="Arithm. Mean=";
+      textRMS ="Arithm. RMS=";
       textMeanGaus ="Gauss. Mean=";
       textRMSGaus ="Gauss. RMS=";
       if(htemp_rel_mc->GetEntries()){
@@ -916,6 +482,7 @@ void CorrectionObject::AdditionalAsymmetryPlots(bool eta_abs, bool si_trg){
 	textChi2NDF = textChi2NDF+Form("%d",tempFunc->GetNDF());
 	textMean+=Form("%.3f",htemp_rel_mc->GetMean());
 	textMean+=", R=";
+	textRMS+=Form("%.3f",htemp_rel_mc->GetRMS());
 	double response = 1+htemp_rel_mc->GetMean()/(1-htemp_rel_mc->GetMean());
 	textMean+=Form("%.3f",response);
 	textMeanGaus+=Form("%.3f",tempFunc->GetParameter(1));
@@ -928,12 +495,13 @@ void CorrectionObject::AdditionalAsymmetryPlots(bool eta_abs, bool si_trg){
 
       //      htemp_rel_mc->Print();
       htemp_rel_mc->GetXaxis()->SetTitle("A");
-      //      htemp_rel_mc->GetYaxis()->SetTitle("Entries per Bin");
       htemp_rel_mc->GetYaxis()->SetTitle("Entries");
       htemp_rel_mc->GetYaxis()->SetTitleOffset(1.5);
-      htemp_rel_mc->GetXaxis()->SetLimits(-1.2,1.2);
+      htemp_rel_mc->GetXaxis()->SetLimits(-0.8,0.8);
+
       htemp_rel_mc->SetMarkerStyle(24);
       htemp_rel_mc->SetMarkerColor(kRed);
+
       htemp_rel_mc->Draw("EP");		
       tex->DrawLatex(0.56,0.85,text);
       tex->DrawLatex(0.56,0.8,legname);		
@@ -942,7 +510,9 @@ void CorrectionObject::AdditionalAsymmetryPlots(bool eta_abs, bool si_trg){
       if(htemp_rel_mc->GetEntries()) tex->DrawLatex(0.17,0.65,textMeanGaus);
       if(htemp_rel_mc->GetEntries()) tex->DrawLatex(0.17,0.60,textRMSGaus);
       if(htemp_rel_mc->GetEntries()) tex->DrawLatex(0.17,0.54,textMean);
+      if(htemp_rel_mc->GetEntries()) tex->DrawLatex(0.17,0.49,textRMS);
 
+      cFullAmc->SetLogy();//TEST FOR LOG on Y axis, as for JER plots
       cFullAmc->SaveAs(CorrectionObject::_outpath+"plots/control/fullAsym/A_MC_" + CorrectionObject::_generator_tag + "_eta_" + (eta_abs ? eta_range2 : eta_range2_full)[i] + "_" + (eta_abs ? eta_range2 : eta_range2_full)[i+1]+"_pt_"+ (eta_cut_bool?pt_range_HF:pt_range)[j] + "_" + (eta_cut_bool?pt_range_HF:pt_range)[j+1] + ".pdf");
      
 
@@ -985,7 +555,7 @@ void CorrectionObject::AdditionalAsymmetryPlots(bool eta_abs, bool si_trg){
       //      htemp_mpf_data->GetYaxis()->SetTitle("Entries per Bin");
       htemp_mpf_data->GetYaxis()->SetTitle("Entries");
       htemp_mpf_data->GetYaxis()->SetTitleOffset(1.5);
-      htemp_mpf_data->GetXaxis()->SetLimits(-1.2,1.2);
+      htemp_mpf_data->GetXaxis()->SetLimits(-0.8,0.8);
       htemp_mpf_data->SetMarkerColor(kBlack);
       htemp_mpf_data->SetLineColor(kBlack);
       htemp_mpf_data->SetMarkerStyle(20);
@@ -1045,7 +615,7 @@ void CorrectionObject::AdditionalAsymmetryPlots(bool eta_abs, bool si_trg){
       //      htemp_mpf_mc->GetYaxis()->SetTitle("Entries per Bin");
       htemp_mpf_mc->GetYaxis()->SetTitle("Entries");
       htemp_mpf_mc->GetYaxis()->SetTitleOffset(1.5);
-      htemp_mpf_mc->GetXaxis()->SetLimits(-1.2,1.2);
+      htemp_mpf_mc->GetXaxis()->SetLimits(-0.8,0.8);
       htemp_mpf_mc->SetMarkerColor(kRed);
       htemp_mpf_mc->SetLineColor(kRed);
       htemp_mpf_mc->SetMarkerStyle(24);
@@ -1103,7 +673,7 @@ void CorrectionObject::AdditionalAsymmetryPlots(bool eta_abs, bool si_trg){
   //     htemp_rel_data_rho->GetXaxis()->SetTitle("A");
   //     htemp_rel_data_rho->GetYaxis()->SetTitle("rho");
   //     htemp_rel_data_rho->GetZaxis()->SetTitle("Entries per Bin");      
-  //     htemp_rel_data_rho->GetXaxis()->SetLimits(-1.2,1.2);
+  //     htemp_rel_data_rho->GetXaxis()->SetLimits(-0.8,0.8);
   //     htemp_rel_data_rho->Draw("COLZ");		
   //     tex->DrawLatex(0.47,0.85,"Data, " + text);
   //     tex->DrawLatex(0.54,0.8,legname);		
@@ -1176,7 +746,7 @@ void CorrectionObject::AdditionalAsymmetryPlots(bool eta_abs, bool si_trg){
 
     
   //   // h->SetMaximum(0.3);
-  //   h->GetXaxis()->SetLimits(0,1.2);
+  //   h->GetXaxis()->SetLimits(0,0.8);
   //   //      h->GetYaxis()->SetLimits(0,0.8);
   //   // htemp_pt_mc->SetMaximum(0.3);
 
@@ -1282,7 +852,7 @@ void CorrectionObject::AdditionalAsymmetryPlots(bool eta_abs, bool si_trg){
 
     
   //   // h->SetMaximum(0.3);
-  //   h->GetXaxis()->SetLimits(0,1.2);
+  //   h->GetXaxis()->SetLimits(0,0.8);
   //   //      h->GetYaxis()->SetLimits(0,0.8);
   //   // htemp_pt_mc->SetMaximum(0.3);
 
@@ -1387,7 +957,7 @@ void CorrectionObject::AdditionalAsymmetryPlots(bool eta_abs, bool si_trg){
 
     
   //   // h->SetMaximum(0.3);
-  //   h->GetXaxis()->SetLimits(0,1.2);
+  //   h->GetXaxis()->SetLimits(0,0.8);
   //   //      h->GetYaxis()->SetLimits(0,0.8);
   //   // htemp_pt_mc->SetMaximum(0.3);
 
@@ -1495,7 +1065,7 @@ void CorrectionObject::AdditionalAsymmetryPlots(bool eta_abs, bool si_trg){
 
     
   //   // h->SetMaximum(0.3);
-  //   h->GetXaxis()->SetLimits(0,1.2);
+  //   h->GetXaxis()->SetLimits(0,0.8);
   //   //      h->GetYaxis()->SetLimits(0,0.8);
   //   // htemp_met_mc->SetMaximum(0.3);
 

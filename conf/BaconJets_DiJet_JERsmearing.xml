@@ -14,7 +14,9 @@
 
 <!-- <!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JERC/RunII_102X_v1/2018/Autumn18V8_L1L2L3_NoRes_V4ABCJERsmear_DiJet_FixCS_newSamples_RECO10GeV_dR02_addDATApuid_addMCpartonPUid_fixPUidvsPFs/"> -->
 
-<!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JERC/RunII_102X_v1/2018/Autumn18V8_L1L2L3_NoRes_V4ABCJERsmearNoBelow180PTEndcapsmear_DiJet_FixCS_newSamples_RECO10GeV_dR02_addDATApuid_addMCpartonPUid_fixPUidvsPFs/"> 
+<!-- <!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JERC/RunII_102X_v1/2018/Autumn18V8_L1L2L3_NoRes_V4ABCJERsmearNoBelow180PTEndcapsmear_DiJet_FixCS_newSamples_RECO10GeV_dR02_addDATApuid_addMCpartonPUid_fixPUidvsPFs/"> -->
+
+<!ENTITY OUTdir              "/nfs/dust/cms/user/karavdia/JERC/RunII_102X_v1/2018/Autumn18V8_L1L2L3_NoRes_V4ABCJERsmearPTmodified_DiJet_FixCS_newSamples_RECO10GeV_dR02_addDATApuid_addMCpartonPUid_fixPUidvsPFs_2/"> 
 
 
 <!ENTITY b_closuretest       "false">
@@ -63,7 +65,7 @@
 
 
 <!--
-<ConfigParse NEventsBreak="0" FileSplit="20" AutoResubmit="5"/>
+<ConfigParse NEventsBreak="0" FileSplit="10" AutoResubmit="5"/>
 <ConfigSGE RAM ="2" DISK ="3" Mail="xxx@desy.de" Notification="as" Workdir="workdir_DiJet_RunABCD_2_V4ABCJERsmear"/>
 -->
 
@@ -121,7 +123,7 @@
           <InputTree Name="AnalysisTree"/>
           <OutputTree Name="AnalysisTree"/>
      </InputData>
-
+<!--
 <InputData Lumi="58827" NEventsMax="&NEVT;" Type="MC" Version="QCD_Flat2018_pythia8_2018_AK4CHS" Cacheable="&CACHEABLE;">
           &QCD_Flat2018_pythia8;
           <InputTree Name="AnalysisTree"/>
@@ -150,7 +152,7 @@
           <InputTree Name="AnalysisTree"/>
           <OutputTree Name="AnalysisTree"/>
      </InputData>
-
+-->
 
     <UserConfig>
       <Item Name="PrimaryVertexCollection" Value="offlineSlimmedPrimaryVertices"/>

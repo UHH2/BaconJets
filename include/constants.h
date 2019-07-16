@@ -82,29 +82,55 @@ constexpr static int n_pt_bins = 9;
 
 
 /* //from 94X max RunB to RunD */
-/*  constexpr static float s_Pt_AveMC_cut   =40; */
-/*  constexpr static float s_Pt_Ave40_cut   =40 ; */
-/*  constexpr static float s_Pt_Ave60_cut   =72 ; */
-/*  constexpr static float s_Pt_Ave80_cut   =95 ; */
-/*  constexpr static float s_Pt_Ave140_cut  =160; */
-/*  constexpr static float s_Pt_Ave200_cut  =226; */
-/*  constexpr static float s_Pt_Ave260_cut  =283; */
-/*  constexpr static float s_Pt_Ave320_cut  =344; */
-/*  constexpr static float s_Pt_Ave400_cut  =443; */
-/*  constexpr static float s_Pt_Ave450_cut  =577; */
-/*  constexpr static float s_Pt_Ave500_cut  =606; */
+ constexpr static float s_Pt_AveMC_cut_2017   =40;
+ constexpr static float s_Pt_Ave40_cut_2017   =40 ;
+ constexpr static float s_Pt_Ave60_cut_2017   =72 ;
+ constexpr static float s_Pt_Ave80_cut_2017   =95 ;
+ constexpr static float s_Pt_Ave140_cut_2017  =160;
+ constexpr static float s_Pt_Ave200_cut_2017  =226;
+ constexpr static float s_Pt_Ave260_cut_2017  =283;
+ constexpr static float s_Pt_Ave320_cut_2017  =344;
+ constexpr static float s_Pt_Ave400_cut_2017  =443;
+ constexpr static float s_Pt_Ave450_cut_2017  =577;
+ constexpr static float s_Pt_Ave500_cut_2017  =606;
 
-/* //FIXME check the numbers below, are copy of central triggers atm, are they still?? does not look so... */
-/*   constexpr static float s_Pt_Ave40HF_cut  =40 ; */
-/*   constexpr static float s_Pt_Ave60HF_cut  =60 ; */
-/*   constexpr static float s_Pt_Ave80HF_cut  =72 ; */
-/*  constexpr static float s_Pt_Ave140HF_cut  =160; */
-/*  constexpr static float s_Pt_Ave200HF_cut  =190; */
-/*  constexpr static float s_Pt_Ave260HF_cut  =290; */
-/*  constexpr static float s_Pt_Ave320HF_cut  =310; */
-/*  constexpr static float s_Pt_Ave400HF_cut  =390; */
-/*  constexpr static float s_Pt_Ave450HF_cut  =444; */
-/*  constexpr static float s_Pt_Ave500HF_cut  =480;    */
+//FIXME check the numbers below, are copy of central triggers atm, are they still?? does not look so...
+  constexpr static float s_Pt_Ave40HF_cut_2017  =40 ;
+  constexpr static float s_Pt_Ave60HF_cut_2017  =60 ;
+  constexpr static float s_Pt_Ave80HF_cut_2017  =72 ;
+ constexpr static float s_Pt_Ave140HF_cut_2017  =160;
+ constexpr static float s_Pt_Ave200HF_cut_2017  =190;
+ constexpr static float s_Pt_Ave260HF_cut_2017  =290;
+ constexpr static float s_Pt_Ave320HF_cut_2017  =310;
+ constexpr static float s_Pt_Ave400HF_cut_2017  =390;
+ constexpr static float s_Pt_Ave450HF_cut_2017  =444;
+ constexpr static float s_Pt_Ave500HF_cut_2017  =480;
+
+//FixME: 2018 is copy of 2017 at the moment
+constexpr static float s_Pt_AveMC_cut_2018   =40;
+ constexpr static float s_Pt_Ave40_cut_2018   =40 ;
+ constexpr static float s_Pt_Ave60_cut_2018   =72 ;
+ constexpr static float s_Pt_Ave80_cut_2018   =95 ;
+ constexpr static float s_Pt_Ave140_cut_2018  =160;
+ constexpr static float s_Pt_Ave200_cut_2018  =226;
+ constexpr static float s_Pt_Ave260_cut_2018  =283;
+ constexpr static float s_Pt_Ave320_cut_2018  =344;
+ constexpr static float s_Pt_Ave400_cut_2018  =443;
+ constexpr static float s_Pt_Ave450_cut_2018  =577;
+ constexpr static float s_Pt_Ave500_cut_2018  =606;
+
+//FIXME check the numbers below, are copy of central triggers atm, are they still?? does not look so...
+  constexpr static float s_Pt_Ave40HF_cut_2018  =40 ;
+  constexpr static float s_Pt_Ave60HF_cut_2018  =60 ;
+  constexpr static float s_Pt_Ave80HF_cut_2018  =72 ;
+ constexpr static float s_Pt_Ave140HF_cut_2018  =160;
+ constexpr static float s_Pt_Ave200HF_cut_2018  =190;
+ constexpr static float s_Pt_Ave260HF_cut_2018  =290;
+ constexpr static float s_Pt_Ave320HF_cut_2018  =310;
+ constexpr static float s_Pt_Ave400HF_cut_2018  =390;
+ constexpr static float s_Pt_Ave450HF_cut_2018  =444;
+ constexpr static float s_Pt_Ave500HF_cut_2018  =480;
+
 
  constexpr static float Pt_AveMC_cut   =  51;
 //from Di triggers 94X 17Nov2017

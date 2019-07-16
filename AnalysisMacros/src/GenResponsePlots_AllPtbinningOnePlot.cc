@@ -691,7 +691,8 @@ void CorrectionObject::GenResponsePlots_AllPtbinningOnePlot(TString flavor="All"
     h->GetXaxis()->SetTitle("p_{T} [GeV] (see label)");
     h->GetXaxis()->SetTitleSize(0.05);
     h->GetXaxis()->SetLimits(30,pt_bins[n_pt-1]+100);
-    h->GetYaxis()->SetRangeUser(0.70,1.30);
+    //    h->GetYaxis()->SetRangeUser(0.70,1.30);
+    h->GetYaxis()->SetRangeUser(0.50,1.50);
 
     TGraphErrors *graph_probeGEN_tagGEN[6];
     for(int bin=0; bin<6; bin++){
@@ -733,7 +734,8 @@ void CorrectionObject::GenResponsePlots_AllPtbinningOnePlot(TString flavor="All"
     h->GetXaxis()->SetTitle("p_{T} [GeV] (see label)");
     h->GetXaxis()->SetTitleSize(0.05);
     h->GetXaxis()->SetLimits(30,pt_bins[n_pt-1]+100);
-    h->GetYaxis()->SetRangeUser(0.70,1.30);
+    //    h->GetYaxis()->SetRangeUser(0.70,1.30);
+    h->GetYaxis()->SetRangeUser(0.50,1.50);
 
     TGraphErrors *graph_probeRECO_tagRECO[6];
     for(int bin=0; bin<6; bin++){
@@ -775,7 +777,8 @@ void CorrectionObject::GenResponsePlots_AllPtbinningOnePlot(TString flavor="All"
     h->GetXaxis()->SetTitle("p_{T} [GeV] (see label)");
     h->GetXaxis()->SetTitleSize(0.05);
     h->GetXaxis()->SetLimits(30,pt_bins[n_pt-1]+100);
-    h->GetYaxis()->SetRangeUser(0.70,1.30);
+    //    h->GetYaxis()->SetRangeUser(0.70,1.30);
+    h->GetYaxis()->SetRangeUser(0.50,1.50);
 
     TGraphErrors *graph_probeRECO_probeGEN[6];
     for(int bin=0; bin<6; bin++){
@@ -819,7 +822,8 @@ void CorrectionObject::GenResponsePlots_AllPtbinningOnePlot(TString flavor="All"
     h->GetXaxis()->SetTitle("p_{T} [GeV] (see label)");
     h->GetXaxis()->SetTitleSize(0.05);
     h->GetXaxis()->SetLimits(30,pt_bins[n_pt-1]+100);
-    h->GetYaxis()->SetRangeUser(0.70,1.30);
+    //    h->GetYaxis()->SetRangeUser(0.70,1.30);
+    h->GetYaxis()->SetRangeUser(0.50,1.50);
 
     TGraphErrors *graph_MPF_RECO[6];
     for(int bin=0; bin<6; bin++){
@@ -862,7 +866,8 @@ void CorrectionObject::GenResponsePlots_AllPtbinningOnePlot(TString flavor="All"
     h->GetXaxis()->SetTitle("p_{T} [GeV] (see label)");
     h->GetXaxis()->SetTitleSize(0.05);
     h->GetXaxis()->SetLimits(30,pt_bins[n_pt-1]+100);
-    h->GetYaxis()->SetRangeUser(0.70,1.30);
+    //    h->GetYaxis()->SetRangeUser(0.70,1.30);
+    h->GetYaxis()->SetRangeUser(0.50,1.50);
 
     TGraphErrors *graph_MPF_GEN[6];
     for(int bin=0; bin<6; bin++){
